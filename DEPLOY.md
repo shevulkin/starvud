@@ -31,13 +31,22 @@
 
 ### 2. Файли
 
-**Варіант А — архівом (найпростіше).** cPanel → Диспетчер файлів → `public_html` →
-завантажити `starvud-site.zip` → «Видобути». Увімкніть «Показувати приховані файли» й
-переконайтеся, що поруч з `index.php` лежить `.htaccess`.
+Як і в bofu: cPanel тримає власний клон репозиторію (поза `public_html`), а скрипт
+`.cpanel.yml` після кожного розгортання копіює його вміст у робочу теку
+**`public_html/starvud`** (без `.git`, тестів, `config.local.php`; фото й бібліотеку, яких у git
+немає, не чіпає).
 
-**Варіант Б — через git.** cPanel → Git Version Control → клон репозиторію →
-«Deploy HEAD Commit». Шлях розгортання — у `.cpanel.yml` (`$HOME/public_html`). Фото
-(`assets/uploads`) у git немає: їх один раз переносять архівом.
+1. cPanel → **Git Version Control** → Create → Clone URL `https://github.com/shevulkin/starvud.git`,
+   гілка `main`, тека клону — `repositories/starvud` (не в `public_html`).
+2. **Manage → Pull or Deploy → Update from Remote → Deploy HEAD Commit.**
+3. Один раз перенесіть фото: з архіву `starvud-site.zip` завантажте в
+   `public_html/starvud/assets/uploads/` вміст `assets/uploads/` (Диспетчер файлів → Завантажити
+   → Видобути). Далі розгортання їх не зачіпає.
+4. Бібліотека підпису КЕП: у Terminal `cd ~/public_html/starvud && php bin/cli.php dps:lib`.
+5. Перевірте, що в `public_html/starvud` є `.htaccess` (Налаштування → «Показувати приховані файли»).
+
+Кожне наступне оновлення: `git push` → cPanel → **Update from Remote** → **Deploy HEAD Commit**.
+Схема бази оновиться сама на першому запиті (або `php bin/cli.php migrate`).
 
 ### 3. Конфіг
 
@@ -49,7 +58,7 @@
 cPanel → **Terminal**:
 
 ```bash
-cd ~/public_html
+cd ~/public_html/starvud
 php bin/cli.php migrate
 php bin/cli.php prod-check
 ```
@@ -89,7 +98,7 @@ php bin/cli.php grant-admin її@пошта
 Лише після того, як вписано API-ключ Нової Пошти:
 
 ```
-7 * * * * php $HOME/public_html/bin/cli.php np:track
+7 * * * * php $HOME/public_html/starvud/bin/cli.php np:track
 ```
 
 Статуси посилок оновлюватимуться щогодини, а покупець отримуватиме сповіщення.
@@ -97,7 +106,7 @@ php bin/cli.php grant-admin її@пошта
 Друга задача — нічний Z-звіт каси (див. розділ «Каса: ПРРО ДПС» нижче):
 
 ```
-50 23 * * * php $HOME/public_html/bin/cli.php fiscal:z
+50 23 * * * php $HOME/public_html/starvud/bin/cli.php fiscal:z
 ```
 
 Задачі cron окремі для кожного сайту: рядки bofu цей сайт не обслуговують.
@@ -138,7 +147,7 @@ php bin/cli.php grant-admin її@пошта
 **Нічний Z-звіт** (закон вимагає закривати зміну щодоби) — у cron:
 
 ```
-50 23 * * * php $HOME/public_html/bin/cli.php fiscal:z
+50 23 * * * php $HOME/public_html/starvud/bin/cli.php fiscal:z
 ```
 
 Команда ставить закриття зміни в чергу; підпише його вкладка «Каса», щойно її відкриють

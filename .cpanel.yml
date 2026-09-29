@@ -23,13 +23,13 @@
 # копія файлу — проблема, яку видно й можна виправити; стерті фото — ні.
 deployment:
   tasks:
-    # Корінь домену магазину. Якщо сайт живе в підтеці або на піддомені —
-    # вкажіть її тут (напр. $HOME/starvud.com.ua), інакше файли ляжуть не туди.
-    - export DEPLOYPATH=$HOME/public_html
+    # Робоча тека сайту — як у bofu (public_html/bofu). Якщо домен магазину
+    # дивиться в іншу теку, змініть шлях тут.
+    - export DEPLOYPATH=$HOME/public_html/starvud
     - /bin/mkdir -p $DEPLOYPATH
     # ./ із скісною рискою — «вміст цієї теки», а не «тека всередину теки».
-    # Без неї файли лягли б у public_html/starvud.
-    - /usr/bin/rsync -a --exclude=.git --exclude=.gitignore --exclude=.cpanel.yml --exclude=tests --exclude=database --exclude=docker-compose.yml --exclude=config.local.php ./ $DEPLOYPATH/
+    # Без неї файли лягли б у public_html/starvud/starvud.
+    - /usr/bin/rsync -a --exclude=.git --exclude=.gitignore --exclude=.cpanel.yml --exclude=tests --exclude=database --exclude=docker-compose.yml --exclude=.env.example --exclude=config.local.php ./ $DEPLOYPATH/
     # Права на саму теку сайту — і саме ПІСЛЯ rsync, це не дрібниця порядку.
     #
     # public_html належить користувачу, але групі nobody: через групу до нього
