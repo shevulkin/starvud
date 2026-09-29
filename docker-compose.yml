@@ -1,0 +1,50 @@
+# База даних MySQL для «Старвуд-М» (локальна розробка)
+#
+# Паролі — у файлі .env поруч (у git не потрапляє). Вперше:
+#   copy .env.example .env      і впишіть свої паролі
+#   docker compose up -d
+# Зупинка: docker compose stop
+# Дані зберігаються у томі starvud_db_data і переживають перезапуски.
+#
+# Порти 3308 і 8082 — щоб стояти поруч із базою bofu (3307/8081) на тій самій
+# машині: обидва проєкти живуть в одному XAMPP.
+#
+# Обидва порти відкриті ЛИШЕ на 127.0.0.1: інакше базу й phpMyAdmin (з
+# автовходом!) бачив би будь-хто в тій самій Wi-Fi-мережі.
+services:
+  db:
+    image: mysql:8.0
+    container_name: starvud-mysql
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3308:3306"
+    environment:
+      MYSQL_DATABASE: starvud
+      MYSQL_USER: starvud
+      MYSQL_PASSWORD: ${DB_PASSWORD:?впишіть DB_PASSWORD у .env}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?впишіть DB_ROOT_PASSWORD у .env}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - starvud_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$$MYSQL_PASSWORD"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Веб-інтерфейс до бази: http://localhost:8082 (лише з цього комп'ютера)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: starvud-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8082:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: starvud
+      PMA_PASSWORD: ${DB_PASSWORD:?впишіть DB_PASSWORD у .env}
+    depends_on:
+      - db
+
+volumes:
+  starvud_db_data:

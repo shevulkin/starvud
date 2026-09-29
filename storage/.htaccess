@@ -1,0 +1,9 @@
+# Сесії, логи, кеш, база SQLite — назовні не віддається нічого.
+# Файли сесій не мають розширення, тому FilesMatch у корені їх не покриває.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>

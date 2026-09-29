@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head><meta charset="utf-8"><title>Перевірка вікна сканування</title>
+<script>
+// Стилі теж із міткою часу: інакше браузер підсовує кешовану копію, і тест
+// перевіряє вигляд, якого вже немає у файлі.
+document.write('<link rel="stylesheet" href="../assets/css/app.css?t=' + Date.now() + '">');
+</script>
+<style>body{padding:20px}.ok{color:#7fb069}.bad{color:#e0685e}</style>
+</head>
+<body>
+<h1 class="h-serif">Перевірка вікна сканування</h1>
+<p class="dim">Тут перевіряється те, що ламається мовчки: чи ховається вікно камери і чи є звук.
+  Саме читання коду — у <a href="barcode.html">barcode.html</a>, решта — <code>php bin/cli.php test</code>.</p>
+<div id="out">рахуємо…</div>
+<p><button class="btn btn-line btn-sm" id="beepOk">Послухати «знайшли»</button>
+   <button class="btn btn-line btn-sm" id="beepBad">Послухати «не знайшли»</button></p>
+
+<script src="../assets/js/barcode.js"></script>
+<script>
+var s = document.createElement('script');
+s.src = '../assets/js/scan.js?t=' + Date.now();
+s.onload = function () { run(); };
+document.head.appendChild(s);
+
+var pass = 0, fail = 0, out;
+function ok(what, cond) {
+  cond ? pass++ : fail++;
+  out.insertAdjacentHTML('beforeend',
+    '<div class="' + (cond ? 'ok' : 'bad') + '">' + (cond ? 'ok  ' : 'FAIL') + ' ' + what + '</div>');
+}
+
+function run() {
+  out = document.getElementById('out');
+  out.innerHTML = '';
+
+  ok('модуль завантажився', !!window.BofuScan);
+
+  // Вікно будується при першому відкритті, тож викликаємо open() без камери:
+  // getUserMedia відмовить (або спитає дозволу), але розмітка вже буде.
+  window.BofuScan.open(function () {}, { onError: function () {} });
+  var box = document.querySelector('.pos-cam');
+  ok('вікно з’явилось у розмітці', !!box);
+
+  if (box) {
+    // Головне, заради чого цей файл: display у класі перебивав атрибут hidden,
+    // і чорне вікно висіло поверх екрана назавжди — кнопка «Готово» його не
+    // прибирала. Такі поломки не видно в жодному серверному тесті.
+    box.hidden = true;
+    ok('закрите вікно не показується (hidden працює)',
+      getComputedStyle(box).display === 'none');
+    box.hidden = false;
+    ok('відкрите вікно показується',
+      getComputedStyle(box).display === 'flex');
+
+    var video = box.querySelector('video');
+    ok('відео створено', !!video);
+    ok('відео беззвучне — інакше браузер не дасть автозапуск', !!video && video.muted === true);
+    ok('відео грає всередині сторінки (playsInline)', !!video && video.playsInline === true);
+    // Видно рівно те, що читається: з обрізанням (cover) людина цілиться в
+    // один кадр, а декодер отримує інший — і рамка прицілу починає брехати
+    ok('кадр показується без обрізання (object-fit: contain)',
+      !!video && getComputedStyle(video).objectFit === 'contain');
+    // Висоту міряємо лише там, де вікно справді розкладене: у тестовій панелі
+    // innerHeight буває 0, і 60vh чесно дає нуль
+    if (window.innerHeight > 200) {
+      ok('відео має висоту, а не нульову смужку',
+        parseFloat(getComputedStyle(video).height) > 100);
+    }
+
+    ok('є кнопка «ввести руками» — коли камера не дає ради',
+      !!box.querySelector('[data-cam-manual]'));
+    ok('є рядок діагностики', !!box.querySelector('.pos-cam-diag'));
+
+    window.BofuScan.close();
+    ok('close() ховає вікно', getComputedStyle(box).display === 'none');
+  }
+
+  ok('звук є в інтерфейсі модуля', typeof window.BofuScan.say === 'function');
+
+  out.insertAdjacentHTML('beforeend',
+    '<h2 class="' + (fail ? 'bad' : 'ok') + '">' +
+    (fail ? 'ПРОВАЛЕНО ' + fail + ' з ' + (pass + fail) : 'УСЕ ДОБРЕ: ' + pass + ' перевірок') + '</h2>');
+}
+
+// Звук перевіряється вухом: автоматично його не почуєш
+document.getElementById('beepOk').addEventListener('click', function () {
+  window.BofuScan.open(function () {}, { onError: function () {} });
+  window.BofuScan.beep ? window.BofuScan.beep(true) : 0;
+  window.BofuScan.close();
+});
+document.getElementById('beepBad').addEventListener('click', function () {
+  window.BofuScan.open(function () {}, { onError: function () {} });
+  window.BofuScan.beep ? window.BofuScan.beep(false) : 0;
+  window.BofuScan.close();
+});
+</script>
+</body>
+</html>

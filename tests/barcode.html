@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head><meta charset="utf-8"><title>Перевірка декодера штрихкодів</title>
+<style>body{font:14px monospace;background:#141110;color:#f6ecd9;padding:20px}
+.ok{color:#7fb069}.bad{color:#e0685e}canvas{background:#fff;margin:4px 0}</style>
+</head>
+<body>
+<h1>Перевірка barcode.js</h1>
+<p>Читання штрихкодів живе в браузері, тож і перевіряється в браузері:
+  <b>http://localhost/bofu/tests/barcode.html</b>. Решта тестів — <code>php bin/cli.php test</code>.</p>
+<div id="out">рахуємо…</div>
+<script>
+// Файл вантажимо з міткою часу: інакше браузер підсовує кешовану версію, і
+// тест радісно перевіряє код, який ви щойно виправили, у старому вигляді.
+// (Саме на цьому й попався автор: EAN-8 «не читався» вже полагодженим.)
+var s = document.createElement('script');
+s.src = '../assets/js/barcode.js?t=' + Date.now();
+// не `s.onload = runTests` — його ще не існує, він оголошений нижче
+s.onload = function () { runTests(); };
+document.head.appendChild(s);
+</script>
+<script>
+// Кодувальник написаний ВІД БІТОВИХ таблиць стандарту, а декодер — від ширин
+// смужок. Якби таблиці розійшлись, тест би це показав.
+var Lbits = ['0001101','0011001','0010011','0111101','0100011','0110001','0101111','0111011','0110111','0001011'];
+var Gbits = ['0100111','0110011','0011011','0100001','0011101','0111001','0000101','0010001','0001001','0010111'];
+var Rbits = Lbits.map(function (b) { return b.replace(/./g, function (c) { return c === '0' ? '1' : '0'; }); });
+var PARITY = ['LLLLLL','LLGLGG','LLGGLG','LLGGGL','LGLLGG','LGGLLG','LGGGLL','LGLGLG','LGLGGL','LGGLGL'];
+
+function ean13bits(code) {
+  var d = code.split('').map(Number);
+  var parity = PARITY[d[0]], bits = '101';
+  for (var i = 1; i <= 6; i++) bits += (parity[i - 1] === 'L' ? Lbits : Gbits)[d[i]];
+  bits += '01010';
+  for (i = 7; i <= 12; i++) bits += Rbits[d[i]];
+  return bits + '101';
+}
+function ean8bits(code) {
+  var d = code.split('').map(Number), bits = '101';
+  for (var i = 0; i < 4; i++) bits += Lbits[d[i]];
+  bits += '01010';
+  for (i = 4; i < 8; i++) bits += Rbits[d[i]];
+  return bits + '101';
+}
+function check(digits) {  // контрольна цифра для довільного префікса
+  var sum = 0;
+  for (var i = 0; i < digits.length; i++) {
+    var weight = ((digits.length - 1 - i) % 2 === 0) ? 3 : 1;
+    sum += Number(digits[i]) * weight;
+  }
+  return String((10 - (sum % 10)) % 10);
+}
+
+/** Малюємо штрихкод так, як його бачить камера: із полями, шумом і поворотом */
+function render(bits, opt) {
+  opt = opt || {};
+  var module = opt.module || 3, quiet = 12 * module, h = opt.height || 120;
+  var c = document.createElement('canvas');
+  c.width = bits.length * module + quiet * 2;
+  c.height = h;
+  var x = c.getContext('2d');
+  x.fillStyle = opt.bg || '#fff';
+  x.fillRect(0, 0, c.width, c.height);
+  x.fillStyle = opt.fg || '#000';
+  for (var i = 0; i < bits.length; i++) {
+    if (bits[i] === '1') x.fillRect(quiet + i * module, 10, module, h - 20);
+  }
+  if (opt.noise) {   // легкий шум камери
+    var img = x.getImageData(0, 0, c.width, c.height), dt = img.data;
+    for (var p = 0; p < dt.length; p += 4) {
+      var n = (Math.random() - 0.5) * opt.noise;
+      dt[p] += n; dt[p + 1] += n; dt[p + 2] += n;
+    }
+    x.putImageData(img, 0, 0);
+  }
+  if (opt.flip) {    // етикетку піднесли догори дриґом
+    var f = document.createElement('canvas');
+    f.width = c.width; f.height = c.height;
+    var fx = f.getContext('2d');
+    fx.translate(c.width, c.height); fx.rotate(Math.PI);
+    fx.drawImage(c, 0, 0);
+    return f;
+  }
+  return c;
+}
+
+/**
+ * Кадр із камери: код лежить під кутом, десь у смузі, з тінню й нерівним
+ * світлом, а навколо — темний стіл. Саме так виглядало те, що не читалось.
+ */
+function photo(bits, opt) {
+  opt = opt || {};
+  var src = render(bits, { module: opt.module || 3 });
+  var W = opt.width || 900, H = opt.height || 400;
+  var c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  var x = c.getContext('2d');
+
+  x.fillStyle = opt.table || '#6b5a44';           // стіл навколо коробки
+  x.fillRect(0, 0, W, H);
+
+  x.save();
+  x.translate(W / 2 + (opt.dx || 0), H / 2 + (opt.dy || 0));
+  x.rotate((opt.angle || 0) * Math.PI / 180);
+  var s = opt.zoom || 1;
+  x.fillStyle = '#efe9dd';                        // сама коробка, більша за код
+  x.fillRect(-src.width * s / 2 - 30, -src.height * s / 2 - 26, src.width * s + 60, src.height * s + 52);
+  x.drawImage(src, -src.width * s / 2, -src.height * s / 2, src.width * s, src.height * s);
+  x.restore();
+
+  if (opt.blur) {                                 // камера не навелась на різкість
+    var b = document.createElement('canvas');
+    b.width = W; b.height = H;
+    var bx = b.getContext('2d');
+    bx.filter = 'blur(' + opt.blur + 'px)';
+    bx.drawImage(c, 0, 0);
+    c = b; x = bx; x.filter = 'none';
+  }
+  if (opt.shadow) {                               // тінь від руки навскіс
+    var g = x.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, 'rgba(0,0,0,0)');
+    g.addColorStop(1, 'rgba(0,0,0,' + opt.shadow + ')');
+    x.fillStyle = g;
+    x.fillRect(0, 0, W, H);
+  }
+  return c;
+}
+
+var out, pass = 0, fail = 0;
+function say(name, got, want) {
+  var ok = got === want;
+  ok ? pass++ : fail++;
+  out.insertAdjacentHTML('beforeend',
+    '<div class="' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'ok  ' : 'FAIL') + ' ' + name +
+    ' → ' + (got === null ? 'null' : got) + (ok ? '' : ' (чекали ' + want + ')') + '</div>');
+}
+function decodeCanvas(c) {
+  var x = c.getContext('2d');
+  return window.BofuBarcode.decode(x.getImageData(0, 0, c.width, c.height));
+}
+
+function runTests() {
+  out = document.getElementById('out');
+  out.innerHTML = '';
+
+  // '2001…' — саме такі коди придумує собі магазин сам (Barcode::make у PHP):
+  // у них перша цифра 2, а від неї залежить розкладка наборів L/G у лівій
+  // половині. Без цього випадку помилка в тій таблиці лишилась би непоміченою.
+  ['482000000000', '400638133393', '590123412345', '012345678912',
+   '200100000031', '200200000022'].forEach(function (prefix) {
+    var code = prefix + check(prefix);
+    say('EAN-13 ' + code, decodeCanvas(render(ean13bits(code))), code);
+  });
+
+  // Те, що камера підкидає в житті: різна відстань, поворот, шум, сірий папір
+  var full = '482000000000' + check('482000000000');
+  say('дрібний модуль (2px)', decodeCanvas(render(ean13bits(full), { module: 2 })), full);
+  say('великий модуль (5px)', decodeCanvas(render(ean13bits(full), { module: 5 })), full);
+  say('перевернутий', decodeCanvas(render(ean13bits(full), { flip: true })), full);
+  say('шум камери', decodeCanvas(render(ean13bits(full), { noise: 60 })), full);
+  say('сірий фон і темні смуги', decodeCanvas(render(ean13bits(full), { bg: '#ddd8cc', fg: '#221c14' })), full);
+
+  var e8 = '9638507' + check('9638507');
+  say('EAN-8 ' + e8, decodeCanvas(render(ean8bits(e8))), e8);
+
+  // ── Те, що приходить із камери: код у руці, під кутом, на столі ──────────
+  // Саме на цьому декодер і провалювався: горизонтальна лінія входила у смужки
+  // зверху, а виходила вже в надрукованих цифрах.
+  var live = ean13bits(full);
+  [-12, -7, -3, 3, 7, 12].forEach(function (a) {
+    say('кадр: нахил ' + a + '°', decodeCanvas(photo(live, { angle: a })), full);
+  });
+  say('кадр: не по центру', decodeCanvas(photo(live, { angle: 6, dx: -140, dy: -60 })), full);
+  say('кадр: тінь від руки', decodeCanvas(photo(live, { angle: -5, shadow: 0.55 })), full);
+  say('кадр: темний стіл і нерівне світло',
+    decodeCanvas(photo(live, { angle: 8, table: '#2b2119', shadow: 0.4 })), full);
+  say('кадр: далеко (дрібні смужки)', decodeCanvas(photo(live, { angle: 4, module: 2 })), full);
+
+  // Вигаданий код у чеку гірший за жоден: чужий товар ляже тихо й непомітно
+  say('порожній кадр', decodeCanvas(render('0'.repeat(95), {})), null);
+  var noise = document.createElement('canvas');
+  noise.width = 400; noise.height = 120;
+  var nx = noise.getContext('2d');
+  for (var i = 0; i < 400; i++) {
+    nx.fillStyle = Math.random() > 0.5 ? '#000' : '#fff';
+    nx.fillRect(i, 0, 1, 120);
+  }
+  say('випадкові смуги', decodeCanvas(noise), null);
+  // Саме для цього в коді є контрольна цифра — перевіряємо, що ми її й перевіряємо
+  say('невірна контрольна цифра', decodeCanvas(render(ean13bits('4820000000009'))), null);
+
+  // ── Розмитий кадр ───────────────────────────────────────────────────────
+  // Найчастіша причина «не читається» в житті: вебкамера не наводиться на
+  // різкість зблизька. Витривалість тут прямо залежить від того, скільки
+  // пікселів припадає на найтоншу смужку, — а це вирішує, як близько тримати
+  // етикетку. Числа заміряні, а не вигадані: див. рядки нижче.
+  [
+    [2, 1.2, true],   // навіть 2 px на смужку тримає легке розмиття
+    [3, 2.0, true],   // 3 px — помітне
+    [4, 2.0, true],
+    [6, 3.0, true],   // 6 px — сильне
+    [2, 3.0, false]   // а от тут смужки злипаються остаточно, і це чесно видно
+  ].forEach(function (t) {
+    // Кадр такого ж розміру, як дає справжня вебкамера
+    var c = photo(ean13bits(full), { width: 1280, height: 720, module: t[0], angle: 4, blur: t[1] });
+    say('розмиття ' + t[1] + 'px при ' + t[0] + 'px на смужку — ' + (t[2] ? 'читається' : 'не читається'),
+      decodeCanvas(c), t[2] ? full : null);
+  });
+
+  // ── Швидкість ───────────────────────────────────────────────────────────
+  // Декодер крутиться в циклі камери, тож повільний він так само марний, як
+  // неточний: кадри почнуть відставати від руки. Найгірший випадок — коли в
+  // кадрі коду немає взагалі: тоді перебираються геть усі нахили й смуги.
+  function ms(canvas) {
+    var img = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+    window.BofuBarcode.decode(img);
+    var t0 = performance.now();
+    for (var i = 0; i < 10; i++) window.BofuBarcode.decode(img);
+    return (performance.now() - t0) / 10;
+  }
+  var big = photo(ean13bits(full), { angle: 7, width: 1600, height: 600, module: 4 });
+  var noise2 = document.createElement('canvas');
+  noise2.width = 1600; noise2.height = 600;
+  var n2 = noise2.getContext('2d');
+  n2.fillStyle = '#6b5a44'; n2.fillRect(0, 0, 1600, 600);
+  for (var k = 0; k < 600; k += 7) { n2.fillStyle = 'rgba(0,0,0,.2)'; n2.fillRect(0, k, 1600, 3); }
+
+  var tFound = ms(big), tWorst = ms(noise2);
+  ok('кадр із кодом читається швидше за 8 мс (' + tFound.toFixed(1) + ' мс)', tFound < 8);
+  ok('найгірший кадр (коду немає) вкладається в 40 мс (' + tWorst.toFixed(1) + ' мс)', tWorst < 40);
+
+  out.insertAdjacentHTML('beforeend',
+    '<h2 class="' + (fail ? 'bad' : 'ok') + '" id="verdict">' +
+    (fail ? 'ПРОВАЛЕНО ' + fail + ' з ' + (pass + fail) : 'УСЕ ДОБРЕ: ' + pass + ' перевірок') + '</h2>');
+}
+
+/** ok() з попередніх перевірок — той самий, лише з іншою назвою для читабельності */
+function ok(what, cond) { say(what, cond ? 'так' : 'ні', 'так'); }
+</script>
+</body>
+</html>

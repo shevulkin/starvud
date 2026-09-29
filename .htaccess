@@ -1,0 +1,106 @@
+Options -Indexes
+
+# ─────────────────────────────────────────────────────────── швидкість ───
+# Обидва блоки під IfModule: на хостингу без цих модулів файл має лишатись
+# робочим, а не валити сайт п'ятисоткою.
+
+# Стиснення тексту. Без нього CSS їде як 97 КБ замість ~18, а HTML — як 30
+# замість ~6. Це найдешевше, що можна зробити для першого відкриття з
+# телефона: саме стилі блокують перший показ сторінки.
+# Зображення, шрифти й woff2 тут не згадані навмисно — вони вже стиснуті,
+# і повторне стиснення лише витрачає процесор.
+# Через SetOutputFilter, а не звичніший AddOutputFilterByType: той належить
+# mod_filter, а не mod_deflate, і на сервері, де є один без іншого, обгортка
+# <IfModule mod_deflate.c> його пропускає — а сайт після цього віддає 500 на
+# кожен запит. SetOutputFilter — директива ядра, тож достатньо самого deflate.
+<IfModule mod_deflate.c>
+  <FilesMatch "\.(php|css|js|json|xml|svg|webmanifest|txt)$">
+    SetOutputFilter DEFLATE
+  </FilesMatch>
+</IfModule>
+
+# Кеш статики. Адреси css і js містять час зміни файлу (asset_v), тож рік
+# тут безпечний: змінили файл — змінилась адреса, браузер піде по нову.
+# Шрифти не змінюються ніколи. А от зображення підмінюють тим самим імʼям
+# (перезалили фото товару), тому їм тиждень: інакше стару картинку довелося б
+# чекати рік.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/webp "access plus 7 days"
+  ExpiresByType image/png "access plus 7 days"
+  ExpiresByType image/jpeg "access plus 7 days"
+  ExpiresByType image/svg+xml "access plus 7 days"
+</IfModule>
+
+# Те саме через mod_headers — на випадок, коли mod_expires вимкнений, а він
+# буває вимкнений частіше. Обидва блоки разом не конфліктують: браузер бере
+# Cache-Control, а Expires лишається для зовсім старих проксі.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.woff2?$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(webp|png|jpe?g|svg|ico)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Примусовий HTTPS (діє локально і на хостингу)
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+  # /\.git — на випадок, якщо клон опиниться всередині public_html: там лежить
+  # уся історія проєкту, включно з тим, що колись видалили з файлів
+  # /tests/ і /database/ — тести (запускаються з браузера й міняють базу) і
+  # дані імпорту з Prom (імена покупців у відгуках)
+  RewriteCond %{REQUEST_URI} /app/|/storage/|/bin/|/tests/|/database/|/migrations/|config|/\.git
+  RewriteRule ^ - [F]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# Заборони нижче навмисно дублюють RewriteRule вище: якщо mod_rewrite вимкнений
+# або AllowOverride обмежений, конфіг із паролями БД не має віддаватися жодним шляхом.
+# pem/crt/key — ключі платіжного шлюзу (storage/keys). Приватним ключем
+# підписуються запити на списання коштів: той, хто його забере, зможе
+# створювати платежі від імені магазину. Тека вже закрита правилом вище, але
+# саме тут ціна вимкненого mod_rewrite найвища, тож розширення названі окремо.
+<FilesMatch "\.(sqlite|log|md|lock|yml|yaml|ini|sh|py|sql|bak|swp|dist|pem|crt|cer|key|p12|pfx)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Службові файли git: .gitignore розповідає, що саме ховають, а .gitattributes
+# і подібні нічого не дають відвідувачу
+<FilesMatch "^\.git">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# config.php / config.local.php — секрети; фронт-контролер підключає їх сам
+<FilesMatch "^config.*\.php$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

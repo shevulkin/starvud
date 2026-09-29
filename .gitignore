@@ -1,0 +1,41 @@
+# локальна конфігурація (секрети!)
+/config.local.php
+# робочі дані
+/storage/logs/*
+/storage/sessions/
+/storage/cache/*
+# вивантаження товарів із кабінету «Вчасно.Каси» — робочий файл на час звірки
+/storage/vchasno/
+# стан емулятора Device Manager — робочий файл тестів
+/storage/dm-emulator.json*
+# журнал і налаштування агента каси — вони місцеві, у кожної точки свої
+/bin/agent/agent.log
+/bin/agent/agent.config.json
+/storage/*.sqlite*
+# ключі платіжного шлюзу — секрети, у репозиторії їм не місце.
+# Саму теку лишаємо: доступ до неї вже закритий storage/.htaccess
+/storage/keys/*
+!/storage/keys/.gitkeep
+# завантажені фото (контент, не код) — крім правил доступу до теки
+/assets/uploads/*
+!/assets/uploads/.htaccess
+# сміття IDE/ОС
+.vs/
+Thumbs.db
+desktop.ini
+!**/.gitkeep
+
+# вихідні фото з Prom для імпорту — 100+ МБ, у git не потрібні
+/storage/import/
+
+# Бібліотека підпису КЕП від ІІТ (пропрієтарна, безкоштовна) і файли ЦСК від ДПС —
+# лише на наших серверах, не в репозиторії. Оновлення: php bin/cli.php dps:lib
+/assets/vendor/eusign/*
+!/assets/vendor/eusign/README.md
+
+# паролі локальної бази для docker compose (зразок — .env.example)
+/.env
+# локальні налаштування інструментів розробника
+/.claude/
+# відгуки покупців з Prom (імена) — персональні дані, лише локально й на сервері
+/database/prom/reviews.json

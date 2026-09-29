@@ -1,0 +1,12 @@
+# Завантажені фото. Вони перекодовуються через GD, тож PHP усередині «картинки»
+# не виживає, — але віддавати звідси скрипти заборонено про всяк випадок.
+# (php_flag тут не використовуємо: під PHP-FPM він валить сервер у 500)
+<FilesMatch "\.(php|phtml|phar|php[0-9]|cgi|pl|htaccess)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
