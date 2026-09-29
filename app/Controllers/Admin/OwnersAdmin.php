@@ -49,7 +49,7 @@ class OwnersAdmin
             'ep_groups' => Owners::EP_GROUPS,
             'tax_groups' => Vchasno::TAX_GROUPS,
             'year' => (int)date('Y'),
-            'page_title' => 'Власники — адмінка',
+            'page_title' => 'Власники — Адміністрування',
         ], 'layouts/admin');
     }
 

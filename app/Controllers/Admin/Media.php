@@ -107,7 +107,7 @@ class Media
         }
         View::show('admin/media', [
             'items' => self::listAll(),
-            'page_title' => 'Медіа-бібліотека — адмінка',
+            'page_title' => 'Медіа-бібліотека — Адміністрування',
         ], 'layouts/admin');
     }
 }

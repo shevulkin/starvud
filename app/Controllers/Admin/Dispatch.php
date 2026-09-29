@@ -51,7 +51,7 @@ class Dispatch
             'children' => $children,
             'hints' => $hints,
             'statuses' => OrderFlow::STATUSES,
-            'page_title' => 'Розподіл замовлень — адмінка',
+            'page_title' => 'Розподіл замовлень — Адміністрування',
         ], 'layouts/admin');
     }
 }

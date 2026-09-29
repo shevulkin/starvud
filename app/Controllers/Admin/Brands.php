@@ -30,7 +30,7 @@ class Brands
             // скільки товарів на кожному бренді: без цього не видно, що можна прибрати
             'counts' => self::counts(),
             'own_default' => Catalog::ownBrandName(),
-            'page_title' => 'Бренди — адмінка',
+            'page_title' => 'Бренди — Адміністрування',
         ], 'layouts/admin');
     }
 

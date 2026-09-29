@@ -87,7 +87,7 @@ class ContentAdmin
             'blocks' => Content::all(),
             'faq' => ContentSave::currentList('faq'),
             'gallery' => ContentSave::currentList('gallery'),
-            'page_title' => 'Контент сайту — адмінка',
+            'page_title' => 'Контент сайту — Адміністрування',
         ], 'layouts/admin');
     }
 }

@@ -46,7 +46,7 @@ class Notifications
                 'stock_wanted' => '{product} {waiting} {store}',
                 'stock_back' => '{product} {where} {url}',
             ],
-            'page_title' => 'Сповіщення — адмінка',
+            'page_title' => 'Сповіщення — Адміністрування',
         ], 'layouts/admin');
     }
 }

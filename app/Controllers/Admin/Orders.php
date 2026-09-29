@@ -150,7 +150,7 @@ class Orders
             'is_seller_view' => $mine !== null,
             'my_store_ids' => $mine ?? [],
             'sees_all' => $seesAll, 'scope' => $scope,
-            'page_title' => 'Замовлення — адмінка',
+            'page_title' => 'Замовлення — Адміністрування',
         ], 'layouts/admin');
     }
 
@@ -215,7 +215,7 @@ class Orders
             'kasa_on' => FiscalProvider::anyConfigured(),
             'pay_types' => Vchasno::PAY_TYPES,
             'np_enabled' => Settings::get('np_api_key') !== null && Settings::get('np_api_key') !== '',
-            'page_title' => 'Каса — адмінка',
+            'page_title' => 'Каса — Адміністрування',
         ], 'layouts/admin');
     }
 
@@ -1028,7 +1028,7 @@ class Orders
             'pay_types' => Vchasno::PAY_TYPES,
             'statuses' => self::STATUSES,
             'can_manage_parent' => Auth::can('orders.manage'),
-            'page_title' => 'Замовлення ' . $order['number'] . ' — адмінка',
+            'page_title' => 'Замовлення ' . $order['number'] . ' — Адміністрування',
         ], 'layouts/admin');
     }
 

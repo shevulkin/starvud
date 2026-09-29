@@ -29,7 +29,7 @@ class Subscribers
         View::show('admin/subscribers', [
             'rows' => DB::all('SELECT * FROM subscribers ORDER BY active DESC, id DESC'),
             'active_count' => (int)DB::val('SELECT COUNT(*) FROM subscribers WHERE active = 1'),
-            'page_title' => 'Розсилка — адмінка',
+            'page_title' => 'Розсилка — Адміністрування',
         ], 'layouts/admin');
     }
 

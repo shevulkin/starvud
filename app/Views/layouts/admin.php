@@ -19,7 +19,7 @@ $pos_screen = rtrim($cur, '/') === '/admin/orders/new';
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?= e($page_title ?? 'Адмінка') ?></title>
+<title><?= e($page_title ?? 'Адміністрування') ?></title>
 <meta name="theme-color" content="#141110">
 <?php /* Легкий значок вкладки; велика іконка лишається манифесту й apple-touch */ ?>
 <link rel="icon" href="<?= e(asset('img/favicon.png')) ?>" sizes="64x64">
@@ -31,7 +31,7 @@ $pos_screen = rtrim($cur, '/') === '/admin/orders/new';
 <body class="is-admin<?= $pos_screen ? ' pos-screen' : '' ?>">
 <div class="admin-mobilebar">
   <button class="mobile-menu-btn" style="display:flex" onclick="document.querySelector('.admin-side').classList.toggle('open')">☰</button>
-  <b><?= Auth::isAdmin() ? 'Адмінпанель' : 'Кабінет продавця' ?></b>
+  <b><?= Auth::isAdmin() ? 'Адміністрування' : 'Кабінет продавця' ?></b>
   <?php if (Auth::actingAs() !== null): ?>
     <span class="role-tag"><?= e(Roles::label(Auth::actingAs())) ?></span>
   <?php endif; ?>
@@ -39,7 +39,7 @@ $pos_screen = rtrim($cur, '/') === '/admin/orders/new';
 <div class="admin-wrap">
   <aside class="admin-side">
     <a class="brand" href="<?= e(url('/')) ?>">
-      <img src="<?= e(asset('img/logo-mark.png')) ?>" width="34" height="34" alt=""> <span class="brand-text" style="font-size:14px">Старвуд-М · <?= Auth::isAdmin() ? 'Адмін' : 'Продавець' ?></span>
+      <img src="<?= e(asset('img/logo-mark.png')) ?>" width="34" height="34" alt=""> <span class="brand-text" style="font-size:14px">Старвуд-М · <?= Auth::isAdmin() ? 'Адміністратор' : 'Продавець' ?></span>
     </a>
     <?php
     /**

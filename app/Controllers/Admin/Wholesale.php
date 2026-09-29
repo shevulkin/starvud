@@ -41,7 +41,7 @@ class Wholesale
             'tier_cat' => $tierCat,
             'tier_rows' => QtyDiscounts::level(null, $tierCat ?: null),
             'ladders' => self::ladders(),
-            'page_title' => 'Оптові знижки — адмінка',
+            'page_title' => 'Оптові знижки — Адміністрування',
         ], 'layouts/admin');
     }
 

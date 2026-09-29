@@ -47,7 +47,7 @@ class ReviewsAdmin
             'tab' => $tab,
             'rows' => DB::all($sql),
             'pending' => Reviews::pendingCount(),
-            'page_title' => 'Відгуки — адмінка',
+            'page_title' => 'Відгуки — Адміністрування',
         ], 'layouts/admin');
     }
 }

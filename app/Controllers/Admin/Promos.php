@@ -62,7 +62,7 @@ class Promos
                                  LEFT JOIN products p ON p.id = pr.product_id ORDER BY pr.id DESC'),
             'stores' => Catalog::stores(), 'categories' => Catalog::categories(),
             'products' => DB::all('SELECT id, name FROM products WHERE active = 1 ORDER BY name'),
-            'page_title' => 'Акції та промокоди — адмінка',
+            'page_title' => 'Акції та промокоди — Адміністрування',
         ], 'layouts/admin');
     }
 }

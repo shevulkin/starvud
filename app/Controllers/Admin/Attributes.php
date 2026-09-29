@@ -29,7 +29,7 @@ class Attributes
             'attrs' => $attrs, 'usage' => $usage, 'val_usage' => $valUsage,
             'categories' => Catalog::categories(),
             'open' => (int)($_GET['open'] ?? 0),
-            'page_title' => 'Характеристики — адмінка',
+            'page_title' => 'Характеристики — Адміністрування',
         ], 'layouts/admin');
     }
 

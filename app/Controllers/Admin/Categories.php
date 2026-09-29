@@ -118,7 +118,7 @@ class Categories
          */
         View::show('admin/categories', [
             'cats' => self::treeOrder($cats),
-            'page_title' => 'Категорії — адмінка',
+            'page_title' => 'Категорії — Адміністрування',
         ], 'layouts/admin');
     }
 

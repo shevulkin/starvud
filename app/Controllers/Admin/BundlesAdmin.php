@@ -88,7 +88,7 @@ class BundlesAdmin
             'preview' => $current ? Bundles::expand($current) : null,
             'products' => DB::all('SELECT id, name FROM products WHERE active = 1 ORDER BY name'),
             'variants' => self::variantMap(),
-            'page_title' => 'Набори — адмінка',
+            'page_title' => 'Набори — Адміністрування',
         ], 'layouts/admin');
     }
 

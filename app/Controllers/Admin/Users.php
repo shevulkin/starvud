@@ -86,7 +86,7 @@ class Users
             'assignable' => Roles::assignable(),
             'counts' => self::tabCounts($q),
             'tab' => $tab, 'q' => $q, 'page' => $page, 'pages' => $pages, 'total' => $total,
-            'page_title' => 'Користувачі та ролі — адмінка',
+            'page_title' => 'Користувачі та ролі — Адміністрування',
         ], 'layouts/admin');
     }
 

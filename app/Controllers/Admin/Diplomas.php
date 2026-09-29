@@ -59,7 +59,7 @@ class Diplomas
                 'SELECT d.*, u.name AS user_name, u.phone AS user_phone, u.email AS user_email
                  FROM diplomas d LEFT JOIN users u ON u.id = d.user_id ORDER BY d.id DESC'),
             'courses' => Courses::all(),
-            'page_title' => 'Дипломи — адмінка',
+            'page_title' => 'Дипломи — Адміністрування',
         ], 'layouts/admin');
     }
 
