@@ -126,8 +126,16 @@ $otherWays = GoogleAuth::configured() || Telegram::configured() || Viber::config
       if (!d.ok) {
         show(d.error || 'Помилка', d.kind);
         if (d.retry_after) {
-          var vis = (emailResend && emailResend.style.display !== 'none') ? emailResend : emailSend;
-          cooldown(vis, d.retry_after, vis === emailSend ? 'Отримати код' : 'Надіслати код ще раз');
+          // «Код уже надіслано»: лист є, і вводити його треба десь — тож поле
+          // коду показуємо й тут (інакше після оновлення сторінки чи другого
+          // натискання людина бачить лише помилку й не має куди вписати код)
+          document.getElementById('emailCodeField').style.display = 'block';
+          emailVer.style.display = 'inline-flex';
+          if (emailSend) emailSend.style.display = 'none';
+          if (emailResend) emailResend.style.display = 'inline';
+          var vis = emailResend || emailSend;
+          cooldown(vis, d.retry_after, 'Надіслати код ще раз');
+          var ci0 = document.getElementById('emailCodeInput'); if (ci0) ci0.focus();
         }
         return;
       }
