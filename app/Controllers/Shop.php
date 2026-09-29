@@ -114,6 +114,13 @@ class Shop
             $otherWhere = ' AND ' . Catalog::inStockSql();
             $otherArgs[] = (int)$filters['store_id'];
         }
+        // Обраний вік — теж: порада «кульки 3+» під видачею «0–1 рік» радила б
+        // батькам немовляти те, що йому не можна
+        if ($filters['age'] !== '') {
+            [$ageCond, $ageArgs] = Ages::sql($filters['age'], 'p');
+            $otherWhere .= ' AND ' . $ageCond;
+            $otherArgs = array_merge($otherArgs, $ageArgs);
+        }
         // Псевдонім p обовʼязковий: умову «є в цьому магазині» написано через
         // нього (Catalog::inStockSql), і без аліаса запит падає на p.id
         $other = $page !== $pages ? [] : DB::all("SELECT p.* FROM products p WHERE p.active = 1 AND p.featured = 1 AND p.type <> 'course'" .
