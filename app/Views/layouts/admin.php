@@ -39,7 +39,7 @@ $pos_screen = rtrim($cur, '/') === '/admin/orders/new';
 <div class="admin-wrap">
   <aside class="admin-side">
     <a class="brand" href="<?= e(url('/')) ?>">
-      <img src="<?= e(asset('img/logo-mark.png')) ?>" width="34" height="34" alt=""> <span class="brand-text" style="font-size:14px">Старвуд-М · <?= Auth::isAdmin() ? 'Адміністратор' : 'Продавець' ?></span>
+      <img src="<?= e(asset('img/logo-mark.webp')) ?>" width="34" height="34" alt=""> <span class="brand-text" style="font-size:14px">Старвуд-М · <?= Auth::isAdmin() ? 'Адміністратор' : 'Продавець' ?></span>
     </a>
     <?php
     /**
