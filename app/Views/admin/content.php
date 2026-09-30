@@ -52,8 +52,8 @@ $imageKeys = [];   // ключі з фото — приховані форми �
                 <div class="field">
                   <label><?= e($f['label']) ?></label>
                   <?php $img = (string)($b['image'] ?? ''); ?>
-                  <img src="<?= e(asset($img !== '' ? $img : 'img/about-photo.webp')) ?>"
-                       style="width:120px;height:120px;object-fit:cover;border-radius:4px;border:1px solid var(--line)">
+                  <img src="<?= e(asset($img !== '' ? $img : 'img/logo.webp')) ?>"
+                       style="width:120px;height:120px;object-fit:contain;border-radius:4px;border:1px solid var(--line)">
                   <div style="margin-top:8px">
                     <button class="btn btn-line btn-xs" type="button"
                             onclick="var f=document.getElementById('setImg_<?= e($key) ?>');MediaPicker.open(function(p){f.querySelector('[name=media_path]').value=p;f.submit();})">Змінити фото</button>
