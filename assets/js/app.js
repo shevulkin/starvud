@@ -3,7 +3,10 @@
   var modal = document.getElementById('authModal');
   var loginBtn = document.getElementById('loginBtn');
   if (loginBtn && modal) {
-    loginBtn.addEventListener('click', function (e) { e.preventDefault(); modal.classList.add('open'); });
+    // і іконка в шапці, і кнопка в мобільному меню
+    Array.prototype.forEach.call(document.querySelectorAll('#loginBtn, [data-login]'), function (b) {
+      b.addEventListener('click', function (e) { e.preventDefault(); modal.classList.add('open'); });
+    });
     var close = document.getElementById('authClose');
     if (close) close.addEventListener('click', function () { modal.classList.remove('open'); });
     modal.addEventListener('click', function (e) { if (e.target === modal) modal.classList.remove('open'); });

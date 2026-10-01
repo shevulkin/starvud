@@ -2056,3 +2056,7 @@ body.ce-on [data-ce].ce-just-saved{outline:2px solid var(--ok);outline-offset:3p
 .dps-log li.is-ok{color:inherit}
 .dps-signer input[type=file]{max-width:100%}
 .dps-signer[hidden],.dps-signer [hidden]{display:none!important}
+
+/* Вкладки зі лічильником («Персонал 2»): у flex-контейнері пробіл між текстом і числом
+   зникає, тож відступ задаємо явно */
+.chip{gap:6px}

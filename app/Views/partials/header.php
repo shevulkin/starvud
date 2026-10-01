@@ -127,6 +127,9 @@ $short = [
     <a href="<?= e(url('/testimonials')) ?>">Відгуки</a>
     <a href="<?= e(url('/about')) ?>">Про нас</a>
     <a href="<?= e(url('/contacts')) ?>">Контакти</a>
+    <?php if (!$auth_user): ?>
+      <a class="btn btn-gold sv-mobile-login" href="#" data-login>Увійти</a>
+    <?php endif; ?>
     <?php if ($auth_user): ?>
       <?php if (Auth::isStaff()): ?><a href="<?= e(url('/admin')) ?>">Адміністрування</a><?php endif; ?>
       <a href="<?= e(url('/orders')) ?>">Мої замовлення</a>

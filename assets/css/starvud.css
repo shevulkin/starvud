@@ -625,3 +625,8 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
   .co-sum-h{display:flex!important;align-items:baseline;flex-wrap:wrap;gap:2px 8px;font-size:18px!important}
   .co-sum-h .co-fold-total{margin-left:auto;white-space:nowrap}
 }
+
+/* Вхід на телефоні: іконка «Увійти» лишається в шапці (решта іконок ховається) */
+@media (max-width:720px){ .sv-side #loginBtn{display:flex!important;min-width:44px} }
+.sv-mobile-login{display:none}
+@media (max-width:720px){ .sv-mobile-login{display:block;margin:6px 0 2px} }
