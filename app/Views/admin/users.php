@@ -27,7 +27,7 @@ $tabs = ['staff' => 'Персонал', 'customers' => 'Покупці', 'all' =
 
 «Усі» — кожен, хто хоч раз увійшов через Google, Telegram або Viber.">
     <?php foreach ($tabs as $key => $label): ?>
-      <a class="chip <?= $tab === $key ? '' : 'off' ?>" href="<?= e(url($listUrl(['tab' => $key, 'p' => 1]))) ?>">
+      <a class="chip<?= $tab === $key ? ' active' : '' ?>" href="<?= e(url($listUrl(['tab' => $key, 'p' => 1]))) ?>">
         <?= e($label) ?> <span class="dim"><?= (int)($counts[$key] ?? 0) ?></span>
       </a>
     <?php endforeach; ?>
