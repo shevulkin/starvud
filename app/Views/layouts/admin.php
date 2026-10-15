@@ -124,8 +124,9 @@ $pos_screen = rtrim($cur, '/') === '/admin/orders/new';
     <a href="<?= e(url('/')) ?>">← На сайт</a>
     <div style="padding:8px 22px"><?= View::partial('partials/work_store') ?></div>
     <div style="padding:8px 22px"><?= View::partial('partials/role_switch') ?></div>
-    <form method="post" action="<?= e(url('/logout')) ?>" style="padding:8px 22px"><?= Csrf::field() ?>
-      <button class="btn btn-line btn-xs" type="submit" style="width:100%">Вийти (<?= e($auth_user['name'] ?? '') ?>)</button>
+    <form method="post" action="<?= e(url('/logout')) ?>" class="side-user"><?= Csrf::field() ?>
+      <span class="side-user-name" title="<?= e($auth_user['name'] ?? '') ?>"><?= e($auth_user['name'] ?? '') ?></span>
+      <button class="side-logout" type="submit">Вийти</button>
     </form>
     <div style="padding:12px 22px">
       <button class="btn btn-line btn-xs" style="width:100%;display:none" id="pwaInstall">📱 Встановити додаток</button>
