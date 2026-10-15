@@ -862,10 +862,10 @@ footer{border-top:1px solid var(--line);padding:88px 0 40px;margin-top:64px}
 .admin-side .nav-group:hover{color:var(--text)}
 .admin-side .nav-group svg{transition:transform .15s}
 .admin-side .nav-group.is-closed svg{transform:rotate(-90deg)}
-.admin-side .side-user{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 22px}
+.admin-side .side-user{display:flex;flex-direction:column;gap:8px;padding:8px 22px}
 .admin-side .side-user-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;color:var(--muted)}
-.admin-side .side-logout{flex-shrink:0;background:none;border:0;padding:4px 0;font:inherit;font-size:13px;font-weight:700;color:var(--gold);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.admin-side .side-logout:hover{color:var(--text)}
+.admin-side .side-logout{width:100%;background:none;border:1px solid var(--line);border-radius:8px;padding:9px 12px;font:inherit;font-size:13px;font-weight:700;color:var(--text);cursor:pointer}
+.admin-side .side-logout:hover{background:var(--bg3)}
 .admin-side .nav-items{display:flex;flex-direction:column;gap:2px}
 .admin-side .nav-items[hidden]{display:none}
 .admin-main{flex:1;padding:30px 34px;min-width:0}
