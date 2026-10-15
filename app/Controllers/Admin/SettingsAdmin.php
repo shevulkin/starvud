@@ -30,7 +30,7 @@ class SettingsAdmin
         'mail_reply_to' => 'Email для відповідей покупця (Reply-To)',
         'google_client_id' => 'Google OAuth: Client ID',
         'google_client_secret' => 'Google OAuth: Client Secret',
-        'bot_site_url' => 'Адреса сайту для кнопки в боті (напр. https://bofu.ua)',
+        'bot_site_url' => 'Адреса сайту для кнопки в боті (напр. https://starvud.nikas-pro.com)',
     ];
 
     /**

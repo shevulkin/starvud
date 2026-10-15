@@ -7,7 +7,7 @@
 Саме за ним будь-хто зможе перевірити диплом на сайті: роботодавець вводить номер і бачить, чи він дійсний.
 
 Тому номер має збігатися з паперовим документом символ у символ — інакше перевірка не знайде запис.">
-    <label>Номер</label><input type="text" name="number" required placeholder="BOFU-2026-001"></div>
+    <label>Номер</label><input type="text" name="number" required placeholder="SV-2026-001"></div>
   <div style="flex:1;min-width:180px" data-help-title="Випускник"
        data-help="ПІБ людини, яка отримала диплом, — так само, як у документі.
 
