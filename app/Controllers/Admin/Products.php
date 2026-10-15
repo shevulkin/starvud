@@ -138,6 +138,11 @@ class Products
         foreach (DB::all('SELECT * FROM product_variants WHERE active = 1 ORDER BY sort, id') as $v) {
             $variants[(int)$v['product_id']][] = $v;
         }
+        // Перше фото кожного товару — одним запитом, а не по запиту на рядок
+        $photos = [];
+        foreach (DB::all('SELECT product_id, path FROM product_images ORDER BY sort DESC, id DESC') as $r) {
+            $photos[(int)$r['product_id']] = $r['path'];
+        }
         $prices = []; $stocks = []; $vprices = []; $vstocks = [];
         foreach (DB::all('SELECT * FROM store_prices') as $r) {
             if ($r['variant_id'] === null) $prices[(int)$r['product_id']][(int)$r['store_id']] = $r['price'];
@@ -155,7 +160,7 @@ class Products
             : $stores;
 
         View::show('admin/products/bulk', [
-            'products' => $products, 'stores' => $shown, 'all_stores' => $stores, 'variants' => $variants,
+            'products' => $products, 'stores' => $shown, 'all_stores' => $stores, 'variants' => $variants, 'photos' => $photos,
             'prices' => $prices, 'stocks' => $stocks, 'vprices' => $vprices, 'vstocks' => $vstocks,
             'categories' => Catalog::categories(), 'brands' => Catalog::brands(),
             'f' => self::bulkInput(), 'query' => self::bulkQuery(),

@@ -142,8 +142,20 @@ $roCard = $canCard ? '' : 'disabled';
     <?php foreach ($products as $p): $pid = (int)$p['id']; $vs = $variants[$pid] ?? []; ?>
       <tr class="row-product">
         <td>
-          <input type="text" name="p[<?= $pid ?>][name]" value="<?= e($p['name']) ?>" style="min-width:220px" <?= $roCard ?>>
-          <div class="dim"><?= e($p['cat_name'] ?? '') ?><?= $vs ? ' · варіантів: ' . count($vs) : '' ?></div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <?php if (!empty($photos[$pid])): ?>
+              <a href="<?= e(url('/admin/products/' . $pid)) ?>" title="Відкрити товар" style="flex-shrink:0">
+                <img src="<?= e(asset(Images::displayThumb($photos[$pid]))) ?>" width="52" height="52" alt="" loading="lazy"
+                     style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block">
+              </a>
+            <?php else: ?>
+              <span title="Фото немає" style="flex-shrink:0;width:52px;height:52px;border-radius:8px;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:11px">нема</span>
+            <?php endif; ?>
+            <div style="min-width:0;flex:1">
+              <input type="text" name="p[<?= $pid ?>][name]" value="<?= e($p['name']) ?>" style="min-width:220px" <?= $roCard ?>>
+              <div class="dim"><?= e($p['cat_name'] ?? '') ?><?= $vs ? ' · варіантів: ' . count($vs) : '' ?></div>
+            </div>
+          </div>
         </td>
         <td class="num cell-money"><input type="number" step="0.01" name="p[<?= $pid ?>][base_price]" value="<?= e(num_val($p['base_price'])) ?>" placeholder="За запитом" <?= $roCard ?>></td>
         <?php foreach ($stores as $s): $sid = (int)$s['id']; $ro = $canStore($sid) ? '' : 'disabled title="Магазин не ваш — правити може лише його продавець або адмін"'; ?>
