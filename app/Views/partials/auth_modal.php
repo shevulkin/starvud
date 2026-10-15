@@ -7,7 +7,10 @@
  * Окремої реєстрації немає свідомо: акаунт створює перше введення коду
  * (див. EmailAuth), паролів у системі не існує. Про це — один короткий рядок.
  */
-$otherWays = GoogleAuth::configured() || Telegram::configured() || Viber::configured();
+$google = GoogleAuth::configured();
+// Google — головним способом, над поштою: це вхід в один дотик без листа й коду.
+// Решта способів лишаються в згорнутому списку.
+$otherWays = Telegram::configured() || Viber::configured();
 ?>
 <div class="modal-back" id="authModal">
   <div class="modal sv-auth" role="dialog" aria-modal="true" aria-labelledby="authTitle">
@@ -18,6 +21,13 @@ $otherWays = GoogleAuth::configured() || Telegram::configured() || Viber::config
     <p class="sv-auth-sub">Замовлення, адреси й сповіщення в одному місці. Купувати можна й без входу.</p>
 
     <div id="loginHint" class="auth-note" role="status" aria-live="polite" style="display:none"></div>
+
+    <?php if ($google): ?>
+      <a class="btn btn-line sv-auth-google" href="<?= e(url('/auth/google')) ?>">
+        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.3l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 7l7.2 5.6c4.3-4 6.8-9.9 6.8-17.1z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.4-.8-2.9-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.2-5.6c-2 1.4-4.6 2.2-8.7 2.2-6.3 0-11.6-4.1-13.5-9.9l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+        Увійти через Google</a>
+      <p class="sv-auth-or"><span>або поштою</span></p>
+    <?php endif; ?>
 
     <form id="emailLoginBox" class="sv-auth-form" onsubmit="return false">
       <label class="sv-auth-l" for="emailInput">Пошта</label>
@@ -37,9 +47,6 @@ $otherWays = GoogleAuth::configured() || Telegram::configured() || Viber::config
       <details class="sv-auth-more">
         <summary>Інші способи входу</summary>
         <div class="stack">
-          <?php if (GoogleAuth::configured()): ?>
-            <a class="btn btn-line" href="<?= e(url('/auth/google')) ?>">Через Google</a>
-          <?php endif; ?>
           <?php if (Telegram::configured()): ?>
             <button class="btn btn-line" id="tgLoginBtn" type="button">Через Telegram</button>
           <?php endif; ?>

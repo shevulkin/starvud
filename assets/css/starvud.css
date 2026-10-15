@@ -630,3 +630,8 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 @media (max-width:720px){ .sv-side #loginBtn{display:flex!important;min-width:44px} }
 .sv-mobile-login{display:none}
 @media (max-width:720px){ .sv-mobile-login{display:block;margin:6px 0 2px} }
+
+/* Вхід через Google: кнопка над формою пошти */
+.sv .sv-auth-google{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:48px;margin-top:14px;font-size:15.5px;font-weight:600;background:#fff}
+.sv-auth-or{display:flex;align-items:center;gap:12px;margin:16px 0 0;color:var(--muted);font-size:13px}
+.sv-auth-or::before,.sv-auth-or::after{content:"";flex:1;height:1px;background:var(--line)}

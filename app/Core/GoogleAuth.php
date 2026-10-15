@@ -45,7 +45,12 @@ class GoogleAuth
             'code' => $code, 'client_id' => self::clientId(), 'client_secret' => self::clientSecret(),
             'redirect_uri' => self::redirectUri(), 'grant_type' => 'authorization_code',
         ]);
-        if (empty($token['access_token'])) return null;
+        if (empty($token['access_token'])) {
+            // Причину пишемо в журнал, покупцю — лише «не вдалося»: помилка тут майже
+            // завжди в налаштуванні (адреса переходу чи секрет), і видно її лише так
+            error_log('Google OAuth: токен не отримано — ' . ($token['error'] ?? '?') . ' ' . ($token['error_description'] ?? '') . ' (redirect_uri ' . self::redirectUri() . ')');
+            return null;
+        }
 
         $ch = curl_init('https://openidconnect.googleapis.com/v1/userinfo');
         curl_setopt_array($ch, [

@@ -10,7 +10,7 @@ class AuthController
     public static function google(): never
     {
         if (!GoogleAuth::configured()) {
-            flash('error', 'Вхід через Google ще не налаштовано. Скористайтесь демо-входом або зверніться до адміністратора.');
+            flash('error', 'Вхід через Google поки недоступний. Скористайтесь входом за поштою.');
             redirect('/');
         }
         redirect(GoogleAuth::authUrl());
