@@ -1,5 +1,5 @@
-<section class="section" style="padding-top:48px">
-  <div class="container narrow" style="max-width:640px">
+<section class="section sv-compact" style="padding-top:32px">
+  <div class="container narrow" style="max-width:780px">
     <?= View::partial('partials/account_nav', ['active' => 'profile']) ?>
     <div class="kicker">Кабінет</div>
     <h2>Мій профіль</h2>
@@ -39,15 +39,14 @@
              і власні покупки шукати більше ніде. */ ?>
     <?php /* «Моє навчання» показуємо лише тим, кому є що там показати: кнопка
              в порожній розділ — обіцянка, за якою нічого немає. */ ?>
-    <p style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
-      <a class="btn btn-line" href="<?= e(url('/orders')) ?>">📦 Мої замовлення</a>
-      <?php if (!empty($has_learning)): ?>
-        <a class="btn btn-line" href="<?= e(url('/learning')) ?>">🎓 Моє навчання</a>
-      <?php endif; ?>
-    </p>
+    <?php /* «Мої замовлення» тепер у навігації кабінету вгорі — тут лишився тільки навчальний розділ */ ?>
+    <?php if (!empty($has_learning)): ?>
+      <p style="margin-top:14px"><a class="btn btn-line" href="<?= e(url('/learning')) ?>">🎓 Моє навчання</a></p>
+    <?php endif; ?>
 
     <form class="admin-card" method="post" action="<?= e(url('/profile')) ?>" style="margin-top:22px">
       <?= Csrf::field() ?>
+      <div class="sv-row2">
       <div class="field"><label>Імʼя та прізвище</label><input type="text" name="name" value="<?= e($u['name']) ?>" required></div>
       <?php /* Обовʼязковість поля залежить від того, чи є інший спосіб звʼязку.
                Хто увійшов поштою, може не мати змоги зайняти свій номер (його
@@ -55,6 +54,9 @@
                би профіль на глухий кут: зберегти не можна нічого, зокрема імʼя. */ ?>
       <div class="field"><label>Телефон<?= empty($u['email_verified_at']) ? ' *' : '' ?></label>
         <input type="tel" name="phone" value="<?= e($u['phone']) ?>" placeholder="067 123 45 67"<?= empty($u['email_verified_at']) ? ' required' : '' ?>>
+      </div>
+      </div>
+      <div class="sv-hint">
         <?php /* Стан номера показуємо словами, бо від нього залежить видима річ:
                  чи потрапить у кабінет замовлення, яке продавець оформив по
                  телефону. Мовчазна різниця між «вписаний» і «підтверджений»
@@ -69,15 +71,17 @@
           <?php endif; ?>
         <?php endif; ?>
       </div>
+      <div class="sv-row2">
       <div class="field"><label>Email</label><input type="text" value="<?= e($mail_email ?: '—') ?>" disabled>
         <?php if (!$mail_email): ?><p class="dim" style="margin:6px 0 0">Email підтягнеться автоматично, якщо увійти через Google або за поштою.</p><?php endif; ?>
       </div>
       <?php if ($mail_email): ?>
-        <label class="checkbox" style="align-items:flex-start;margin-bottom:18px">
-          <input type="checkbox" name="newsletter" value="1" style="margin-top:3px"<?= $subscribed ? ' checked' : '' ?>>
-          <span>Отримувати новини та акції на <?= e($mail_email) ?>. Зніміть галку, щоб відписатись.</span>
+        <label class="checkbox sv-news">
+          <input type="checkbox" name="newsletter" value="1"<?= $subscribed ? ' checked' : '' ?>>
+          <span>Новини й акції на пошту (зніміть галку, щоб відписатись)</span>
         </label>
       <?php endif; ?>
+      </div>
       <button class="btn btn-gold" type="submit">💾 Зберегти</button>
     </form>
 

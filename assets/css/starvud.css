@@ -651,3 +651,22 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-acct-nav a.is-on{background:var(--teal-l);color:var(--teal-d)}
 .sv-acct-nav a:hover,.sv-acct-nav button:hover{color:var(--text)}
 .sv-acct-nav form{margin:0 0 0 auto}
+
+/* Профіль: компактні форми — менше прокручування */
+.sv-compact h2{font-size:30px;margin:0 0 14px}
+.sv-compact .kicker{margin-bottom:4px}
+.sv-compact .admin-card{padding:18px 22px;margin-top:14px;border-radius:18px}
+.sv-compact .admin-card h2,.sv-compact .admin-card .h-serif{font-size:18px!important;margin:0 0 12px}
+.sv-compact .field{margin-bottom:10px}
+.sv-compact .field label,.sv-compact label.sv-l{display:block;margin-bottom:4px;font-size:11.5px;letter-spacing:.06em}
+.sv-compact input[type=text],.sv-compact input[type=tel],.sv-compact input[type=email],.sv-compact input[type=number],.sv-compact input[type=password],.sv-compact select{height:42px;padding:0 14px;font-size:15px;border-radius:12px}
+.sv-compact textarea{padding:10px 14px;font-size:15px;border-radius:12px}
+.sv-compact .btn{height:42px;padding:0 20px;font-size:14.5px}
+.sv-compact .btn-sm{height:36px;padding:0 14px}
+.sv-compact .checkbox{font-size:14px;gap:10px;margin-bottom:8px}
+.sv-compact .dim,.sv-compact .field-hint{font-size:13px}
+.sv-row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px;align-items:start}
+.sv-hint{margin:-4px 0 10px}
+.sv-hint p{margin:0!important}
+.sv-news{align-self:end;margin:0 0 10px;min-height:42px;align-items:center}
+@media(max-width:620px){.sv-row2{grid-template-columns:minmax(0,1fr)}.sv-compact h2{font-size:26px}}
