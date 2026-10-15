@@ -373,17 +373,20 @@
   }
   // На телефоні липка смужка з кнопкою ховається, поки людина друкує: разом із
   // клавіатурою вона з'їдає майже весь видимий екран і закриває саме те поле
-  var typingEl = 'INPUT,TEXTAREA,SELECT';
-  document.addEventListener('focusin', function(e){
-    if (e.target.matches && e.target.matches(typingEl) && e.target.type !== 'checkbox' && e.target.type !== 'radio')
-      document.body.classList.add('co-typing');
-  });
-  document.addEventListener('focusout', function(){
-    setTimeout(function(){
+  // Ознака — не «поле у фокусі» (клавіатуру на телефоні закривають кнопкою
+  // «назад», і поле лишається у фокусі, а смужка — схованою), а справжнє
+  // скорочення видимої висоти екрана клавіатурою
+  var vv = window.visualViewport;
+  if (vv) {
+    var fullH = window.innerHeight;
+    var syncBar = function(){
       var a = document.activeElement;
-      if (!a || !a.matches || !a.matches(typingEl)) document.body.classList.remove('co-typing');
-    }, 150);
-  });
+      var typing = a && a.matches && a.matches('INPUT:not([type=checkbox]):not([type=radio]),TEXTAREA');
+      document.body.classList.toggle('co-typing', !!typing && vv.height < fullH * 0.75);
+    };
+    vv.addEventListener('resize', syncBar);
+    document.addEventListener('focusout', function(){ setTimeout(syncBar, 150); });
+  }
   // «Я отримувач»: одні й ті самі поля, просто заповнені з профілю
   var meBox = document.getElementById('meRecipient');
   function applyMe(){
