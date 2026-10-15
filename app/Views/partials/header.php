@@ -69,10 +69,19 @@ $short = [
         <?php if (($myOffers = Offers::myTurnCount(Auth::id())) > 0): ?>
           <a class="sv-side-link" href="<?= e(url('/bargain')) ?>">Пропозиції · <?= (int)$myOffers ?></a>
         <?php endif; ?>
-        <a class="sv-icon" href="<?= e(url(Auth::isStaff() ? '/profile' : '/orders')) ?>" title="<?= e($auth_user['name']) ?>" aria-label="Мій кабінет">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
-          <span class="sv-icon-l">Кабінет</span>
-        </a>
+        <div class="sv-acct" data-acct>
+          <button type="button" class="sv-icon" data-acct-btn aria-haspopup="true" aria-expanded="false" title="<?= e($auth_user['name']) ?>" aria-label="Мій кабінет">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+            <span class="sv-icon-l">Кабінет</span>
+          </button>
+          <div class="sv-acct-menu" data-acct-menu hidden>
+            <div class="sv-acct-who"><?= e($auth_user['name']) ?></div>
+            <a href="<?= e(url('/orders')) ?>">Мої замовлення</a>
+            <a href="<?= e(url('/profile')) ?>">Профіль і налаштування</a>
+            <?php if (Auth::isStaff()): ?><a href="<?= e(url('/admin')) ?>">Адміністрування</a><?php endif; ?>
+            <form method="post" action="<?= e(url('/logout')) ?>"><?= Csrf::field() ?><button type="submit">Вийти</button></form>
+          </div>
+        </div>
       <?php else: ?>
         <a class="sv-icon" href="#" id="loginBtn" aria-label="Увійти">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>

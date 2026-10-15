@@ -13,6 +13,15 @@
   }
   var mb = document.getElementById('mobileBtn'), mm = document.getElementById('mobileMenu');
   if (mb && mm) mb.addEventListener('click', function () { mm.classList.toggle('open'); });
+  // Меню кабінету: клік по іконці відкриває, клік деінде чи Esc закриває
+  var acct = document.querySelector('[data-acct]');
+  if (acct) {
+    var ab = acct.querySelector('[data-acct-btn]'), am = acct.querySelector('[data-acct-menu]');
+    var setAcct = function (open) { am.hidden = !open; ab.setAttribute('aria-expanded', open ? 'true' : 'false'); };
+    ab.addEventListener('click', function (e) { e.stopPropagation(); setAcct(am.hidden); });
+    document.addEventListener('click', function (e) { if (!acct.contains(e.target)) setAcct(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setAcct(false); });
+  }
   // Іконка пошуку на телефоні: відкриває меню й одразу ставить курсор у поле
   var msb = document.getElementById('mobileSearchBtn');
   if (msb && mm) msb.addEventListener('click', function () {

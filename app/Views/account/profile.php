@@ -1,5 +1,6 @@
 <section class="section" style="padding-top:48px">
   <div class="container narrow" style="max-width:640px">
+    <?= View::partial('partials/account_nav', ['active' => 'profile']) ?>
     <div class="kicker">Кабінет</div>
     <h2>Мій профіль</h2>
     <?php if (empty($u['phone'])): ?>

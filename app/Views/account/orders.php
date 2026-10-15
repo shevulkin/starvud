@@ -1,5 +1,6 @@
 <section class="section" style="padding-top:48px">
   <div class="container narrow">
+    <?= View::partial('partials/account_nav', ['active' => 'orders']) ?>
     <div class="kicker">Кабінет</div>
     <h2>Мої замовлення</h2>
     <?php if (!$orders): ?>
