@@ -371,6 +371,19 @@
     // самовивіз зберігати нічого: адреса магазину і так у довіднику
     if (saveRow) saveRow.style.display = v === 'pickup' ? 'none' : '';
   }
+  // На телефоні липка смужка з кнопкою ховається, поки людина друкує: разом із
+  // клавіатурою вона з'їдає майже весь видимий екран і закриває саме те поле
+  var typingEl = 'INPUT,TEXTAREA,SELECT';
+  document.addEventListener('focusin', function(e){
+    if (e.target.matches && e.target.matches(typingEl) && e.target.type !== 'checkbox' && e.target.type !== 'radio')
+      document.body.classList.add('co-typing');
+  });
+  document.addEventListener('focusout', function(){
+    setTimeout(function(){
+      var a = document.activeElement;
+      if (!a || !a.matches || !a.matches(typingEl)) document.body.classList.remove('co-typing');
+    }, 150);
+  });
   // «Я отримувач»: одні й ті самі поля, просто заповнені з профілю
   var meBox = document.getElementById('meRecipient');
   function applyMe(){

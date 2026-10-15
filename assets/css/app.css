@@ -395,6 +395,14 @@ input:disabled,select:disabled,textarea:disabled{opacity:.45;cursor:not-allowed}
   .co-bar-total span{display:block;font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
   .co-bar-total b{font-size:19px;color:var(--gold)}
   .to-top{bottom:100px}
+  /* Коли відкрита клавіатура, видимої висоти лишається мало. Липка смужка
+     «Підтвердити» поверх неї закриває поле, у яке людина вводить текст, — тому
+     на час набору вона ховається (клас ставить скрипт у checkout.php). */
+  body.co-typing .co-bar{display:none}
+  body.co-typing .co-wrap{padding-bottom:24px}
+  /* 16px — поріг, нижче якого iOS Safari збільшує сторінку при фокусі й
+     зсуває поле з-під пальця */
+  .co-step input,.co-step select,.co-step textarea{font-size:16px !important;scroll-margin-top:140px;scroll-margin-bottom:140px}
 }
 /* Два поля поруч мають сенс на столі, а на телефоні перетворюються на дві
    вузькі колонки, куди не влазить ані номер, ані назва відділення. */
