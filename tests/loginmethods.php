@@ -39,6 +39,7 @@ final class LoginMethodsTest
             $this->testDisabledMethodIsRefused();
             $this->testCodeChannelPrefersTelegram();
             $this->testFallbackWhenNothingWorks();
+            $this->testFirstGoogleLink();
         } finally {
             $this->tearDown();
         }
@@ -246,6 +247,29 @@ final class LoginMethodsTest
             LoginMethods::codeChannel($both) === null);
         Settings::set('telegram_bot_token', '000000:TEST');
         Settings::set('viber_bot_token', 'test-viber-token');
+    }
+
+    /** Існуючий акаунт без google_id уперше входить Google-ом (пошта збігається) */
+    private function testFirstGoogleLink(): void
+    {
+        $this->group('перший вхід через Google в існуючий акаунт');
+
+        $plain = $this->user();
+        $this->ok('акаунт із поштою, без вибору — можна повʼязати', LoginMethods::canLinkGoogle($plain));
+
+        $linked = $this->user(['google_id' => 'g-' . bin2hex(random_bytes(4))]);
+        $this->ok('уже повʼязаний — це не перший вхід, правило не застосовується', !LoginMethods::canLinkGoogle($linked));
+
+        $tech = $this->user(['email' => 'abc' . random_int(100, 999) . '@offline.local']);
+        $this->ok('технічна адреса не повʼязується', !LoginMethods::canLinkGoogle($tech));
+
+        $tg = $this->user(['tg_chat_id' => '5555']);
+        LoginMethods::save($tg, ['telegram', 'email']);
+        $this->ok('свідомий вибір без Google лишає вхід закритим', !LoginMethods::canLinkGoogle($tg));
+
+        Settings::set('google_client_id', '');
+        $this->ok('без налаштованого Google — ні', !LoginMethods::canLinkGoogle($plain));
+        Settings::set('google_client_id', 'test.apps.googleusercontent.com');
     }
 
     /**

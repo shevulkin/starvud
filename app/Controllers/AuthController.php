@@ -25,7 +25,9 @@ class AuthController
         // Заборона діє на СЕРВЕРІ, а не приховуванням кнопки: адреса /auth/google
         // відома, і відкрити її може будь-хто. Нового акаунта це не стосується —
         // забороняти вхід у те, чого ще немає, нема чого.
-        if ($existing && !LoginMethods::permits($existing, 'google')) {
+        // Перший вхід Google-ом в акаунт, який ще не повʼязаний із ним (див. canLinkGoogle)
+        $firstLink = $existing && LoginMethods::canLinkGoogle($existing);
+        if ($existing && !$firstLink && !LoginMethods::permits($existing, 'google')) {
             AuthLog::write((int)$existing['id'], 'login_blocked', 'Google');
             flash('error', LoginMethods::denial('google'));
             redirect('/');

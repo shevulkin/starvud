@@ -40,7 +40,7 @@ class LoginMethods
 
     /** Пояснення для профілю: що саме означає кожен спосіб */
     public const ABOUT = [
-        'google'   => 'Кнопка «Увійти через Google». Працює, лише якщо акаунт створений через Google або колись до нього приєднаний.',
+        'google'   => 'Кнопка «Увійти через Google». Перший вхід звʼязує акаунт із Google, якщо Google підтвердив ту саму пошту, що й у акаунті.',
         'telegram' => 'Бот запитує підтвердження й впускає без коду.',
         'phone'    => 'Код приходить у підключений месенджер — Telegram або Viber.',
         'email'    => 'Код приходить листом на пошту акаунта.',
@@ -173,6 +173,26 @@ class LoginMethods
         AuthLog::write((int)$user['id'], 'login_fallback',
             'жоден із дозволених способів більше не працює — вхід відкрито всіма налаштованими');
         return true;
+    }
+
+    /**
+     * Перший вхід через Google в уже існуючий акаунт.
+     *
+     * Акаунт, заведений поштою чи продавцем, ще не повʼязаний із Google
+     * (google_id порожній), тож readiness() каже «не готовий» — і без цього
+     * винятку людина, яка вже має акаунт, ніколи б не змогла вперше увійти
+     * Google-ом. Дозволяємо рівно один випадок: Google підтвердив ту саму
+     * пошту, що в акаунті (GoogleAuth::handleCallback відсіює непідтверджені).
+     * Це не слабше за вхід кодом на пошту — довести треба володіння тією самою
+     * скринькою. Свідомий вибір «лише Telegram» цим не обходиться: якщо людина
+     * обрала способи й Google серед них немає, вхід лишається закритим.
+     */
+    public static function canLinkGoogle(array $user): bool
+    {
+        if (!GoogleAuth::configured() || !empty($user['google_id'])) return false;
+        if (Newsletter::normEmail((string)($user['email'] ?? '')) === null) return false;
+        $allowed = self::allowed((int)$user['id']);
+        return $allowed === [] || in_array('google', $allowed, true);
     }
 
     /**
