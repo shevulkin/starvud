@@ -856,7 +856,14 @@ footer{border-top:1px solid var(--line);padding:88px 0 40px;margin-top:64px}
    проміжків і збирає їх у купку. */
 .admin-side .nav-group{color:var(--dim);font-size:10px;font-weight:700;letter-spacing:.16em;
   text-transform:uppercase;padding:14px 22px 8px;margin-top:12px;
-  border-top:1px solid var(--line2);user-select:none}
+  border-top:1px solid var(--line2);user-select:none;
+  display:flex;align-items:center;justify-content:space-between;width:100%;
+  background:none;border-left:0;border-right:0;border-bottom:0;font-family:inherit;cursor:pointer;text-align:left}
+.admin-side .nav-group:hover{color:var(--text)}
+.admin-side .nav-group svg{transition:transform .15s}
+.admin-side .nav-group.is-closed svg{transform:rotate(-90deg)}
+.admin-side .nav-items{display:flex;flex-direction:column;gap:2px}
+.admin-side .nav-items[hidden]{display:none}
 .admin-main{flex:1;padding:30px 34px;min-width:0}
 .admin-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px;flex-wrap:wrap}
 .admin-head h1{font-size:30px}

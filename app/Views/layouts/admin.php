@@ -103,10 +103,22 @@ $pos_screen = rtrim($cur, '/') === '/admin/orders/new';
     foreach ($groups as [$title, $items]):
         $items = array_values(array_filter($items, fn($i) => $i[2]));
         if (!$items) continue; ?>
-      <?php if ($title !== ''): ?><div class="nav-group"><?= e($title) ?></div><?php endif; ?>
+      <?php
+      // Група з поточною сторінкою завжди розгорнута: інакше людина «губиться»,
+      // не бачачи, де вона. Решта запамʼятовується браузером (див. скрипт нижче).
+      $hasActive = false;
+      foreach ($items as [$href]) if ($cur === $href) $hasActive = true;
+      ?>
+      <?php if ($title !== ''): ?>
+        <button type="button" class="nav-group" data-nav-grp="<?= e($title) ?>" data-has-active="<?= $hasActive ? '1' : '0' ?>" aria-expanded="true">
+          <span><?= e($title) ?></span><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 6l5 5 5-5"/></svg>
+        </button>
+      <?php endif; ?>
+      <div class="nav-items"<?= $title !== '' ? ' data-nav-items="' . e($title) . '"' : '' ?>>
       <?php foreach ($items as [$href, $label, ]): ?>
         <a href="<?= e(url($href)) ?>" class="<?= $cur === $href ? 'active' : '' ?>"><?= e($label) ?></a>
       <?php endforeach; ?>
+      </div>
     <?php endforeach; ?>
     <div class="sep"></div>
     <a href="<?= e(url('/')) ?>">← На сайт</a>
@@ -159,6 +171,31 @@ $pos_screen = rtrim($cur, '/') === '/admin/orders/new';
 </div>
 <script>
 window.BOFU = { base: '<?= e(url('/')) ?>', vapid: '<?= e(Settings::get('vapid_public', '')) ?>', csrf: '<?= e(Csrf::token()) ?>' };
+</script>
+<script>
+(function () {
+  var KEY = 'sv_admin_nav', saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) {}
+  document.querySelectorAll('[data-nav-grp]').forEach(function (btn) {
+    var name = btn.getAttribute('data-nav-grp');
+    var box = document.querySelector('[data-nav-items="' + name + '"]');
+    if (!box) return;
+    function set(open) {
+      box.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.classList.toggle('is-closed', !open);
+    }
+    // За замовчуванням розгорнуто лише «Продажі» й ту групу, де людина зараз
+    var def = btn.getAttribute('data-has-active') === '1' || name === 'Продажі';
+    set(btn.getAttribute('data-has-active') === '1' ? true : (name in saved ? !!saved[name] : def));
+    btn.addEventListener('click', function () {
+      var open = box.hidden;
+      set(open);
+      saved[name] = open;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
 </script>
 <script src="<?= e(asset_v('js/admin.js')) ?>" defer></script>
 <?php /* На самій касі смужка зайва — чек там і так перед очима */ ?>
