@@ -804,3 +804,8 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 /* Назва по центру — в одну вісь із ціною */
 .sv .sv-card .sv-card-title{text-align:center}
 .sv .sv-card .sv-card-title a{text-align:center}
+
+/* Ціна праворуч, кнопка кошика ліворуч */
+.sv .sv-card .sv-card-foot{flex-direction:row-reverse;padding-left:0}
+.sv .sv-card .sv-price{align-items:flex-end;text-align:right}
+.sv .sv-card .sv-price b{justify-content:flex-end}
