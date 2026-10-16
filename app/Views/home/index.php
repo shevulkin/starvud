@@ -73,29 +73,58 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     <?php /* Торг — відмінність магазину: показуємо як обіцянку, а не дрібний рядок.
              Лише коли він справді увімкнений, інакше це обіцянка, якої не виконати */ ?>
     <?php if (Offers::enabled()): ?>
-      <?php
-        // Колаж зі справжніх фото магазину: лялька, гойдалка, намет — найживіші; решта як запас
-        $collage = [];
-        foreach (['lialky-ta-pupsy', 'hoidalky', 'ihrovi-namety'] as $want)
-            foreach ($categories as $c) if ($c['slug'] === $want) $collage[] = $c['photo'];
-        foreach ($categories as $c) if (count($collage) < 3 && !in_array($c['photo'], $collage, true)) $collage[] = $c['photo'];
-        $collage = array_slice($collage, 0, 3);
-      ?>
-      <div class="sv-haggle-promo">
+      <div class="sv-haggle-promo sv-hg" data-hg data-base="<?= e(url('/product/')) ?>">
         <div class="sv-haggle-body">
           <span class="sv-haggle-ico" aria-hidden="true">🤝</span>
           <div class="sv-haggle-txt">
             <b>Назвіть свою ціну — здійсніть мрію</b>
             <span>Беріть кілька штук або просто хочете вигідніше? Запропонуйте ціну на будь-яку іграшку, і продавець відповість особисто <?= e(Offers::replyPromise()) ?>.</span>
-            <a class="btn btn-gold" href="<?= e(url('/shop')) ?>">Обрати іграшку →</a>
+            <a class="btn btn-line" href="<?= e(url('/shop')) ?>">Обрати іншу іграшку →</a>
           </div>
         </div>
-        <?php if ($collage): ?>
-          <div class="sv-haggle-photos" aria-hidden="true">
-            <?php foreach ($collage as $k => $ph): ?>
-              <span class="sv-haggle-ph sv-haggle-ph-<?= $k ?>" style="--ph:url('<?= e(asset(Images::displayThumb($ph))) ?>')"><img src="<?= e(asset(Images::displayThumb($ph))) ?>" alt="" loading="lazy"></span>
-            <?php endforeach; ?>
+        <?php if ($haggle_items): ?>
+          <?php /* Спробуйте просто тут: оберіть іграшку, торкніться знижки — побачите свою ціну
+                   й одним дотиком потрапите у форму пропозиції на сторінці товару */ ?>
+          <div class="sv-hg-card">
+            <p class="sv-hg-step">1. Оберіть іграшку</p>
+            <div class="sv-hg-thumbs" role="tablist">
+              <?php foreach ($haggle_items as $n => $it): ?>
+                <button type="button" class="sv-hg-thumb<?= $n === 0 ? ' is-on' : '' ?>" data-slug="<?= e($it['slug']) ?>" data-name="<?= e($it['name']) ?>" data-price="<?= e((string)$it['price']) ?>" aria-label="<?= e($it['name']) ?>">
+                  <img src="<?= e(asset(Images::displayThumb($it['photo']))) ?>" alt="" loading="lazy">
+                </button>
+              <?php endforeach; ?>
+            </div>
+            <p class="sv-hg-name" data-hg-name></p>
+            <p class="sv-hg-step">2. Яку ціну хочете?</p>
+            <div class="sv-hg-chips">
+              <?php foreach ([5, 10, 15, 20] as $d): ?>
+                <button type="button" class="sv-hg-chip<?= $d === 10 ? ' is-on' : '' ?>" data-off="<?= $d ?>">−<?= $d ?>%</button>
+              <?php endforeach; ?>
+            </div>
+            <p class="sv-hg-result"><s data-hg-old></s> <b data-hg-new></b> <i data-hg-save></i></p>
+            <a class="btn btn-gold sv-hg-go" data-hg-go href="#">Запропонувати цю ціну →</a>
           </div>
+          <script>
+          (function(){
+            var root = document.querySelector('[data-hg]'); if (!root) return;
+            var thumbs = root.querySelectorAll('.sv-hg-thumb'), chips = root.querySelectorAll('.sv-hg-chip');
+            var cur = thumbs[0], off = 10;
+            function money(n){ return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' грн'; }
+            function paint(){
+              var p = parseFloat(cur.dataset.price), np = Math.max(1, Math.round(p * (100 - off) / 100));
+              root.querySelector('[data-hg-name]').textContent = cur.dataset.name;
+              root.querySelector('[data-hg-old]').textContent = money(p);
+              root.querySelector('[data-hg-new]').textContent = money(np);
+              root.querySelector('[data-hg-save]').textContent = 'економія ' + money(p - np);
+              root.querySelector('[data-hg-go]').href = root.dataset.base + cur.dataset.slug + '?offer=' + np + '#offerBox';
+            }
+            thumbs.forEach(function(t){ t.addEventListener('click', function(){
+              thumbs.forEach(function(x){ x.classList.remove('is-on'); }); t.classList.add('is-on'); cur = t; paint(); }); });
+            chips.forEach(function(c){ c.addEventListener('click', function(){
+              chips.forEach(function(x){ x.classList.remove('is-on'); }); c.classList.add('is-on'); off = +c.dataset.off; paint(); }); });
+            paint();
+          })();
+          </script>
         <?php endif; ?>
       </div>
     <?php endif; ?>

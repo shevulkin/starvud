@@ -351,6 +351,17 @@ $phone1 = Content::title('contact_phone');
               </script>
             <?php endif; ?>
           </details>
+          <script>
+          /* Прийшли з головної («Запропонувати цю ціну»): відкриваємо форму
+             торгу й підставляємо ціну, яку людина вже обрала там */
+          (function(){
+            var m = /[?&]offer=(\d+)/.exec(location.search), box = document.getElementById('offerBox');
+            if (!m || !box) return;
+            box.style.display = 'block'; box.open = true;
+            var f = document.getElementById('offerPrice'); if (f && !f.value) f.value = m[1];
+            setTimeout(function(){ box.scrollIntoView({behavior: 'smooth', block: 'center'}); }, 150);
+          })();
+          </script>
         <?php endif; ?>
 
         <?php /* «Разом дешевше». Стоїть тут, а не в кошику: у кошику покупець

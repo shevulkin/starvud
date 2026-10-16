@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Controllers;
 
-use DB, View, Catalog, Content, Settings, Csrf, JsonLd, Reviews, Ages, Auth;
+use DB, View, Catalog, Content, Settings, Csrf, JsonLd, Reviews, Ages, Auth, Offers;
 
 class Home
 {
@@ -32,6 +32,17 @@ class Home
         }
         Catalog::preloadCards($featured);
 
+        // Інтерактивний блок торгу на головній: до чотирьох товарів, на які торг дозволений і є ціна
+        $haggle = [];
+        if (Offers::enabled()) {
+            foreach ($featured as $p) {
+                if (!Offers::allowed($p)) continue;
+                $pr = Catalog::price($p)[0];
+                if ($pr === null) continue;
+                $haggle[] = ['slug' => $p['slug'], 'name' => $p['name'], 'photo' => Catalog::photo($p), 'price' => (float)$pr];
+            }
+        }
+
         $stats = Reviews::stats();
         $featured = array_slice($featured, 0, 4);
         $shownIds = array_map(static fn($p) => (int)$p['id'], $featured) ?: [0];
@@ -48,6 +59,7 @@ class Home
         View::show('home/index', [
             'categories' => self::shelves(),
             'featured' => $featured,
+            'haggle_items' => $haggle,
             'fresh' => $fresh,
             'age_count' => $ageCount,
             // Перший екран показує справжні іграшки, а не малюнки: чотири хіти
