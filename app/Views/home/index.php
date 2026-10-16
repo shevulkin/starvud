@@ -73,24 +73,13 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     <?php /* Торг — відмінність магазину: показуємо як обіцянку, а не дрібний рядок.
              Лише коли він справді увімкнений, інакше це обіцянка, якої не виконати */ ?>
     <?php if (Offers::enabled()): ?>
-      <?php $collage = $haggle_photos ?? []; ?>
       <div class="sv-haggle-promo">
-        <div class="sv-haggle-body">
-          <span class="sv-haggle-ico" aria-hidden="true">🤝</span>
-          <div class="sv-haggle-txt">
-            <b>Назвіть свою ціну — здійсніть мрію</b>
-            <span>Беріть кілька штук або просто хочете вигідніше? Запропонуйте ціну на будь-яку іграшку, і продавець відповість особисто <?= e(Offers::replyPromise()) ?>.</span>
-            <a class="btn btn-gold" href="<?= e(url('/shop')) ?>">Обрати іграшку →</a>
-          </div>
+        <span class="sv-haggle-ico" aria-hidden="true">🤝</span>
+        <div class="sv-haggle-txt">
+          <b>Назвіть свою ціну — здійсніть мрію</b>
+          <span>Беріть кілька штук або просто хочете вигідніше? Запропонуйте ціну на будь-яку іграшку, і продавець відповість особисто <?= e(Offers::replyPromise()) ?>.</span>
         </div>
-        <?php if ($collage): ?>
-          <div class="sv-haggle-photos">
-            <?php foreach ($collage as $k => $c): $ph = $c['photo']; ?>
-              <a class="sv-haggle-ph sv-haggle-ph-<?= $k ?>" href="<?= e(url('/product/' . $c['slug'])) ?>" aria-label="<?= e($c['name']) ?>" style="--ph:url('<?= e(asset(Images::displayThumb($ph))) ?>')"><img src="<?= e(asset(Images::displayThumb($ph))) ?>" alt="" loading="lazy">
-                <span class="sv-haggle-ph-cap"><?= e($c['name']) ?> →</span></a>
-            <?php endforeach; ?>
-          </div>
-        <?php endif; ?>
+        <a class="btn btn-gold" href="<?= e(url('/shop')) ?>">Обрати іграшку →</a>
       </div>
     <?php endif; ?>
   </div>
