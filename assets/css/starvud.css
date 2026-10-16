@@ -728,7 +728,9 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-tag-haggle{background:var(--teal-l);color:var(--teal-d)}
 .sv-topbar b{font-weight:600}
 
-/* Менше порожнього місця між першим екраном і вибором віку */
-.sv-hero{padding-bottom:28px}
-#age.sv-section{padding-top:36px}
-@media (max-width:760px){.sv-hero{padding-bottom:20px}#age.sv-section{padding-top:28px}}
+/* Однаковий вертикальний ритм головної: між блоками завжди ~88–96px,
+   а не то 140, то 60 */
+.sv-hero{padding-bottom:44px}
+.sv-section{padding-top:48px;padding-bottom:48px}
+.sv-section-tight{padding-top:40px;padding-bottom:40px}
+@media (max-width:760px){.sv-hero{padding-bottom:28px}.sv-section{padding-top:36px;padding-bottom:36px}.sv-section-tight{padding-top:28px;padding-bottom:28px}}
