@@ -780,3 +780,11 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-price{flex:1;min-width:0;align-items:center;text-align:center}
 .sv-price b{justify-content:center}
 .sv-card-foot{padding-left:44px}
+
+/* Картка — єдиний білий блок із рамкою: ціна й кнопка явно належать товару над ними, а не сусідньому внизу */
+.sv .sv-card{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 2px 10px rgba(30,50,45,.05);transition:box-shadow .25s,transform .25s}
+.sv .sv-card:hover{box-shadow:var(--shadow-h);transform:translateY(-2px)}
+.sv .sv-card .sv-card-img{border-radius:0;box-shadow:none}
+.sv .sv-card:hover .sv-card-img{box-shadow:none}
+.sv .sv-card .sv-card-body{padding:14px 16px 16px}
+.sv-grid{gap:24px 22px}
