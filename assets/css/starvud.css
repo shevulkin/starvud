@@ -771,3 +771,12 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-card-foot>form .sv-cart-btn{width:100%;justify-content:center}
 .sv-card-foot>.sv-cart-btn{justify-content:center}
 @container (max-width:250px){.sv-cart-txt{display:none}.sv-card-foot>.sv-cart-btn,.sv-card-foot>form{flex:none;width:44px;max-width:44px}.sv-cart-btn,.sv-card-foot>form .sv-cart-btn{width:44px;padding:0}}
+
+/* Назад до круглої кнопки; ціна по центру вільного місця поряд із нею */
+.sv-cart-txt{display:none!important}
+.sv-card-foot>.sv-cart-btn,.sv-card-foot>form{flex:none;width:44px;max-width:44px;margin-left:0}
+.sv-cart-btn,.sv-card-foot>form .sv-cart-btn{width:44px;height:44px;padding:0;border-radius:50%;justify-content:center}
+.sv-cart-btn svg{width:20px;height:20px}
+.sv-price{flex:1;min-width:0;align-items:center;text-align:center}
+.sv-price b{justify-content:center}
+.sv-card-foot{padding-left:44px}
