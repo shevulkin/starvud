@@ -707,3 +707,9 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv .offer-box[open] .offer-toggle{display:flex;align-items:center;gap:12px;text-transform:none;letter-spacing:0;font-size:17px;font-weight:700;color:var(--text);border:0;margin-bottom:14px;padding:0}
 .sv .offer-box[open] .offer-txt small{text-transform:none;letter-spacing:0;font-size:13px;font-weight:400;color:var(--muted)}
 .sv .offer-box[open] .offer-toggle::after{margin-left:auto}
+
+/* Праворуч довга колонка (ціна, умови, характеристики), ліворуч коротка
+   галерея: замість порожнечі під фото воно «їде» слідом, поки читаєш */
+@media (min-width:1001px){
+  .sv .sv-pp .product-gallery{position:sticky;top:150px;align-self:start}
+}
