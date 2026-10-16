@@ -800,3 +800,7 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv .sv-card .sv-card-img{aspect-ratio:1/1.1}
 .sv-card-age-on{position:absolute;left:12px;bottom:12px;z-index:1;background:rgba(255,255,255,.94);box-shadow:0 1px 6px rgba(0,0,0,.12);font-size:12.5px}
 .sv .sv-card .sv-card-body{gap:6px;padding:12px 16px 14px}
+
+/* Назва по центру — в одну вісь із ціною */
+.sv .sv-card .sv-card-title{text-align:center}
+.sv .sv-card .sv-card-title a{text-align:center}
