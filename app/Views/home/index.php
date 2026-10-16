@@ -73,14 +73,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     <?php /* Торг — відмінність магазину: показуємо як обіцянку, а не дрібний рядок.
              Лише коли він справді увімкнений, інакше це обіцянка, якої не виконати */ ?>
     <?php if (Offers::enabled()): ?>
-      <?php
-        // Колаж зі справжніх фото магазину: лялька, гойдалка, намет — найживіші; решта як запас
-        $collage = [];
-        foreach (['lialky-ta-pupsy', 'hoidalky', 'ihrovi-namety'] as $want)
-            foreach ($categories as $c) if ($c['slug'] === $want) $collage[] = $c;
-        foreach ($categories as $c) if (count($collage) < 3 && !in_array($c, $collage, true)) $collage[] = $c;
-        $collage = array_slice($collage, 0, 3);
-      ?>
+      <?php $collage = $haggle_photos ?? []; ?>
       <div class="sv-haggle-promo">
         <div class="sv-haggle-body">
           <span class="sv-haggle-ico" aria-hidden="true">🤝</span>
@@ -93,7 +86,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
         <?php if ($collage): ?>
           <div class="sv-haggle-photos">
             <?php foreach ($collage as $k => $c): $ph = $c['photo']; ?>
-              <a class="sv-haggle-ph sv-haggle-ph-<?= $k ?>" href="<?= e(shop_url($c['slug'])) ?>" aria-label="<?= e($c['name']) ?>: подивитись іграшки" style="--ph:url('<?= e(asset(Images::displayThumb($ph))) ?>')"><img src="<?= e(asset(Images::displayThumb($ph))) ?>" alt="" loading="lazy">
+              <a class="sv-haggle-ph sv-haggle-ph-<?= $k ?>" href="<?= e(url('/product/' . $c['slug'])) ?>" aria-label="<?= e($c['name']) ?>" style="--ph:url('<?= e(asset(Images::displayThumb($ph))) ?>')"><img src="<?= e(asset(Images::displayThumb($ph))) ?>" alt="" loading="lazy">
                 <span class="sv-haggle-ph-cap"><?= e($c['name']) ?> →</span></a>
             <?php endforeach; ?>
           </div>

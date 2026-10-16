@@ -780,3 +780,4 @@ a.sv-haggle-ph:hover .sv-haggle-ph-cap,a.sv-haggle-ph:focus-visible .sv-haggle-p
   .sv-haggle-promo{padding:0;min-height:0}
   .sv-haggle-photos{min-height:210px;height:210px}
 }
+.sv-haggle-ph-cap{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

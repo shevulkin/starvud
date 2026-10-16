@@ -45,8 +45,25 @@ class Home
         $aged = Catalog::search([]);
         $ageCount = [];
         foreach (array_keys(Ages::BANDS) as $k) $ageCount[$k] = count(array_filter($aged, static fn($p) => Ages::matches($p, (string)$k)));
+        $shelves = self::shelves();
+        // Колаж у блоці торгу — товари, чиїх фото ще немає на сторінці (не «обличчя» розділів,
+        // не хіти й не новинки), з різних розділів: щоб одні й ті самі знімки не повторювались
+        $usedPhotos = array_column($shelves, 'photo');
+        foreach (array_merge($featured, $fresh) as $p) $usedPhotos[] = Catalog::photo($p);
+        $collage = []; $seenCat = [];
+        $cands = DB::all("SELECT p.* FROM products p WHERE p.active = 1 AND p.type <> 'course' AND p.image IS NOT NULL AND p.image <> ''
+                          AND EXISTS (SELECT 1 FROM store_stock s WHERE s.product_id = p.id AND s.qty > 0)
+                          ORDER BY p.featured DESC, p.id");
+        foreach ($cands as $p) {
+            $ph = Catalog::photo($p);
+            if (in_array($ph, $usedPhotos, true) || isset($seenCat[(int)$p['category_id']])) continue;
+            $seenCat[(int)$p['category_id']] = true;
+            $collage[] = ['slug' => $p['slug'], 'name' => $p['name'], 'photo' => $ph];
+            if (count($collage) >= 3) break;
+        }
         View::show('home/index', [
-            'categories' => self::shelves(),
+            'categories' => $shelves,
+            'haggle_photos' => $collage,
             'featured' => $featured,
             'fresh' => $fresh,
             'age_count' => $ageCount,
