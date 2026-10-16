@@ -53,13 +53,33 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
       <div class="sv-hero-star"><?= mascot('wave', 96) ?></div>
     </div>
   </div>
+  <?php /* Порожній проміжок між першим екраном і вибором віку — чотири короткі
+           причини купити тут, у рядок. Торг — лише коли він увімкнений */ ?>
+  <div class="container">
+    <ul class="sv-strip">
+      <li><b>Перевіряємо</b><span>кожну іграшку перед відправкою</span></li>
+      <li><b>Чесний вік</b><span>на кожній картці й упаковці</span></li>
+      <li><b>1–3 дні</b><span>Новою Поштою по всій Україні</span></li>
+      <?php if (Offers::enabled()): ?><li class="is-haggle"><b>🤝 Торг</b><span>запропонуйте свою ціну на будь-яку іграшку</span></li>
+      <?php else: ?><li><b>14 днів</b><span>на обмін і повернення</span></li><?php endif; ?>
+    </ul>
+  </div>
 </section>
 
 <section class="sv-section" id="age">
   <div class="container">
     <div class="sv-sec-head">
       <h2 class="sv-h2">Для якого віку шукаєте?</h2>
-      <p class="sv-lead">Позначка «від» — це вік, з якого іграшка безпечна й цікава; старшим дітям вона теж підійде.</p>
+      <?php /* Торг — головна відмінність магазину: значок і одна жива фраза замість абзацу.
+               Коли торг вимкнено, лишається пояснення про вік */ ?>
+      <?php if (Offers::enabled()): ?>
+        <a class="sv-haggle-line" href="<?= e(url('/shop')) ?>">
+          <span class="sv-haggle-badge" aria-hidden="true">🤝 Торг</span>
+          <span>У нас можна торгуватись: запропонуйте свою ціну на будь-яку іграшку.</span>
+        </a>
+      <?php else: ?>
+        <p class="sv-lead">Позначка «від» — це вік, з якого іграшка безпечна й цікава; старшим дітям вона теж підійде.</p>
+      <?php endif; ?>
     </div>
     <div class="sv-ages">
       <?php foreach (Ages::BANDS as $k => [, , $label, $hint]): ?>

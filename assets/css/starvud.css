@@ -727,3 +727,19 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 /* Позначка торгу на картці: «тут можна запропонувати свою ціну» */
 .sv-tag-haggle{background:var(--teal-l);color:var(--teal-d)}
 .sv-topbar b{font-weight:600}
+
+/* Торг на головній: значок + одна фраза */
+.sv-haggle-line{display:inline-flex;align-items:center;gap:12px;max-width:520px;color:var(--text)!important;text-decoration:none;font-size:17px;line-height:1.45}
+.sv-haggle-line:hover span:last-child{color:var(--teal-d)}
+.sv-haggle-badge{flex-shrink:0;padding:8px 14px;border-radius:999px;background:var(--teal-l);color:var(--teal-d);font-weight:700;font-size:15px;white-space:nowrap}
+@media (max-width:760px){.sv-haggle-line{display:flex;font-size:16px}}
+
+/* Рядок переваг під першим екраном: заповнює колишній порожній проміжок */
+.sv-hero{padding-bottom:40px}
+.sv-strip{list-style:none;margin:36px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.sv-strip li{display:flex;flex-direction:column;gap:3px;padding:16px 20px;border-radius:18px;background:#fff;border:1px solid var(--line)}
+.sv-strip b{font-size:16px;font-weight:700;color:var(--teal-d)}
+.sv-strip span{font-size:14px;line-height:1.4;color:var(--muted)}
+.sv-strip .is-haggle{background:var(--teal-l);border-color:#bfe0d8}
+@media (max-width:1000px){.sv-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.sv-strip{grid-template-columns:minmax(0,1fr);gap:10px}.sv-strip li{padding:14px 16px}}
