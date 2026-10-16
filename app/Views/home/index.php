@@ -70,18 +70,6 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
         </a>
       <?php endforeach; ?>
     </div>
-    <?php /* Торг — відмінність магазину: показуємо як обіцянку, а не дрібний рядок.
-             Лише коли він справді увімкнений, інакше це обіцянка, якої не виконати */ ?>
-    <?php if (Offers::enabled()): ?>
-      <div class="sv-haggle-promo">
-        <span class="sv-haggle-ico" aria-hidden="true">🤝</span>
-        <div class="sv-haggle-txt">
-          <b>Назвіть свою ціну — ми відповімо</b>
-          <span>Беріть кілька штук або просто хочете вигідніше? Запропонуйте ціну на будь-яку іграшку, і продавець відповість особисто <?= e(Offers::replyPromise()) ?>.</span>
-        </div>
-        <a class="btn btn-gold" href="<?= e(url('/shop')) ?>">Обрати іграшку →</a>
-      </div>
-    <?php endif; ?>
   </div>
 </section>
 
