@@ -809,3 +809,9 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv .sv-card .sv-card-foot{flex-direction:row-reverse;padding-left:0}
 .sv .sv-card .sv-price{align-items:flex-end;text-align:right}
 .sv .sv-card .sv-price b{justify-content:flex-end}
+
+/* Ціна ліворуч, кнопка праворуч; назва теж ліворуч — в одну вісь із ціною */
+.sv .sv-card .sv-card-foot{flex-direction:row;padding-left:0}
+.sv .sv-card .sv-price{flex:1;align-items:flex-start;text-align:left}
+.sv .sv-card .sv-price b{justify-content:flex-start}
+.sv .sv-card .sv-card-title,.sv .sv-card .sv-card-title a{text-align:left}
