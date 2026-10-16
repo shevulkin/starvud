@@ -699,3 +699,11 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv .offer-txt{display:flex;flex-direction:column;gap:2px}
 .sv .offer-txt b{font-weight:700}
 .sv .offer-txt small{font-size:13px;font-weight:400;color:var(--muted)}
+
+/* Форма торгу з'являється лише після дотику по «Можна поторгуватись»;
+   доти її нема на сторінці (виняток — розмова вже триває: тоді блок відкритий) */
+.sv .offer-box:not([open]){display:none}
+.sv .offer-box:target{display:block}
+.sv .offer-box[open] .offer-toggle{display:flex;align-items:center;gap:12px;text-transform:none;letter-spacing:0;font-size:17px;font-weight:700;color:var(--text);border:0;margin-bottom:14px;padding:0}
+.sv .offer-box[open] .offer-txt small{text-transform:none;letter-spacing:0;font-size:13px;font-weight:400;color:var(--muted)}
+.sv .offer-box[open] .offer-toggle::after{margin-left:auto}
