@@ -758,25 +758,3 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
   .sv-haggle-photos{height:200px;min-height:200px;order:2;margin-bottom:8px}
   .sv-haggle-txt b{font-size:21px}
 }
-
-/* Інтерактивний торг на головній: оберіть іграшку й знижку — одразу видно свою ціну */
-.sv-hg{grid-template-columns:minmax(0,1fr) minmax(0,420px);padding:28px 32px;gap:32px;align-items:center;overflow:visible;min-height:0}
-.sv-hg .sv-haggle-body{padding:0}
-.sv-hg-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px 22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
-.sv-hg-step{margin:0;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.sv-hg-thumbs{display:flex;gap:10px}
-.sv-hg-thumb{flex:1;min-width:0;aspect-ratio:1/1;padding:0;border:2px solid transparent;border-radius:14px;overflow:hidden;background:#f3f1ec;cursor:pointer;transition:border-color .15s,transform .15s}
-.sv-hg-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.sv-hg-thumb:hover{transform:translateY(-2px)}
-.sv-hg-thumb.is-on{border-color:var(--teal);box-shadow:0 4px 14px rgba(31,110,100,.25)}
-.sv-hg-name{margin:0 0 4px;font-weight:600;font-size:15px;line-height:1.35;min-height:2.7em}
-.sv-hg-chips{display:flex;gap:8px;flex-wrap:wrap}
-.sv-hg-chip{flex:1;min-width:64px;padding:10px 0;border:1px solid var(--line);border-radius:999px;background:#fff;font:inherit;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s}
-.sv-hg-chip:hover{border-color:var(--teal);color:var(--teal-d)}
-.sv-hg-chip.is-on{background:var(--teal-d);border-color:var(--teal-d);color:#fff}
-.sv-hg-result{margin:2px 0;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px}
-.sv-hg-result s{color:var(--dim);font-size:15px}
-.sv-hg-result b{font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--teal-d)}
-.sv-hg-result i{font-style:normal;font-size:13.5px;color:var(--muted)}
-.sv-hg-go{width:100%;text-align:center}
-@media (max-width:900px){.sv-hg{grid-template-columns:minmax(0,1fr);padding:22px 18px;gap:20px}}
