@@ -59,7 +59,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
   <div class="container">
     <div class="sv-sec-head">
       <h2 class="sv-h2">Для якого віку шукаєте?</h2>
-      <p class="sv-lead">Кожна іграшка має вікову позначку — оберіть вік, і ми покажемо лише те, що підійде.</p>
+      <p class="sv-lead">Вік на іграшці — це «від»: рекомендація виробника, а не обмеження. Оберіть вік дитини, і ми покажемо, з чого почати.</p>
     </div>
     <div class="sv-ages">
       <?php foreach (Ages::BANDS as $k => [, , $label, $hint]): ?>

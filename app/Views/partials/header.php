@@ -107,6 +107,7 @@ $short = [
           <?php foreach (Ages::BANDS as $k => [, , $label, $hint]): ?>
             <a href="<?= e(shop_url(null, ['age' => $k])) ?>"><span class="sv-age-dot sv-age-<?= e((string)$k) ?>"></span><b><?= e($label) ?></b><small><?= e($hint) ?></small></a>
           <?php endforeach; ?>
+          <p class="sv-age-note">Вік — це «від»: рекомендація, а не межа. Іграшка «від 3 років» підходить і старшим.</p>
         </div>
       </span>
       <a href="<?= e(url('/shop')) ?>"<?= $path === '/shop' ? ' aria-current="page"' : '' ?>>Усі іграшки</a>

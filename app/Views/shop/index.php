@@ -136,7 +136,7 @@ foreach (DB::all('SELECT category_id, COUNT(*) n FROM products WHERE active = 1 
     </details>
 
     <div class="sv-shop-main">
-      <?php if ($filters['age'] !== '' && ($b = Ages::band($filters['age']))): ?><div class="sv-count">Для дітей <b><?= e($b[2]) ?></b> · <?= e($b[3]) ?></div><?php endif; ?>
+      <?php if ($filters['age'] !== '' && ($b = Ages::band($filters['age']))): ?><div class="sv-count">Для дітей <b><?= e(mb_strtolower($b[2])) ?></b> · <?= e($b[3]) ?></div><?php endif; ?>
       <?php if (!$products): ?>
         <div class="sv-empty">
           <?= mascot('shrug', 110) ?>
