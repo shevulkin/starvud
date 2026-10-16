@@ -45,7 +45,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     <div class="sv-hero-art" aria-hidden="true">
       <div class="sv-hero-mosaic">
         <?php foreach ($hero_photos as $i => $h): ?>
-          <a class="sv-hero-tile sv-hero-tile-<?= $i ?>" href="<?= e(url('/product/' . $h['slug'])) ?>" tabindex="-1">
+          <a class="sv-hero-tile sv-hero-tile-<?= $i ?>" href="<?= e(url('/product/' . $h['slug'])) ?>" tabindex="-1" style="--ph:url('<?= e(asset(Images::displayThumb($h['photo']))) ?>')">
             <img src="<?= e(asset(Images::displayThumb($h['photo']))) ?>" alt="" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
           </a>
         <?php endforeach; ?>

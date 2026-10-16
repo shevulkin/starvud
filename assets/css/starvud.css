@@ -677,3 +677,12 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-cat-img::before,.sv-card-img::before{content:'';position:absolute;inset:-12%;z-index:-1;background:var(--ph) center/cover no-repeat;filter:blur(22px) saturate(1.1);opacity:.55}
 .sv-cat-img{position:relative}
 .sv-cat-img img,.sv-card-img img{object-fit:contain}
+
+/* Перший екран: чотири однакові плитки, товар цілком (як у розділів), без
+   високої колонки, яка з горизонтального фото лишала одну середину */
+.sv-hero-mosaic{grid-template-columns:1fr 1fr;aspect-ratio:1/1}
+.sv-hero-tile{position:relative;isolation:isolate}
+.sv-hero-tile-0{grid-row:auto}
+.sv-hero-tile-3{display:block}
+.sv-hero-tile::before{content:'';position:absolute;inset:-12%;z-index:-1;background:var(--ph) center/cover no-repeat;filter:blur(22px) saturate(1.1);opacity:.55}
+.sv-hero-tile img{object-fit:contain}
