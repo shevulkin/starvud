@@ -758,3 +758,13 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
   .sv-haggle-photos{height:200px;min-height:200px;order:2;margin-bottom:8px}
   .sv-haggle-txt b{font-size:21px}
 }
+
+/* Колаж торгу клікабельний: фото веде в розділ, при наведенні підіймається й показує підпис */
+a.sv-haggle-ph{text-decoration:none;color:#fff!important;transition:transform .25s ease,box-shadow .25s ease}
+a.sv-haggle-ph-0:hover{transform:translateY(-55%) rotate(-3deg) scale(1.04);z-index:4}
+a.sv-haggle-ph-1:hover{transform:translateY(-51%) rotate(1deg) scale(1.04);z-index:4}
+a.sv-haggle-ph-2:hover{transform:translateY(-55%) rotate(3deg) scale(1.04);z-index:4}
+a.sv-haggle-ph:hover{box-shadow:0 20px 44px rgba(20,60,55,.32)}
+.sv-haggle-ph-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;font-size:14px;font-weight:700;text-align:center;background:linear-gradient(to top,rgba(10,40,36,.78),transparent);opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s}
+a.sv-haggle-ph:hover .sv-haggle-ph-cap,a.sv-haggle-ph:focus-visible .sv-haggle-ph-cap{opacity:1;transform:none}
+@media (hover:none){.sv-haggle-ph-cap{opacity:1;transform:none;font-size:12px;padding:20px 8px 8px}}

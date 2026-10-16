@@ -77,8 +77,8 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
         // Колаж зі справжніх фото магазину: лялька, гойдалка, намет — найживіші; решта як запас
         $collage = [];
         foreach (['lialky-ta-pupsy', 'hoidalky', 'ihrovi-namety'] as $want)
-            foreach ($categories as $c) if ($c['slug'] === $want) $collage[] = $c['photo'];
-        foreach ($categories as $c) if (count($collage) < 3 && !in_array($c['photo'], $collage, true)) $collage[] = $c['photo'];
+            foreach ($categories as $c) if ($c['slug'] === $want) $collage[] = $c;
+        foreach ($categories as $c) if (count($collage) < 3 && !in_array($c, $collage, true)) $collage[] = $c;
         $collage = array_slice($collage, 0, 3);
       ?>
       <div class="sv-haggle-promo">
@@ -91,9 +91,10 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
           </div>
         </div>
         <?php if ($collage): ?>
-          <div class="sv-haggle-photos" aria-hidden="true">
-            <?php foreach ($collage as $k => $ph): ?>
-              <span class="sv-haggle-ph sv-haggle-ph-<?= $k ?>" style="--ph:url('<?= e(asset(Images::displayThumb($ph))) ?>')"><img src="<?= e(asset(Images::displayThumb($ph))) ?>" alt="" loading="lazy"></span>
+          <div class="sv-haggle-photos">
+            <?php foreach ($collage as $k => $c): $ph = $c['photo']; ?>
+              <a class="sv-haggle-ph sv-haggle-ph-<?= $k ?>" href="<?= e(shop_url($c['slug'])) ?>" aria-label="<?= e($c['name']) ?>: подивитись іграшки" style="--ph:url('<?= e(asset(Images::displayThumb($ph))) ?>')"><img src="<?= e(asset(Images::displayThumb($ph))) ?>" alt="" loading="lazy">
+                <span class="sv-haggle-ph-cap"><?= e($c['name']) ?> →</span></a>
             <?php endforeach; ?>
           </div>
         <?php endif; ?>
