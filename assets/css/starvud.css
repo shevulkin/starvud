@@ -788,3 +788,10 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv .sv-card:hover .sv-card-img{box-shadow:none}
 .sv .sv-card .sv-card-body{padding:14px 16px 16px}
 .sv-grid{gap:24px 22px}
+
+/* Співвідношення фото й інформації: фото трохи нижче (5:4 замість квадрата), нижня частина щільніша */
+.sv .sv-card .sv-card-img{aspect-ratio:5/4}
+.sv .sv-card .sv-card-body{gap:8px;padding:14px 16px 16px}
+.sv .sv-card .sv-card-title{margin-bottom:0;font-size:15.5px}
+.sv .sv-card .sv-card-foot{padding-top:8px}
+.sv .sv-card .sv-price b{font-size:22px}
