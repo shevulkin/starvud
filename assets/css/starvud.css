@@ -670,3 +670,10 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-hint p{margin:0!important}
 .sv-news{align-self:end;margin:0 0 10px;min-height:42px;align-items:center}
 @media(max-width:620px){.sv-row2{grid-template-columns:minmax(0,1fr)}.sv-compact h2{font-size:26px}}
+
+/* Фото різних пропорцій: товар показується цілком (contain), а вільні поля
+   заповнює розмита копія того самого фото — без білих смуг і без обрізання */
+.sv-cat-img,.sv-card-img{isolation:isolate}
+.sv-cat-img::before,.sv-card-img::before{content:'';position:absolute;inset:-12%;z-index:-1;background:var(--ph) center/cover no-repeat;filter:blur(22px) saturate(1.1);opacity:.55}
+.sv-cat-img{position:relative}
+.sv-cat-img img,.sv-card-img img{object-fit:contain}

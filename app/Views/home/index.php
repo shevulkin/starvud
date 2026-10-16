@@ -82,7 +82,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     <div class="sv-cats">
       <?php foreach ($categories as $c): ?>
         <a class="sv-cat" href="<?= e(shop_url($c['slug'])) ?>">
-          <span class="sv-cat-img"><img src="<?= e(asset(Images::displayThumb($c['photo']))) ?>" alt="" loading="lazy"></span>
+          <span class="sv-cat-img" style="--ph:url('<?= e(asset(Images::displayThumb($c['photo']))) ?>')"><img src="<?= e(asset(Images::displayThumb($c['photo']))) ?>" alt="" loading="lazy"></span>
           <span class="sv-cat-name"><?= e($c['name']) ?></span>
           <span class="sv-cat-count"><?= (int)$c['count'] ?> <?= plural((int)$c['count'], 'товар', 'товари', 'товарів') ?></span>
         </a>

@@ -19,7 +19,7 @@ $cardCat = $cardCats[(int)$prod['category_id']] ?? null;
 $photo = Catalog::photo($prod);
 ?>
 <article class="card sv-card<?= $soldOut ? ' is-out' : '' ?>">
-  <a class="sv-card-img" href="<?= e($href) ?>" tabindex="-1" aria-hidden="true">
+  <a class="sv-card-img" href="<?= e($href) ?>" tabindex="-1" aria-hidden="true" style="--ph:url('<?= e(asset(Images::displayThumb($photo))) ?>')">
     <img src="<?= e(asset(Images::displayThumb($photo))) ?>" alt="" loading="lazy" decoding="async">
     <span class="sv-card-tags">
       <?php if ($old !== null): ?><span class="sv-tag sv-tag-sale">−<?= (int)round((1 - $pr / $old) * 100) ?>%</span>
