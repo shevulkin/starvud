@@ -42,11 +42,11 @@ $photo = Catalog::photo($prod);
       </div>
       <?php if ($needsChoice): ?>
         <a class="sv-cart-btn" href="<?= e($href) ?>" aria-label="Обрати варіант «<?= e($prod['name']) ?>»">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg><span class="sv-cart-txt">Обрати</span>
         </a>
       <?php elseif ($soldOut): ?>
         <a class="sv-cart-btn is-ghost" href="<?= e($href) ?>" aria-label="Повідомити про наявність «<?= e($prod['name']) ?>»" title="Повідомити, коли зʼявиться">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 004 0"/></svg>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 004 0"/></svg><span class="sv-cart-txt">Повідомити</span>
         </a>
       <?php else: ?>
         <form method="post" action="<?= e(url('/cart/add')) ?>" class="add-cart-form" data-product-name="<?= e($prod['name']) ?>"><?= Csrf::field() ?>
@@ -54,7 +54,7 @@ $photo = Catalog::photo($prod);
           <?php if ($cardVariant): ?><input type="hidden" name="variant_id" value="<?= (int)$cardVariant['id'] ?>"><?php endif; ?>
           <input type="hidden" name="back" value="<?= e(request_path()) ?>">
           <button class="sv-cart-btn" type="submit" aria-label="Додати «<?= e($prod['name']) ?>» у кошик" title="У кошик">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 01-2 1.8H8.2a2 2 0 01-2-1.8z"/><path d="M9 8V6a3 3 0 016 0v2"/><path d="M12 12v5M9.5 14.5h5"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 01-2 1.8H8.2a2 2 0 01-2-1.8z"/><path d="M9 8V6a3 3 0 016 0v2"/><path d="M12 12v5M9.5 14.5h5"/></svg><span class="sv-cart-txt">У кошик</span>
           </button>
         </form>
       <?php endif; ?>

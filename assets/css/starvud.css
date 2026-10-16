@@ -754,3 +754,20 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-price b{display:flex;align-items:baseline;gap:5px;font-size:21px;font-weight:700;letter-spacing:-.015em;color:var(--teal-d)}
 .sv-price b .sv-cur{font-size:14px;font-weight:500;letter-spacing:0;color:var(--muted)}
 .sv-price s{font-size:13px;color:var(--dim);margin-bottom:1px}
+
+/* Кнопка купівлі — «пілюля» з підписом, а не самотнє коло на краю картки: ціна й кнопка стоять поруч */
+.sv-card-foot{justify-content:space-between;gap:12px}
+.sv-cart-btn{width:auto;height:44px;padding:0 18px 0 16px;border-radius:999px;gap:8px;font:inherit;font-size:14px;font-weight:600;white-space:nowrap}
+.sv-cart-btn svg{flex-shrink:0;width:19px;height:19px}
+@media (max-width:520px){
+  .sv-cart-btn{padding:0 12px 0 11px;font-size:13px;gap:6px}
+  .sv-cart-btn svg{width:17px;height:17px}
+}
+/* Підпис на кнопці — лише коли картка достатньо широка; у вузькій лишається коло, і ціна не ламається на два рядки */
+.sv-card-body{container-type:inline-size}
+.sv-price b{white-space:nowrap}
+/* Кнопка займає вільне місце поряд із ціною (але не ширше 190px), щоб посеред картки не лишалась діра */
+.sv-card-foot>.sv-cart-btn,.sv-card-foot>form{flex:1 1 auto;max-width:190px;margin-left:auto}
+.sv-card-foot>form .sv-cart-btn{width:100%;justify-content:center}
+.sv-card-foot>.sv-cart-btn{justify-content:center}
+@container (max-width:250px){.sv-cart-txt{display:none}.sv-card-foot>.sv-cart-btn,.sv-card-foot>form{flex:none;width:44px;max-width:44px}.sv-cart-btn,.sv-card-foot>form .sv-cart-btn{width:44px;padding:0}}
