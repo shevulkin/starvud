@@ -76,7 +76,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
       <div class="sv-haggle-promo">
         <span class="sv-haggle-ico" aria-hidden="true">🤝</span>
         <div class="sv-haggle-txt">
-          <b>Назвіть свою ціну — ми відповімо</b>
+          <b>Назвіть свою ціну — здійсніть мрію</b>
           <span>Беріть кілька штук або просто хочете вигідніше? Запропонуйте ціну на будь-яку іграшку, і продавець відповість особисто <?= e(Offers::replyPromise()) ?>.</span>
         </div>
         <a class="btn btn-gold" href="<?= e(url('/shop')) ?>">Обрати іграшку →</a>
