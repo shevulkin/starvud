@@ -73,13 +73,30 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     <?php /* Торг — відмінність магазину: показуємо як обіцянку, а не дрібний рядок.
              Лише коли він справді увімкнений, інакше це обіцянка, якої не виконати */ ?>
     <?php if (Offers::enabled()): ?>
+      <?php
+        // Колаж зі справжніх фото магазину: лялька, гойдалка, намет — найживіші; решта як запас
+        $collage = [];
+        foreach (['lialky-ta-pupsy', 'hoidalky', 'ihrovi-namety'] as $want)
+            foreach ($categories as $c) if ($c['slug'] === $want) $collage[] = $c['photo'];
+        foreach ($categories as $c) if (count($collage) < 3 && !in_array($c['photo'], $collage, true)) $collage[] = $c['photo'];
+        $collage = array_slice($collage, 0, 3);
+      ?>
       <div class="sv-haggle-promo">
-        <span class="sv-haggle-ico" aria-hidden="true">🤝</span>
-        <div class="sv-haggle-txt">
-          <b>Назвіть свою ціну — здійсніть мрію</b>
-          <span>Беріть кілька штук або просто хочете вигідніше? Запропонуйте ціну на будь-яку іграшку, і продавець відповість особисто <?= e(Offers::replyPromise()) ?>.</span>
+        <div class="sv-haggle-body">
+          <span class="sv-haggle-ico" aria-hidden="true">🤝</span>
+          <div class="sv-haggle-txt">
+            <b>Назвіть свою ціну — здійсніть мрію</b>
+            <span>Беріть кілька штук або просто хочете вигідніше? Запропонуйте ціну на будь-яку іграшку, і продавець відповість особисто <?= e(Offers::replyPromise()) ?>.</span>
+            <a class="btn btn-gold" href="<?= e(url('/shop')) ?>">Обрати іграшку →</a>
+          </div>
         </div>
-        <a class="btn btn-gold" href="<?= e(url('/shop')) ?>">Обрати іграшку →</a>
+        <?php if ($collage): ?>
+          <div class="sv-haggle-photos" aria-hidden="true">
+            <?php foreach ($collage as $k => $ph): ?>
+              <span class="sv-haggle-ph sv-haggle-ph-<?= $k ?>" style="--ph:url('<?= e(asset(Images::displayThumb($ph))) ?>')"><img src="<?= e(asset(Images::displayThumb($ph))) ?>" alt="" loading="lazy"></span>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
       </div>
     <?php endif; ?>
   </div>
