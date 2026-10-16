@@ -29,7 +29,7 @@ $short = [
 ?>
 <div class="sv-topbar">
   <div class="container sv-topbar-in">
-    <span>Доставка Новою Поштою 1–3 дні · безкоштовно від <?= e(price_fmt((float)Settings::get('free_shipping_from', '2500'))) ?></span>
+    <span>Доставка Новою Поштою 1–3 дні · безкоштовно від <?= e(price_fmt((float)Settings::get('free_shipping_from', '2500'))) ?><?php if (Offers::enabled()): ?> · <b>🤝 можна торгуватись</b><?php endif; ?></span>
     <span class="sv-topbar-phones">
       <?php if ($phone1 !== ''): ?><a href="tel:<?= e($tel($phone1)) ?>"><?= e($phone1) ?></a><?php endif; ?>
       <?php if ($phone2 !== ''): ?><a href="tel:<?= e($tel($phone2)) ?>"><?= e($phone2) ?></a><?php endif; ?>

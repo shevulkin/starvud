@@ -24,7 +24,7 @@ $photo = Catalog::photo($prod);
     <span class="sv-card-tags">
       <?php if ($old !== null): ?><span class="sv-tag sv-tag-sale">−<?= (int)round((1 - $pr / $old) * 100) ?>%</span>
       <?php elseif (!empty($prod['featured'])): ?><span class="sv-tag sv-tag-hit">Хіт</span><?php endif; ?>
-      <?php if ($soldOut): ?><span class="sv-tag sv-tag-out">Очікується</span><?php endif; ?>
+      <?php if ($soldOut): ?><span class="sv-tag sv-tag-out">Очікується</span><?php elseif (Offers::allowed($prod, $cardVariant)): ?><span class="sv-tag sv-tag-haggle" title="Можна запропонувати свою ціну">🤝 Торг</span><?php endif; ?>
     </span>
   </a>
   <div class="sv-card-body">

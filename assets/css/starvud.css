@@ -723,3 +723,7 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-haggle-txt span{font-size:15px;line-height:1.5;color:var(--muted)}
 .sv-haggle-promo .btn{flex-shrink:0;white-space:nowrap}
 @media (max-width:760px){.sv-haggle-promo{flex-direction:column;align-items:flex-start;gap:12px;padding:20px}.sv-haggle-promo .btn{width:100%;text-align:center}}
+
+/* Позначка торгу на картці: «тут можна запропонувати свою ціну» */
+.sv-tag-haggle{background:var(--teal-l);color:var(--teal-d)}
+.sv-topbar b{font-weight:600}
