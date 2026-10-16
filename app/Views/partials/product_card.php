@@ -13,7 +13,8 @@ $soldOut = $cardLimit !== null && $cardLimit <= 0;
 [$pr, $old] = Catalog::price($prod, $cardVariant);
 $age = Ages::label($prod);
 $tiers = Catalog::qtyTiers($prod);
-$bestTier = $tiers ? end($tiers) : null;
+// На головній оптову знижку не показуємо: вона відволікає від ціни; у каталозі й на сторінці товару вона лишається
+$bestTier = ($tiers && empty($hide_tiers)) ? end($tiers) : null;
 $href = url('/product/' . $prod['slug']);
 $cardCat = $cardCats[(int)$prod['category_id']] ?? null;
 $photo = Catalog::photo($prod);

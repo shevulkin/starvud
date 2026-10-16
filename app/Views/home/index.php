@@ -111,7 +111,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
       <a class="sv-more" href="<?= e(url('/shop')) ?>">Дивитись усі →</a>
     </div>
     <div class="sv-grid">
-      <?php foreach ($featured as $prod) echo View::partial('partials/product_card', ['prod' => $prod]); ?>
+      <?php foreach ($featured as $prod) echo View::partial('partials/product_card', ['prod' => $prod, 'hide_tiers' => true]); ?>
     </div>
   </div>
 </section>
@@ -155,7 +155,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
       <a class="sv-more" href="<?= e(shop_url(null, ['sort' => 'new'])) ?>">Усі новинки →</a>
     </div>
     <div class="sv-grid">
-      <?php foreach ($fresh as $prod) echo View::partial('partials/product_card', ['prod' => $prod]); ?>
+      <?php foreach ($fresh as $prod) echo View::partial('partials/product_card', ['prod' => $prod, 'hide_tiers' => true]); ?>
     </div>
   </div>
 </section>
