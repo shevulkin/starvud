@@ -768,3 +768,15 @@ a.sv-haggle-ph:hover{box-shadow:0 20px 44px rgba(20,60,55,.32)}
 .sv-haggle-ph-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;font-size:14px;font-weight:700;text-align:center;background:linear-gradient(to top,rgba(10,40,36,.78),transparent);opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s}
 a.sv-haggle-ph:hover .sv-haggle-ph-cap,a.sv-haggle-ph:focus-visible .sv-haggle-ph-cap{opacity:1;transform:none}
 @media (hover:none){.sv-haggle-ph-cap{opacity:1;transform:none;font-size:12px;padding:20px 8px 8px}}
+
+/* Колаж торгу цілком у межах картки: розміри за висотою, не за шириною, щоб фото не різались зверху й знизу */
+.sv-haggle-promo{padding:22px 28px 22px 32px;min-height:300px}
+.sv-haggle-photos{min-height:256px}
+.sv-haggle-ph{width:auto}
+.sv-haggle-ph-0{height:80%;aspect-ratio:3/4;left:2%}
+.sv-haggle-ph-1{height:88%;aspect-ratio:1/1;left:34%}
+.sv-haggle-ph-2{height:80%;aspect-ratio:3/4;right:2%}
+@media (max-width:900px){
+  .sv-haggle-promo{padding:0;min-height:0}
+  .sv-haggle-photos{min-height:210px;height:210px}
+}
