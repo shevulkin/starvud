@@ -734,3 +734,7 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-section{padding-top:48px;padding-bottom:48px}
 .sv-section-tight{padding-top:40px;padding-bottom:40px}
 @media (max-width:760px){.sv-hero{padding-bottom:28px}.sv-section{padding-top:36px;padding-bottom:36px}.sv-section-tight{padding-top:28px;padding-bottom:28px}}
+
+/* Назви розділів — по центру під фото */
+.sv-cat{align-items:center;text-align:center}
+.sv-cat-img{align-self:stretch}
