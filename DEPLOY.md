@@ -36,7 +36,7 @@
 **`public_html/starwood`** (без `.git`, тестів, `config.local.php`; фото й бібліотеку, яких у git
 немає, не чіпає).
 
-1. cPanel → **Git Version Control** → Create → Clone URL `https://github.com/shevulkin/starvud.git`,
+1. cPanel → **Git Version Control** → Create → Clone URL `https://github.com/shevulkin/starwood.git`,
    гілка `main`, тека клону — `repositories/starvud` (не в `public_html`).
 2. **Manage → Pull or Deploy → Update from Remote → Deploy HEAD Commit.**
 3. Один раз перенесіть фото: з архіву `starvud-site.zip` завантажте в
