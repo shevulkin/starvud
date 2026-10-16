@@ -37,8 +37,8 @@ $photo = Catalog::photo($prod);
     <div class="sv-card-foot">
       <div class="sv-price">
         <?php if ($old !== null): ?><s><?= e(price_fmt($old)) ?></s><?php endif; ?>
-        <b><?= e(price_label($pr, (bool)$prod['made_to_order'])) ?></b>
-        <small class="sv-stock<?= $soldOut ? ' is-out' : '' ?>"><?= $soldOut ? 'Очікується' : 'В наявності' ?></small>
+        <?php $pl = price_label($pr, (bool)$prod['made_to_order']); $plNum = preg_match('/^(.+?)\s*грн$/u', $pl, $pm) ? $pm[1] : null; ?>
+        <b><?= $plNum !== null ? e($plNum) . '<span class="sv-cur">грн</span>' : e($pl) ?></b>
       </div>
       <?php if ($needsChoice): ?>
         <a class="sv-cart-btn" href="<?= e($href) ?>" aria-label="Обрати варіант «<?= e($prod['name']) ?>»">

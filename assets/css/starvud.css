@@ -747,3 +747,10 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-price small.sv-stock{display:flex;align-items:center;gap:6px;margin-top:2px;font-size:12.5px;font-weight:500;color:var(--ok)}
 .sv-price small.sv-stock::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor}
 .sv-price small.sv-stock.is-out{color:var(--dim)}
+
+/* Ціна в картці: число виразне, «грн» тихіше; без лінії й зайвих підписів */
+.sv-card-foot{border-top:0;padding-top:4px;align-items:center}
+.sv-card-title{margin-bottom:6px}
+.sv-price b{display:flex;align-items:baseline;gap:5px;font-size:21px;font-weight:700;letter-spacing:-.015em;color:var(--teal-d)}
+.sv-price b .sv-cur{font-size:14px;font-weight:500;letter-spacing:0;color:var(--muted)}
+.sv-price s{font-size:13px;color:var(--dim);margin-bottom:1px}
