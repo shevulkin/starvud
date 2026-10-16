@@ -180,6 +180,12 @@
       <b style="color:var(--gold)">Не забудьте вимкнути перед запуском</b> — інакше сайт не потрапить у Google.</p>
     <p class="dim" style="margin:8px 0 0">Це не захист: сторінки лишаються доступними всім, хто знає адресу.
       Пошуковики просто не додають їх у видачу, а вже проіндексовані зникають протягом кількох днів.</p>
+    <div class="field" style="margin-top:18px" data-help-title="Google Analytics 4"
+         data-help="Ідентифікатор вимірювання з Google Analytics (Адміністратор → Потоки даних → ваш веб-потік). Має вигляд G-XXXXXXXXXX. Порожньо — аналітика вимкнена, жодних скриптів Google на сайті немає. Відвідування персоналу (адміністраторів і продавців) не враховується.">
+      <label>Google Analytics 4: ідентифікатор вимірювання</label>
+      <input type="text" name="ga4_id" value="<?= e((string)Settings::get('ga4_id', '')) ?>" placeholder="G-XXXXXXXXXX" maxlength="20" autocomplete="off">
+      <p class="field-hint">Порожньо — аналітика вимкнена. Відвідування персоналу не рахується.</p>
+    </div>
   </div>
   <div class="admin-card" data-stab="seo">
     <h2 class="h-serif" data-help-title="Інтеграції та SEO"

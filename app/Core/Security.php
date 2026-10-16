@@ -105,19 +105,32 @@ class Security
      * і робити його наосліп перед переїздом на бойовий сервер небезпечніше,
      * ніж лишити цю директиву слабкою й позначеною.
      */
+    /** Ідентифікатор GA4 із налаштувань (лише коректного вигляду), інакше порожній рядок */
+    public static function ga4Id(): string
+    {
+        $id = strtoupper(trim((string)\Settings::get('ga4_id', '')));
+        return preg_match('~^G-[A-Z0-9]{6,14}$~', $id) ? $id : '';
+    }
+
     private static function csp(): string
     {
         $self = "'self'";
+        // Домени Google відкриваємо лише тоді, коли в налаштуваннях задано GA4: без нього CSP
+        // лишається максимально суворим (жодного чужого домену)
+        $ga = self::ga4Id() !== '';
+        $gaScript = $ga ? ' https://www.googletagmanager.com' : '';
+        $gaConnect = $ga ? ' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com' : '';
+        $gaImg = $ga ? ' https://*.google-analytics.com https://www.googletagmanager.com' : '';
         return implode('; ', [
             "default-src $self",
-            "script-src $self 'unsafe-inline'",
+            "script-src $self 'unsafe-inline'" . $gaScript,
             "style-src $self 'unsafe-inline'",
             // data: — вбудовані іконки в CSS; blob: — кадр із камери під час сканування
-            "img-src $self data: blob: " . self::YT_IMG,
+            "img-src $self data: blob: " . self::YT_IMG . $gaImg,
             "font-src $self",
             // Жодного чужого домену: навіть виконаний скрипт не має куди
             // відіслати вкрадене
-            "connect-src $self",
+            "connect-src $self" . $gaConnect,
             "media-src $self blob:",          // потік із камери
             "worker-src $self blob:",         // service worker (PWA) і декодер коду
             "frame-src 'none'",
