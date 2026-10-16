@@ -27,12 +27,11 @@ $photo = Catalog::photo($prod);
       <?php elseif (!empty($prod['featured'])): ?><span class="sv-tag sv-tag-hit">Хіт</span><?php endif; ?>
       <?php if ($soldOut): ?><span class="sv-tag sv-tag-out">Очікується</span><?php endif; ?>
     </span>
+    <?php /* Вік — значком на самому фото: рядок під ним не з'їдає висоту картки,
+             а фото лишається головним (≈70% картки) */ ?>
+    <?php if ($age !== ''): ?><span class="sv-card-age sv-card-age-on"><?= e($age) ?></span><?php endif; ?>
   </a>
   <div class="sv-card-body">
-    <div class="sv-card-meta">
-      <?php if ($age !== ''): ?><span class="sv-card-age"><?= e($age) ?></span><?php endif; ?>
-      <?php if ($cardCat): ?><span class="sv-card-cat"><?= e($cardCat) ?></span><?php endif; ?>
-    </div>
     <h3 class="sv-card-title"><a href="<?= e($href) ?>"><?= e($prod['name']) ?></a></h3>
     <div class="sv-card-foot">
       <div class="sv-price">

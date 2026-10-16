@@ -795,3 +795,8 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv .sv-card .sv-card-title{margin-bottom:0;font-size:15.5px}
 .sv .sv-card .sv-card-foot{padding-top:8px}
 .sv .sv-card .sv-price b{font-size:22px}
+
+/* Фото ≈70% картки: вік переїхав на фото, рядок категорії прибрано, фото трохи вище квадрата */
+.sv .sv-card .sv-card-img{aspect-ratio:1/1.1}
+.sv-card-age-on{position:absolute;left:12px;bottom:12px;z-index:1;background:rgba(255,255,255,.94);box-shadow:0 1px 6px rgba(0,0,0,.12);font-size:12.5px}
+.sv .sv-card .sv-card-body{gap:6px;padding:12px 16px 14px}
