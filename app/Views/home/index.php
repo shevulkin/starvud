@@ -46,7 +46,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
       <div class="sv-hero-mosaic">
         <?php foreach ($hero_photos as $i => $h): ?>
           <a class="sv-hero-tile sv-hero-tile-<?= $i ?>" href="<?= e(url('/product/' . $h['slug'])) ?>" tabindex="-1" style="--ph:url('<?= e(asset(Images::displayThumb($h['photo']))) ?>')">
-            <img src="<?= e(asset(Images::displayThumb($h['photo']))) ?>" alt="" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
+            <img src="<?= e(asset(Images::displayThumb($h['photo']))) ?>" alt="<?= e($h['name']) ?>" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
           </a>
         <?php endforeach; ?>
       </div>
@@ -94,7 +94,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     <div class="sv-cats">
       <?php foreach ($categories as $c): ?>
         <a class="sv-cat" href="<?= e(shop_url($c['slug'])) ?>">
-          <span class="sv-cat-img" style="--ph:url('<?= e(asset(Images::displayThumb($c['photo']))) ?>')"><img src="<?= e(asset(Images::displayThumb($c['photo']))) ?>" alt="" loading="lazy"></span>
+          <span class="sv-cat-img" style="--ph:url('<?= e(asset(Images::displayThumb($c['photo']))) ?>')"><img src="<?= e(asset(Images::displayThumb($c['photo']))) ?>" alt="<?= e($c['name']) ?>" loading="lazy"></span>
           <span class="sv-cat-name"><?= e($c['name']) ?></span>
           <span class="sv-cat-count"><?= (int)$c['count'] ?> <?= plural((int)$c['count'], 'товар', 'товари', 'товарів') ?></span>
         </a>

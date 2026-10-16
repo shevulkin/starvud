@@ -291,8 +291,10 @@ class Shop
             'weight_fmt' => self::weightIsAttr($attrs) ? '' : weight_fmt($first['weight'] ?? $p['weight'] ?? null),
             'per_100g' => price_per_100g($price, ($first['weight'] ?? null) ?: ($p['weight'] ?? null)),
             // У <title> — довга назва з Prom: у ній слова, якими шукають
-            'page_title' => (trim((string)($p['seo_title'] ?? '')) ?: $p['name']) . ' — ' . cfg('app_name'),
-            'meta_description' => $p['short_desc'] ?? '',
+            // Довга назва з Prom (100+ символів, набір ключових слів) Google однаково обрізає й
+            // сприймає як переспам, тож у <title> її беремо лише коли вона вкладається в ~65 знаків
+            'page_title' => (($t = trim((string)($p['seo_title'] ?? ''))) !== '' && mb_strlen($t) <= 65 ? $t : $p['name']) . ' — ' . cfg('app_name'),
+            'meta_description' => self::productMetaDescription($p, $price),
             'product_reviews' => Reviews::forProduct((int)$p['id']),
             'jsonld_product' => true,
             'jsonld' => [
@@ -319,6 +321,29 @@ class Shop
             'offer_allowed' => Offers::allowed($p, $first),
             'offer_states' => self::offerStates($p, $variants),
         ]);
+    }
+
+    /**
+     * Опис для сніпета в пошуку: ~155 знаків. Короткий опис із картки («Кульки — білі (20 шт)») надто
+     * бідний для видачі, тому, коли він коротший за 80 знаків, добираємо з повного опису або складаємо
+     * з ціни, віку й умов доставки.
+     */
+    private static function productMetaDescription(array $p, $price): string
+    {
+        $short = trim(strip_tags((string)($p['short_desc'] ?? '')));
+        if (mb_strlen($short) >= 80) return mb_substr($short, 0, 160);
+        $full = trim(preg_replace('~\s+~u', ' ', strip_tags((string)($p['description'] ?? ''))));
+        if (mb_strlen($full) >= 80) {
+            $cut = mb_substr($full, 0, 155);
+            $sp = mb_strrpos($cut, ' ');
+            return ($sp !== false && $sp > 100 ? mb_substr($cut, 0, $sp) : $cut) . '…';
+        }
+        $age = Ages::label($p);
+        $parts = [(string)$p['name']];
+        if ($price !== null) $parts[] = 'Ціна ' . price_fmt((float)$price);
+        if ($age !== '') $parts[] = 'Вік: ' . $age;
+        $parts[] = 'Доставка Новою Поштою по Україні';
+        return mb_substr(implode('. ', $parts) . '.', 0, 160);
     }
 
     /**

@@ -21,7 +21,7 @@ $photo = Catalog::photo($prod);
 ?>
 <article class="card sv-card<?= $soldOut ? ' is-out' : '' ?>">
   <a class="sv-card-img" href="<?= e($href) ?>" tabindex="-1" aria-hidden="true" style="--ph:url('<?= e(asset(Images::displayThumb($photo))) ?>')">
-    <img src="<?= e(asset(Images::displayThumb($photo))) ?>" alt="" loading="lazy" decoding="async">
+    <img src="<?= e(asset(Images::displayThumb($photo))) ?>" alt="<?= e($prod['name']) ?>" loading="lazy" decoding="async">
     <span class="sv-card-tags">
       <?php if ($old !== null): ?><span class="sv-tag sv-tag-sale">−<?= (int)round((1 - $pr / $old) * 100) ?>%</span>
       <?php elseif (!empty($prod['featured'])): ?><span class="sv-tag sv-tag-hit">Хіт</span><?php endif; ?>
