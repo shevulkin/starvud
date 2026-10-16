@@ -727,3 +727,8 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 /* Позначка торгу на картці: «тут можна запропонувати свою ціну» */
 .sv-tag-haggle{background:var(--teal-l);color:var(--teal-d)}
 .sv-topbar b{font-weight:600}
+
+/* Менше порожнього місця між першим екраном і вибором віку */
+.sv-hero{padding-bottom:28px}
+#age.sv-section{padding-top:36px}
+@media (max-width:760px){.sv-hero{padding-bottom:20px}#age.sv-section{padding-top:28px}}
