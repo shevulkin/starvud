@@ -707,3 +707,8 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv .offer-box[open] .offer-toggle{display:flex;align-items:center;gap:12px;text-transform:none;letter-spacing:0;font-size:17px;font-weight:700;color:var(--text);border:0;margin-bottom:14px;padding:0}
 .sv .offer-box[open] .offer-txt small{text-transform:none;letter-spacing:0;font-size:13px;font-weight:400;color:var(--muted)}
 .sv .offer-box[open] .offer-toggle::after{margin-left:auto}
+
+/* Характеристики й опис — під фото й купівлею, на всю ширину у дві колонки */
+.sv-pp-more{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:12px 56px;margin-top:48px;padding-top:36px;border-top:1px solid var(--line)}
+.sv-pp-col>h2{margin:0 0 14px!important;font-size:22px}
+@media (max-width:1000px){.sv-pp-more{grid-template-columns:minmax(0,1fr);margin-top:32px;padding-top:24px}}

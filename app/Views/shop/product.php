@@ -461,9 +461,16 @@ $phone1 = Content::title('contact_phone');
           <?php endif; ?>
         </div>
 
+      </div>
+    </div>
+
+    <?php /* Характеристики й опис — на всю ширину під фото й купівлею, у дві колонки:
+             права колонка вже не тягнеться на пів сторінки, а під фото немає порожнечі */ ?>
+    <div class="sv-pp-more">
         <?php $prodBrands = Catalog::brandsOf($p); ?>
         <?php if ($attrs || $prodBrands || $weight_fmt !== ''): ?>
-          <h2 style="font-size:22px;margin-top:34px">Характеристики</h2>
+          <div class="sv-pp-col">
+          <h2>Характеристики</h2>
           <table class="specs">
             <?php /* Бренд першим рядком: «чий це товар» — питання, яке виникає
                      раніше за вагу й обʼєм, надто коли позиція не наша.
@@ -500,13 +507,15 @@ $phone1 = Content::title('contact_phone');
               </tr>
             <?php endforeach; ?>
           </table>
+          </div>
         <?php endif; ?>
 
         <?php if (!empty($p['description']) && $p['description'] !== ($p['short_desc'] ?? '')): ?>
-          <h2 style="font-size:22px;margin-top:30px">Опис</h2>
+          <div class="sv-pp-col">
+          <h2>Опис</h2>
           <div class="sv-desc"><?= rich_text((string)$p['description']) ?></div>
+          </div>
         <?php endif; ?>
-      </div>
     </div>
 
     <?php if ($product_reviews): ?>
