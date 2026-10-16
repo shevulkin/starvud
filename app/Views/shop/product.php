@@ -124,6 +124,13 @@ $phone1 = Content::title('contact_phone');
           </div>
         </form>
 
+        <?php if (!empty($offer_allowed)): ?>
+          <?php /* Торг — перевага магазину, а не дрібний шрифт унизу: підказка стоїть
+                   поруч із кнопкою купівлі й одним дотиком відкриває форму нижче */ ?>
+          <a class="sv-haggle" href="#offerBox" onclick="var b=document.getElementById('offerBox');if(b){b.open=true;b.scrollIntoView({behavior:'smooth',block:'center'});return false}">
+            🤝 <b>Можна поторгуватись</b> — запропонуйте свою ціну</a>
+        <?php endif; ?>
+
         <?php /* Коротко про доставку й оплату — одразу під кнопкою, де людина
                  вирішує. Три рядки, а не картки: відповідь на «скільки й коли»
                  без того, щоб відсувати опис. Подробиці — на сторінці умов. */ ?>
@@ -245,7 +252,13 @@ $phone1 = Content::title('contact_phone');
         <?php if (!empty($offer_allowed)): ?>
           <details class="offer-box" id="offerBox"<?= $offerBusy ? ' open' : '' ?>>
             <summary class="offer-toggle">
-              <?= $offerBusy ? 'Ваша пропозиція ціни' : 'Запропонувати свою ціну' ?>
+              <?php if ($offerBusy): ?>
+                Ваша пропозиція ціни
+              <?php else: ?>
+                <span class="offer-ico" aria-hidden="true">🤝</span>
+                <span class="offer-txt"><b>Торг доречний — запропонуйте свою ціну</b>
+                  <small>Продавець відповість особисто, без зобовʼязань</small></span>
+              <?php endif; ?>
             </summary>
 
             <?php if (!$auth_user): ?>

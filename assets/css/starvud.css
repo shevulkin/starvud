@@ -686,3 +686,16 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-hero-tile-3{display:block}
 .sv-hero-tile::before{content:'';position:absolute;inset:-12%;z-index:-1;background:var(--ph) center/cover no-repeat;filter:blur(22px) saturate(1.1);opacity:.55}
 .sv-hero-tile img{object-fit:contain}
+
+/* Торг — помітна перевага, а не прихований рядок */
+.sv-haggle{display:inline-flex;align-items:center;gap:8px;margin:14px 0 4px;padding:9px 16px;border-radius:999px;background:var(--teal-l);color:var(--teal-d)!important;font-size:14.5px;text-decoration:none}
+.sv-haggle:hover{background:#d9ece7}
+.sv-haggle b{font-weight:700}
+.sv .offer-box:not([open]){margin:6px 0 22px}
+.sv .offer-box:not([open]) .offer-toggle{display:flex;align-items:center;gap:14px;width:100%;box-sizing:border-box;padding:16px 20px;border:1px solid #bfe0d8;border-radius:18px;background:linear-gradient(135deg,var(--teal-l),#fff);color:var(--teal-d);font-size:16px;font-weight:600}
+.sv .offer-box:not([open]) .offer-toggle:hover{border-color:var(--teal);color:var(--teal-d)}
+.sv .offer-box:not([open]) .offer-toggle::after{margin-left:auto;color:var(--teal-d);font-size:13px}
+.sv .offer-ico{font-size:26px;line-height:1}
+.sv .offer-txt{display:flex;flex-direction:column;gap:2px}
+.sv .offer-txt b{font-weight:700}
+.sv .offer-txt small{font-size:13px;font-weight:400;color:var(--muted)}
