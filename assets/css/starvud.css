@@ -738,3 +738,12 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 /* Назви розділів — по центру під фото */
 .sv-cat{align-items:center;text-align:center}
 .sv-cat-img{align-self:stretch}
+
+/* Нижня частина картки: ціна крупніше, під нею «В наявності»; тонка лінія відділяє її від назви */
+.sv-card-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);align-items:center}
+.sv-card-title{margin-bottom:10px}
+.sv-price{gap:1px}
+.sv-price b{font-size:22px;letter-spacing:-.02em}
+.sv-price small.sv-stock{display:flex;align-items:center;gap:6px;margin-top:2px;font-size:12.5px;font-weight:500;color:var(--ok)}
+.sv-price small.sv-stock::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor}
+.sv-price small.sv-stock.is-out{color:var(--dim)}

@@ -13,8 +13,8 @@ $soldOut = $cardLimit !== null && $cardLimit <= 0;
 [$pr, $old] = Catalog::price($prod, $cardVariant);
 $age = Ages::label($prod);
 $tiers = Catalog::qtyTiers($prod);
-// На головній оптову знижку не показуємо: вона відволікає від ціни; у каталозі й на сторінці товару вона лишається
-$bestTier = ($tiers && empty($hide_tiers)) ? end($tiers) : null;
+// Оптова знижка в картці не показується: вона відволікає від ціни; повна шкала — на сторінці товару
+$bestTier = null;
 $href = url('/product/' . $prod['slug']);
 $cardCat = $cardCats[(int)$prod['category_id']] ?? null;
 $photo = Catalog::photo($prod);
@@ -38,7 +38,7 @@ $photo = Catalog::photo($prod);
       <div class="sv-price">
         <?php if ($old !== null): ?><s><?= e(price_fmt($old)) ?></s><?php endif; ?>
         <b><?= e(price_label($pr, (bool)$prod['made_to_order'])) ?></b>
-        <?php if ($bestTier && !$soldOut): ?><small>від <?= (int)$bestTier['min_qty'] ?> шт — <?= e(price_fmt(round((float)$pr * (1 - (float)$bestTier['percent'] / 100), 2))) ?></small><?php endif; ?>
+        <small class="sv-stock<?= $soldOut ? ' is-out' : '' ?>"><?= $soldOut ? 'Очікується' : 'В наявності' ?></small>
       </div>
       <?php if ($needsChoice): ?>
         <a class="sv-cart-btn" href="<?= e($href) ?>" aria-label="Обрати варіант «<?= e($prod['name']) ?>»">
