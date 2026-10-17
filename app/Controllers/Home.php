@@ -51,7 +51,8 @@ class Home
             'fresh' => $fresh,
             'age_count' => $ageCount,
             // Перший екран показує справжні іграшки, а не малюнки: чотири хіти
-            'hero_photos' => array_map(static fn($p) => ['photo' => Catalog::photo($p), 'name' => $p['name'], 'slug' => $p['slug']],
+            'hero_photos' => array_map(static fn($p) => ['photo' => Catalog::photo($p), 'name' => $p['name'], 'slug' => $p['slug'],
+                    'price' => ($pr = Catalog::price($p)[0]) !== null ? price_fmt((float)$pr) : ''],
                 array_slice($featured, 0, 4)),
             'reviews' => Reviews::withText(3),
             'review_stats' => $stats,

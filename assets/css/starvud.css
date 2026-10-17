@@ -828,3 +828,10 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 /* Іконка «Адміністрування» для персоналу — лише на телефоні (на комп'ютері є текстове посилання) */
 .sv-admin-btn{display:none!important}
 @media (max-width:720px){ .sv-side .sv-icon.sv-admin-btn{display:flex!important;min-width:44px} }
+
+/* Підпис на плитках першого екрана: «Хіт продажу», назва, ціна */
+.sv-hero-cap{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:2px;padding:36px 14px 12px;color:#fff;background:linear-gradient(to top,rgba(8,36,33,.82),rgba(8,36,33,.5) 55%,transparent)}
+.sv-hero-cap small{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#FFD35C}
+.sv-hero-cap b{font-size:14px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sv-hero-cap i{font-style:normal;font-size:15px;font-weight:700}
+@media (max-width:520px){.sv-hero-cap{padding:28px 10px 9px}.sv-hero-cap b{font-size:12.5px}.sv-hero-cap i{font-size:13.5px}.sv-hero-cap small{font-size:10px}}

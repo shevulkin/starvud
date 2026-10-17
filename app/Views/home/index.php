@@ -47,6 +47,9 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
         <?php foreach ($hero_photos as $i => $h): ?>
           <a class="sv-hero-tile sv-hero-tile-<?= $i ?>" href="<?= e(url('/product/' . $h['slug'])) ?>" tabindex="-1" style="--ph:url('<?= e(asset(Images::displayThumb($h['photo']))) ?>')">
             <img src="<?= e(asset(Images::displayThumb($h['photo']))) ?>" alt="<?= e($h['name']) ?>" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
+            <?php /* Підпис на плитці: без нього чотири великі фото виглядають як випадкові знімки, а не як
+                     «хіти продажу», на які можна натиснути */ ?>
+            <span class="sv-hero-cap"><small>Хіт продажу</small><b><?= e($h['name']) ?></b><?php if ($h['price'] !== ''): ?><i><?= e($h['price']) ?></i><?php endif; ?></span>
           </a>
         <?php endforeach; ?>
       </div>
