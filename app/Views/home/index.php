@@ -44,72 +44,21 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     </div>
     <div class="sv-hero-art" aria-hidden="true">
       <?php
-        /* Банер першого екрана. Якщо в адмінці (Тексти й фото сайту → «Банер першого екрана») заповнено
-           хоч один слайд — показується банер, що сам перемикається; інакше — вітрина з фото хітів */
-        $slides = [];
-        for ($n = 1; $n <= 4; $n++) {
-            $bk = 'hero_banner_' . $n;
-            $bimg = Content::image($bk);
-            if ($bimg !== '') $slides[] = ['photo' => $bimg, 'cap' => Content::title($bk), 'href' => Content::get($bk, 'body')];
-        }
+        /* Класичний банер першого екрана: одна велика картинка з необовʼязковим заголовком і посиланням.
+           Керується з адмінки (Тексти й фото сайту → «Банер першого екрана»), у режимі редагування — олівцем
+           прямо на сторінці. Поки фото не додано, показується фото першого хіта продажу (без підпису) */
+        $bImg = Content::image('hero_banner');
+        $bCap = Content::title('hero_banner');
+        $bHref = Content::get('hero_banner', 'body');
+        $bAuto = $bImg === '';
+        if ($bAuto) { $bImg = $hero_photos[0]['photo'] ?? ''; $bCap = ''; $bHref = ''; }
+        $bTag = $bHref !== '' ? 'a' : 'div';
       ?>
-      <?php if ($slides): ?>
-        <div class="sv-hero-slider" data-slider<?= count($slides) < 2 ? ' data-single' : '' ?> role="region" aria-roledescription="carousel" aria-label="Банер">
-          <?php foreach ($slides as $i => $sl): $tag = $sl['href'] !== '' ? 'a' : 'div'; ?>
-            <<?= $tag ?> class="sv-slide<?= $i === 0 ? ' is-on' : '' ?>"<?= $sl['href'] !== '' ? ' href="' . e($sl['href']) . '"' : '' ?> style="--ph:url('<?= e(asset(Images::displayThumb($sl['photo']))) ?>')">
-              <img src="<?= e(asset($sl['photo'])) ?>" alt="<?= e($sl['cap'] ?: 'Банер Старвуд-М') ?>" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
-              <?php if ($sl['cap'] !== ''): ?><span class="sv-hero-cap"><b><?= e($sl['cap']) ?></b><?php if ($sl['href'] !== ''): ?><i aria-hidden="true">→</i><?php endif; ?></span><?php endif; ?>
-            </<?= $tag ?>>
-          <?php endforeach; ?>
-          <?php if (count($slides) > 1): ?>
-            <div class="sv-slider-dots" role="tablist">
-              <?php foreach ($slides as $i => $sl): ?><button type="button" class="<?= $i === 0 ? 'is-on' : '' ?>" aria-label="Слайд <?= $i + 1 ?>"></button><?php endforeach; ?>
-            </div>
-            <script>
-            (function(){
-              var s = document.querySelector('[data-slider]'); if (!s) return;
-              var sl = s.querySelectorAll('.sv-slide'), dots = s.querySelectorAll('.sv-slider-dots button'), cur = 0, timer = null;
-              function go(n){ sl[cur].classList.remove('is-on'); dots[cur].classList.remove('is-on'); cur = (n + sl.length) % sl.length; sl[cur].classList.add('is-on'); dots[cur].classList.add('is-on'); }
-              function start(){ stop(); if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(function(){ go(cur + 1); }, 5000); }
-              function stop(){ if (timer) { clearInterval(timer); timer = null; } }
-              dots.forEach(function(d, i){ d.addEventListener('click', function(){ go(i); start(); }); });
-              s.addEventListener('mouseenter', stop); s.addEventListener('mouseleave', start);
-              var x0 = null;
-              s.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; stop(); }, {passive: true});
-              s.addEventListener('touchend', function(e){ if (x0 !== null) { var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1)); } x0 = null; start(); });
-              start();
-            })();
-            </script>
-          <?php endif; ?>
-        </div>
-      <?php else: ?>
-      <div class="sv-hero-mosaic">
-        <?php
-          /* Банер першого екрана: кожна з чотирьох плиток керується з адмінки (Тексти й фото сайту →
-             «Банер першого екрана»): фото, підпис, посилання. Поки плитку не заповнено, показується просте фото
-             з хітів без підпису й посилання. Так банер можна замінити, не чіпаючи код */
-          $tiles = [];
-          for ($n = 0; $n < 4; $n++) {
-              $bk = 'hero_banner_' . ($n + 1);
-              $bimg = Content::image($bk);
-              if ($bimg !== '') {
-                  $tiles[] = ['photo' => $bimg, 'alt' => Content::title($bk) ?: 'Банер Старвуд-М',
-                              'cap' => Content::title($bk), 'href' => Content::get($bk, 'body'), 'key' => $bk];
-              } elseif (isset($hero_photos[$n])) {
-                  $h = $hero_photos[$n];
-                  // Заглушка, поки банер не заповнено: просто фото, без підпису й посилання, — це банер, а не розділ
-                  // чи картка товару (хіти з цінами — нижче на сторінці)
-                  $tiles[] = ['photo' => $h['photo'], 'alt' => $h['name'], 'cap' => '', 'href' => '', 'key' => ''];
-              }
-          }
-        ?>
-        <?php foreach ($tiles as $i => $tl): $tag = $tl['href'] !== '' ? 'a' : 'div'; ?>
-          <<?= $tag ?> class="sv-hero-tile sv-hero-tile-<?= $i ?>"<?= $tl['href'] !== '' ? ' href="' . e($tl['href']) . '" tabindex="-1"' : '' ?> style="--ph:url('<?= e(asset(Images::displayThumb($tl['photo']))) ?>')">
-            <img src="<?= e(asset(Images::displayThumb($tl['photo']))) ?>" alt="<?= e($tl['alt']) ?>" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
-            <?php if ($tl['cap'] !== ''): ?><span class="sv-hero-cap"><b><?= e($tl['cap']) ?></b><?php if ($tl['href'] !== ''): ?><i aria-hidden="true">→</i><?php endif; ?></span><?php endif; ?>
-          </<?= $tag ?>>
-        <?php endforeach; ?>
-      </div>
+      <?php if ($bImg !== ''): ?>
+        <<?= $bTag ?> class="sv-hero-banner"<?= $bHref !== '' ? ' href="' . e($bHref) . '"' : '' ?><?= edit_mark('hero_banner') ?> style="--ph:url('<?= e(asset(Images::displayThumb($bImg))) ?>')">
+          <img src="<?= e(asset($bAuto ? Images::displayThumb($bImg) : $bImg)) ?>" alt="<?= e($bCap !== '' ? $bCap : 'Банер Старвуд-М') ?>" fetchpriority="high">
+          <?php if ($bCap !== ''): ?><span class="sv-hero-cap"><b><?= e($bCap) ?></b><?php if ($bHref !== ''): ?><i aria-hidden="true">→</i><?php endif; ?></span><?php endif; ?>
+        </<?= $bTag ?>>
       <?php endif; ?>
       <div class="sv-hero-star"><?= mascot('wave', 96) ?></div>
     </div>
