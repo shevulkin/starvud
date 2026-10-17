@@ -43,6 +43,46 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
       </ul>
     </div>
     <div class="sv-hero-art" aria-hidden="true">
+      <?php
+        /* Банер першого екрана. Якщо в адмінці (Тексти й фото сайту → «Банер першого екрана») заповнено
+           хоч один слайд — показується банер, що сам перемикається; інакше — вітрина з фото хітів */
+        $slides = [];
+        for ($n = 1; $n <= 4; $n++) {
+            $bk = 'hero_banner_' . $n;
+            $bimg = Content::image($bk);
+            if ($bimg !== '') $slides[] = ['photo' => $bimg, 'cap' => Content::title($bk), 'href' => Content::get($bk, 'body')];
+        }
+      ?>
+      <?php if ($slides): ?>
+        <div class="sv-hero-slider" data-slider<?= count($slides) < 2 ? ' data-single' : '' ?> role="region" aria-roledescription="carousel" aria-label="Банер">
+          <?php foreach ($slides as $i => $sl): $tag = $sl['href'] !== '' ? 'a' : 'div'; ?>
+            <<?= $tag ?> class="sv-slide<?= $i === 0 ? ' is-on' : '' ?>"<?= $sl['href'] !== '' ? ' href="' . e($sl['href']) . '"' : '' ?> style="--ph:url('<?= e(asset(Images::displayThumb($sl['photo']))) ?>')">
+              <img src="<?= e(asset($sl['photo'])) ?>" alt="<?= e($sl['cap'] ?: 'Банер Старвуд-М') ?>" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
+              <?php if ($sl['cap'] !== ''): ?><span class="sv-hero-cap"><b><?= e($sl['cap']) ?></b><?php if ($sl['href'] !== ''): ?><i aria-hidden="true">→</i><?php endif; ?></span><?php endif; ?>
+            </<?= $tag ?>>
+          <?php endforeach; ?>
+          <?php if (count($slides) > 1): ?>
+            <div class="sv-slider-dots" role="tablist">
+              <?php foreach ($slides as $i => $sl): ?><button type="button" class="<?= $i === 0 ? 'is-on' : '' ?>" aria-label="Слайд <?= $i + 1 ?>"></button><?php endforeach; ?>
+            </div>
+            <script>
+            (function(){
+              var s = document.querySelector('[data-slider]'); if (!s) return;
+              var sl = s.querySelectorAll('.sv-slide'), dots = s.querySelectorAll('.sv-slider-dots button'), cur = 0, timer = null;
+              function go(n){ sl[cur].classList.remove('is-on'); dots[cur].classList.remove('is-on'); cur = (n + sl.length) % sl.length; sl[cur].classList.add('is-on'); dots[cur].classList.add('is-on'); }
+              function start(){ stop(); if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(function(){ go(cur + 1); }, 5000); }
+              function stop(){ if (timer) { clearInterval(timer); timer = null; } }
+              dots.forEach(function(d, i){ d.addEventListener('click', function(){ go(i); start(); }); });
+              s.addEventListener('mouseenter', stop); s.addEventListener('mouseleave', start);
+              var x0 = null;
+              s.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; stop(); }, {passive: true});
+              s.addEventListener('touchend', function(e){ if (x0 !== null) { var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1)); } x0 = null; start(); });
+              start();
+            })();
+            </script>
+          <?php endif; ?>
+        </div>
+      <?php else: ?>
       <div class="sv-hero-mosaic">
         <?php
           /* Банер першого екрана: кожна з чотирьох плиток керується з адмінки (Тексти й фото сайту →
@@ -70,6 +110,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
           </<?= $tag ?>>
         <?php endforeach; ?>
       </div>
+      <?php endif; ?>
       <div class="sv-hero-star"><?= mascot('wave', 96) ?></div>
     </div>
   </div>

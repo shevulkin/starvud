@@ -860,3 +860,16 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-hero-cap b{font-size:16px;font-weight:700;display:block;-webkit-line-clamp:unset}
 .sv-hero-cap i{font-size:18px;font-weight:600;color:#FFD35C}
 @media (max-width:520px){.sv-hero-cap{padding:24px 10px 9px}.sv-hero-cap b{font-size:13px}.sv-hero-cap i{font-size:15px}}
+
+/* Банер першого екрана, що перемикається: слайди плавно змінюють один одного, керується з адмінки */
+.sv-hero-slider{position:relative;aspect-ratio:1.1/1;border-radius:24px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.sv-slide{position:absolute;inset:0;display:block;opacity:0;visibility:hidden;transition:opacity .7s ease,visibility .7s;isolation:isolate;color:#fff!important;text-decoration:none}
+.sv-slide.is-on{opacity:1;visibility:visible;z-index:1}
+.sv-slide::before{content:'';position:absolute;inset:-12%;z-index:-1;background:var(--ph) center/cover no-repeat;filter:blur(22px);opacity:.55}
+.sv-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.sv-slide .sv-hero-cap{padding:48px 22px 44px}
+.sv-slide .sv-hero-cap b{font-size:clamp(18px,2.2vw,26px)}
+.sv-slider-dots{position:absolute;left:0;right:0;bottom:14px;z-index:3;display:flex;justify-content:center;gap:8px}
+.sv-slider-dots button{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.55);cursor:pointer;transition:all .2s}
+.sv-slider-dots button.is-on{width:24px;border-radius:6px;background:#fff}
+@media (max-width:520px){.sv-hero-slider{border-radius:18px}.sv-slide .sv-hero-cap{padding:40px 14px 36px}}
