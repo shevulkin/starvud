@@ -229,7 +229,7 @@ class JsonLd
             '@context' => 'https://schema.org',
             '@type' => 'Product',
             'name' => $p['name'],
-            'description' => $p['short_desc'] ?? '',
+            'description' => ($p['short_desc'] ?? '') !== '' ? $p['short_desc'] : $p['name'],
             'sku' => $p['sku'] ?? '',
             'gtin13' => (isset($p['barcode']) && strlen((string)$p['barcode']) === 13) ? $p['barcode'] : '',
             'weight' => !empty($p['weight']) ? [
@@ -247,7 +247,43 @@ class JsonLd
                 'availability' => $inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
                 'itemCondition' => 'https://schema.org/NewCondition',
                 'seller' => ['@id' => abs_url('/') . '#org'],
+                'shippingDetails' => self::shipping($price),
+                'hasMerchantReturnPolicy' => self::returnPolicy(),
             ]),
+        ];
+    }
+
+    /**
+     * Доставка для розширеного відображення товару в Google: Нова Пошта по Україні за 1–3 дні, безкоштовно
+     * від порога з налаштувань, інакше орієнтовний тариф (той самий, що вказано в Merchant Center).
+     */
+    private static function shipping(?float $price): array
+    {
+        $free = (float)Settings::get('free_shipping_from', '2500');
+        $rate = ($price !== null && $free > 0 && $price >= $free) ? 0 : 110;
+        return [
+            '@type' => 'OfferShippingDetails',
+            'shippingRate' => ['@type' => 'MonetaryAmount', 'value' => $rate, 'currency' => 'UAH'],
+            'shippingDestination' => ['@type' => 'DefinedRegion', 'addressCountry' => 'UA'],
+            'deliveryTime' => [
+                '@type' => 'ShippingDeliveryTime',
+                'handlingTime' => ['@type' => 'QuantitativeValue', 'minValue' => 0, 'maxValue' => 1, 'unitCode' => 'DAY'],
+                'transitTime' => ['@type' => 'QuantitativeValue', 'minValue' => 1, 'maxValue' => 3, 'unitCode' => 'DAY'],
+            ],
+        ];
+    }
+
+    /** Повернення: 14 днів, нові товари, зворотну доставку сплачує покупець (як на сторінці «Обмін і повернення») */
+    private static function returnPolicy(): array
+    {
+        return [
+            '@type' => 'MerchantReturnPolicy',
+            'applicableCountry' => 'UA',
+            'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+            'merchantReturnDays' => 14,
+            'returnMethod' => 'https://schema.org/ReturnByMail',
+            'returnFees' => 'https://schema.org/ReturnShippingFees',
+            'merchantReturnLink' => abs_url('/returns'),
         ];
     }
 }

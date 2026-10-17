@@ -112,6 +112,8 @@ class Seo
         foreach (DB::all('SELECT slug, updated_at FROM products WHERE active = 1') as $p) {
             $urls[] = ['/product/' . $p['slug'], '0.8', $p['updated_at']];
         }
+        // Вікові сторінки («іграшки з народження», «від 1 року»…) — окремі посадкові під запити за віком
+        foreach (array_keys(\Ages::BANDS) as $k) $urls[] = ['/shop?age=' . $k, '0.7'];
         foreach (DB::all('SELECT slug FROM categories WHERE active = 1') as $c) {
             $urls[] = [shop_path($c['slug']), '0.7'];
         }

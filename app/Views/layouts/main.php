@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="<?= e(asset_v('css/fonts.css')) ?>">
 <link rel="stylesheet" href="<?= e(asset_v('css/app.css')) ?>">
 <link rel="stylesheet" href="<?= e(asset_v('css/starvud.css')) ?>">
-<link rel="canonical" href="<?= e(current_url()) ?>">
+<link rel="canonical" href="<?= e($canonical ?? current_url()) ?>">
 <?php /* Google Analytics 4: лише коли задано в налаштуваннях і відвідувач — не персонал, щоб власні кліки не псували статистику */
 if (($ga4 = Security::ga4Id()) !== '' && !Auth::isStaff()): ?>
 <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e($ga4) ?>"></script>

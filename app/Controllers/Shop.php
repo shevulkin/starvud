@@ -157,6 +157,11 @@ class Shop
             'stores' => Catalog::stores(),
             'attr_options' => Catalog::filterableAttrs($current['id'] ?? null),
             'brand_options' => Catalog::filterableBrands($current['id'] ?? null),
+            // Вікова сторінка («іграшки від 3 років») — повноцінна посадкова для пошуку, тож вона канонічна сама собі.
+            // Усе інше (сторінки, сортування, фільтри, пошук) каноніться на розділ без параметрів
+            'canonical' => ($filters['age'] !== '' && $filters['q'] === '' && $filters['min'] === '' && $filters['max'] === ''
+                    && !$filters['instock'] && !$filters['attr'] && !$filters['brand'] && $filters['sort'] === '' && $page === 1)
+                ? site_origin() . shop_url($current['slug'] ?? null, ['age' => $filters['age']]) : null,
             'page_title' => ($current ? $current['name'] . ($band ? ' для дітей ' . $band[2] : '') . ' — '
                     : ($band ? 'Іграшки для дітей ' . $band[2] . ' — ' : ''))
                 . 'Каталог іграшок' . ($page > 1 ? ' — сторінка ' . $page : '') . ' — ' . cfg('app_name'),
