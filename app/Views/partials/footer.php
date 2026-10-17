@@ -25,7 +25,7 @@ $tel = static fn(string $p): string => preg_replace('~[^\d+]~', '', $p);
           <span class="sv-brand-chip"><img src="<?= e(asset('img/logo-mark.webp')) ?>" width="44" height="36" alt="" loading="lazy"></span>
           <span class="sv-brand-text"><span class="sv-brand-name">Старвуд-М</span><span class="sv-brand-sub">світ іграшок</span></span>
         </a>
-        <p>Іграшки для дітей від народження до 7 років. Щаслива дитина — щаслива сімʼя.</p>
+        <p>Іграшки для дітей різного віку. Щаслива дитина — щаслива сімʼя.</p>
         <?php if ($socials): ?>
           <p class="sv-footer-social"><?php foreach ($socials as $name => $u): ?><a href="<?= e(safe_url($u)) ?>" target="_blank" rel="noopener"><?= e($name) ?></a><?php endforeach; ?></p>
         <?php endif; ?>

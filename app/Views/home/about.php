@@ -27,7 +27,7 @@ $faq = $faq ?? [];
         <li><b>2018</b><span>рік заснування</span></li>
         <li><b><?= (int)$products_count ?></b><span><?= plural((int)$products_count, 'іграшка', 'іграшки', 'іграшок') ?> в каталозі</span></li>
         <li><b><?= e(number_format((float)$review_stats['avg'], 1, ',', '')) ?>★</b><span><?= (int)$review_stats['count'] ?> <?= plural((int)$review_stats['count'], 'відгук', 'відгуки', 'відгуків') ?></span></li>
-        <li><b>0–7</b><span>років — наш вік</span></li>
+        <li><b>0+</b><span>іграшки на будь-який вік</span></li>
       </ul>
     </div>
   </section>

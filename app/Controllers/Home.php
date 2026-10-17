@@ -99,7 +99,7 @@ class Home
             'review_stats' => Reviews::stats(),
             'products_count' => (int)DB::val('SELECT COUNT(*) FROM products WHERE active = 1'),
             'page_title' => 'Про нас — ' . cfg('app_name'),
-            'meta_description' => 'Старвуд-М — магазин дитячих іграшок від народження до 7 років. Київ, вул. Пустинська, 8. Доставка по всій Україні.',
+            'meta_description' => 'Старвуд-М — магазин дитячих іграшок для будь-якого віку. Київ, вул. Пустинська, 8. Доставка по всій Україні.',
             'jsonld' => [JsonLd::breadcrumbs([['Головна', '/'], ['Про нас', null]])],
         ]);
     }

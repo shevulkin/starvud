@@ -27,7 +27,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
 <section class="sv-hero">
   <div class="container sv-hero-grid">
     <div class="sv-hero-copy">
-      <span class="sv-eyebrow"<?= edit_mark('hero_badge', 'title') ?>><?= e(Content::title('hero_badge', 'Іграшки від народження до 7 років')) ?></span>
+      <span class="sv-eyebrow"<?= edit_mark('hero_badge', 'title') ?>><?= e(Content::title('hero_badge', 'Іграшки для дітей різного віку')) ?></span>
       <h1 class="sv-hero-title">Світ іграшок —<br><span>світ щастя</span></h1>
       <p class="sv-hero-text"<?= edit_mark('hero_text', 'body') ?>><?= e(Content::get('hero_text')) ?></p>
       <div class="sv-hero-cta">

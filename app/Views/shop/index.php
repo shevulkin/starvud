@@ -63,7 +63,7 @@ foreach (DB::all('SELECT category_id, COUNT(*) n FROM products WHERE active = 1 
   <?php endif; ?>
 
   <nav class="sv-agebar" id="age" aria-label="Фільтр за віком дитини">
-    <?php $bands = ['' => [0, 0, 'Усі', '0–7 років', '#FFFFFF']] + Ages::BANDS;
+    <?php $bands = ['' => [0, 0, 'Усі', 'будь-який вік', '#FFFFFF']] + Ages::BANDS;
     foreach ($bands as $k => [, , $label, $hint, $color]):
       $k = (string)$k; $on = $filters['age'] === $k;
       $n = (int)($age_counts[$k] ?? 0); ?>

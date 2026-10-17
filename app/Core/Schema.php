@@ -7,7 +7,7 @@ declare(strict_types=1);
  */
 class Schema
 {
-    public const VERSION = 59;
+    public const VERSION = 60;
 
     /** Оновлення існуючої бази до поточної версії без втрати даних */
     public static function upgrade(): void
@@ -710,6 +710,29 @@ class Schema
              * нормально — важливо, щоб вона почалась.
              */
             self::createAll();
+        }
+        if ($ver < 60) {
+            // Асортимент не обмежений 7 роками: прибираємо цю межу зі старих текстів (змінені вручну не чіпаємо)
+            $map = [
+                'Іграшки для дітей від народження до 7 років' => 'Іграшки для дітей різного віку',
+                'Іграшки від народження до 7 років' => 'Іграшки для дітей різного віку',
+                'дитячі іграшки від народження до 7 років' => 'дитячі іграшки з доставкою по Україні',
+                'який стане в нагоді від народження дитини до 7 років.' => 'який стане в нагоді дитині будь-якого віку.',
+            ];
+            foreach (DB::all('SELECT * FROM content_blocks') as $r) {
+                $up = [];
+                foreach (['title', 'body'] as $c) {
+                    $v = (string)($r[$c] ?? '');
+                    $n = strtr($v, $map);
+                    if ($n !== $v) $up[$c] = $n;
+                }
+                if ($up) DB::update('content_blocks', $up, DB::driver() === 'sqlite' ? '"key" = ?' : '`key` = ?', [$r['key']]);
+            }
+            foreach (['seo_title', 'seo_description'] as $k) {
+                $v = (string)Settings::get($k, '');
+                $n = strtr($v, $map);
+                if ($n !== $v) Settings::set($k, $n);
+            }
         }
         if ($ver < 59) {
             // Текст розділу для сторінки каталогу й пошуку; стартові тексти кладемо лише в порожні поля
