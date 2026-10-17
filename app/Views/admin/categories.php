@@ -125,16 +125,37 @@ $roots = array_values(array_filter($cats, fn($c) => !($c['depth'] ?? 0)));
                  <?= $busy ? 'disabled title="Спершу перенесіть або видаліть товари цієї категорії"' : '' ?>>
         </td>
       </tr>
-      <?php /* Текст розділу — окремим рядком під назвою, згорнутий: поле велике й завадило б читати таблицю */ ?>
+      <?php /* Фото, адреса й текст розділу — окремим рядком під назвою, згорнуті: поля великі й завадили б читати таблицю */ ?>
       <tr class="cat-desc-row"<?= $sub ? ' hidden' : '' ?>>
         <td colspan="6" style="padding-top:0;border-top:0">
           <details>
             <summary class="dim" style="cursor:pointer;font-size:13px">
-              Текст розділу для покупців і пошуку (SEO)<?= trim((string)($c['description'] ?? '')) === '' ? ' — порожній' : ' — ' . mb_strlen((string)$c['description']) . ' знаків' ?>
+              Фото, адреса й текст розділу<?= trim((string)($c['image'] ?? '')) === '' ? ' · фото не задано' : '' ?> · /shop/<?= e($c['slug']) ?>
             </summary>
-            <textarea name="cat[<?= (int)$c['id'] ?>][description]" rows="9" style="width:100%;margin-top:8px"
-                      placeholder="Короткий корисний текст про розділ: як обрати, на що звернути увагу (100–200 слів). Показується під товарами сторінки розділу й іде в опис для Google."><?= e((string)($c['description'] ?? '')) ?></textarea>
-            <p class="field-hint" style="margin:4px 0 0">Абзаци розділяйте порожнім рядком. Рядок із «•» стане пунктом списку, рядок із двокрапкою в кінці — підзаголовком.</p>
+            <div class="cat-extra" style="display:grid;gap:16px;margin-top:10px">
+              <div>
+                <label>Фото розділу (плитка на головній)</label>
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                  <img class="cat-img-prev" src="<?= !empty($c['image']) ? e(asset($c['image'])) : '' ?>" alt=""
+                       style="width:120px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--line2);background:var(--bg3)<?= empty($c['image']) ? ';display:none' : '' ?>">
+                  <input type="hidden" class="cat-img-val" name="cat[<?= (int)$c['id'] ?>][image]" value="<?= e((string)($c['image'] ?? '')) ?>">
+                  <button type="button" class="btn btn-line btn-sm cat-img-pick">Обрати або завантажити фото</button>
+                  <button type="button" class="btn btn-line btn-sm cat-img-clear"<?= empty($c['image']) ? ' hidden' : '' ?>>Прибрати</button>
+                </div>
+                <p class="field-hint" style="margin:6px 0 0">Без власного фото плитка бере фото товару-хіта цього розділу. Краще горизонтальне фото 4:3.</p>
+              </div>
+              <div style="max-width:520px">
+                <label>Адреса сторінки (латиницею)</label>
+                <input type="text" name="cat[<?= (int)$c['id'] ?>][slug]" value="<?= e($c['slug']) ?>" pattern="[A-Za-z0-9-]+" autocomplete="off">
+                <p class="field-hint" style="margin:6px 0 0">Наприклад «lialky-ta-pupsy»: сайт.ua/shop/<b>адреса</b>. Кирилицю й пробіли перетворимо на латиницю автоматично. Змінюйте обережно: старі посилання на розділ (у Google, у повідомленнях) перестануть працювати.</p>
+              </div>
+              <div>
+                <label>Текст розділу для покупців і пошуку (SEO)<?= trim((string)($c['description'] ?? '')) === '' ? ' — порожній' : ' — ' . mb_strlen((string)$c['description']) . ' знаків' ?></label>
+                <textarea name="cat[<?= (int)$c['id'] ?>][description]" rows="9" style="width:100%"
+                          placeholder="Короткий корисний текст про розділ: як обрати, на що звернути увагу (100–200 слів). Показується під товарами сторінки розділу й іде в опис для Google."><?= e((string)($c['description'] ?? '')) ?></textarea>
+                <p class="field-hint" style="margin:4px 0 0">Абзаци розділяйте порожнім рядком. Рядок із «•» стане пунктом списку, рядок із двокрапкою в кінці — підзаголовком.</p>
+              </div>
+            </div>
           </details>
         </td>
       </tr>
@@ -145,6 +166,26 @@ $roots = array_values(array_filter($cats, fn($c) => !($c['depth'] ?? 0)));
     <span class="admin-save-note"></span>
   </div>
 </form>
+<?= View::partial('partials/media_picker') ?>
+<script>
+(function(){
+  var base = '<?= e(url('/')) ?>'.replace(/\/$/, '');
+  document.querySelectorAll('.cat-extra').forEach(function(box){
+    var val = box.querySelector('.cat-img-val'), prev = box.querySelector('.cat-img-prev'),
+        clear = box.querySelector('.cat-img-clear');
+    box.querySelector('.cat-img-pick').addEventListener('click', function(){
+      MediaPicker.open(function(path){
+        val.value = path; prev.src = base + '/assets/' + path; prev.style.display = ''; clear.hidden = false;
+        val.dispatchEvent(new Event('input', {bubbles: true}));
+      });
+    });
+    clear.addEventListener('click', function(){
+      val.value = ''; prev.style.display = 'none'; clear.hidden = true;
+      val.dispatchEvent(new Event('input', {bubbles: true}));
+    });
+  });
+})();
+</script>
 <script>
 /* Розділ зникає разом із підрозділами — інакше вони лишились би в каталозі
    самі по собі. Тому галка на розділі ставить галки і його підрозділам: у

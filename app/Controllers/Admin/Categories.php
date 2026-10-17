@@ -89,7 +89,18 @@ class Categories
                         $errors[] = '«' . $name . '»: у неї є свої підрозділи, тому вкласти її в інший розділ не можна.';
                         $parent = $was;
                     }
+                    // Адреса розділу — латиницею: те, що вписали, приводимо до вигляду «lialky-ta-pupsy»
+                    $slugIn = slugify(trim((string)($c['slug'] ?? '')));
+                    $slugNow = (string)DB::val('SELECT slug FROM categories WHERE id = ?', [$id]);
+                    if (trim((string)($c['slug'] ?? '')) === '' || $slugIn === $slugNow) $slugIn = $slugNow;
+                    elseif (DB::row('SELECT 1 FROM categories WHERE slug = ? AND id <> ?', [$slugIn, $id])) {
+                        $errors[] = '«' . $name . '»: адреса «' . $slugIn . '» вже зайнята іншим розділом.';
+                        $slugIn = $slugNow;
+                    }
+                    $img = trim((string)($c['image'] ?? ''));
+                    if ($img !== '' && (!preg_match('~^[A-Za-z0-9_./-]+$~', $img) || str_contains($img, '..'))) $img = '';
                     DB::update('categories', [
+                        'slug' => $slugIn, 'image' => $img !== '' ? $img : null,
                         'name' => $name, 'sort' => (int)($c['sort'] ?? 0),
                         'parent_id' => $parent ?: null,
                         'active' => !empty($c['active']) ? 1 : 0,

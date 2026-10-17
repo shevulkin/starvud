@@ -85,7 +85,7 @@ class Home
             $c['count'] = count($in);
             $face = null;
             foreach ($in as $p) if (!empty($p['image'])) { $face = $p; break; }
-            $c['photo'] = $face ? Catalog::photo($face) : 'img/no-photo.webp';
+            $c['photo'] = !empty($c['image']) ? $c['image'] : ($face ? Catalog::photo($face) : 'img/no-photo.webp');
             if ($c['count'] > 0) $out[] = $c;
         }
         return $out;

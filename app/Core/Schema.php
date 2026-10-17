@@ -7,7 +7,7 @@ declare(strict_types=1);
  */
 class Schema
 {
-    public const VERSION = 60;
+    public const VERSION = 61;
 
     /** Оновлення існуючої бази до поточної версії без втрати даних */
     public static function upgrade(): void
@@ -711,6 +711,10 @@ class Schema
              */
             self::createAll();
         }
+        if ($ver < 61) {
+            // Власне фото розділу: плитка на головній бере його, а без нього — фото хіта розділу
+            self::addColumn('categories', 'image', 'str null');
+        }
         if ($ver < 60) {
             // Асортимент не обмежений 7 роками: прибираємо цю межу зі старих текстів (змінені вручну не чіпаємо)
             $map = [
@@ -1207,6 +1211,7 @@ class Schema
                 'type' => "str default 'product'", // product|course
                 'sort' => 'int default 0', 'active' => 'bool default 1',
                 'description' => 'text null',
+                'image' => 'str null',   // власне фото плитки розділу (шлях відносно assets/)
             ],
             'products' => [
                 'id' => 'id', 'category_id' => 'int', 'name' => 'str', 'slug' => 'str unique',
