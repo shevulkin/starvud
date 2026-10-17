@@ -55,10 +55,14 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
         $bTag = $bHref !== '' ? 'a' : 'div';
       ?>
       <?php if ($bImg !== ''): ?>
+        <div class="sv-hero-bwrap<?= $bAuto ? '' : ' is-custom' ?>">
         <<?= $bTag ?> class="sv-hero-banner<?= $bAuto ? '' : ' is-custom' ?>"<?= $bHref !== '' ? ' href="' . e($bHref) . '"' : '' ?><?= edit_mark('hero_banner') ?> style="--ph:url('<?= e(asset(Images::displayThumb($bImg))) ?>')">
           <img src="<?= e(asset($bAuto ? Images::displayThumb($bImg) : $bImg)) ?>" alt="<?= e($bCap !== '' ? $bCap : 'Банер Старвуд-М') ?>" fetchpriority="high">
           <?php if ($bCap !== ''): ?><span class="sv-hero-cap"><b><?= e($bCap) ?></b><?php if ($bHref !== ''): ?><i aria-hidden="true">→</i><?php endif; ?></span><?php endif; ?>
         </<?= $bTag ?>>
+        <?php /* Лого-знак на куті банера — як раніше сиділа зірка, того самого розміру */ ?>
+        <img class="sv-hero-logo" src="<?= e(asset('img/logo-mark.webp')) ?>" width="96" height="78" alt="">
+        </div>
       <?php endif; ?>
     </div>
   </div>
