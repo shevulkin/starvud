@@ -897,25 +897,20 @@ a.sv-hero-banner:hover img{transform:scale(1.03)}
 
 /* Яскравіше: сонячний пастельний фон першого екрана й теплі акценти (колір банера — жовтий, зелений, блакитний) */
 .sv-hero{background:
-  radial-gradient(900px 420px at 88% 8%,rgba(255,214,102,.38),transparent 62%),
-  radial-gradient(700px 380px at 6% 92%,rgba(120,200,160,.28),transparent 60%),
-  linear-gradient(180deg,#FFFDF6 0%,#F4FAF5 100%)}
-.sv-hero-title span{background:linear-gradient(90deg,var(--teal-d),#2FA36B);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  radial-gradient(900px 420px at 88% 8%,rgba(247,200,74,.22),transparent 62%),
+  radial-gradient(700px 380px at 6% 92%,rgba(120,190,160,.14),transparent 60%),
+  linear-gradient(180deg,#FFFDF7 0%,#FAF8F1 100%)}
+.sv-hero-title span{color:var(--teal-d)}
 .sv-hero-banner.is-custom{max-height:640px}
 .sv-hero-banner.is-custom img{max-height:640px}
 
-/* ---------- Яскравіша палітра вітрини ----------
-   Було: приглушений «преміальний» бірюзовий і сіруватий беж. Тепер: жвавіший зелено-бірюзовий основний,
-   сонячно-кремове тло й чисті жовтий/червоний акценти — ближче до кольорів банера. Контраст білого
-   тексту на кнопках лишається читабельним (основний колір не світліший за #0B8473). Лише вітрина:
-   адмінка читає ті самі змінні з app.css і не змінюється. */
+/* ---------- Тепліша палітра вітрини ----------
+   Основний бірюзовий лишається спокійним (він ладнає з натуральними фото іграшок у банері), а тло й акценти
+   теплішають: кремове тло, мʼякий жовтий і коралловий. Лише вітрина: адмінка читає ті самі змінні з app.css
+   і не змінюється. */
 body.sv{
-  --bg:#FFFBF2; --bg3:#FFF1D2;
-  --teal:#14A38C; --teal-d:#0B8473; --teal-l:#DFF5EE;
-  --gold:#0B8473; --gold2:#14A38C;
-  --yellow:#FFC93C; --yellow-l:#FFF0C2;
-  --red:#F0605A; --red-l:#FFE4E1;
-  --line:#EFE7D4; --line2:#E2D8BF;
+  --bg:#FFFBF3; --bg3:#FBF1DC;
+  --yellow:#F7C84A; --yellow-l:#FFF2D2;
+  --red:#E8685A; --red-l:#FBE6E2;
+  --line:#EFE8D8; --line2:#E2D9C4;
 }
-.sv-catbar{background:linear-gradient(90deg,#0B8473 0%,#14A38C 100%)}
-.sv .btn-gold:hover,.sv-btn-primary:hover,.sv-btn-ink:hover{background:#08705F;border-color:#08705F}
