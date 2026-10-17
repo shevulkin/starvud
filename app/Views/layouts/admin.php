@@ -198,6 +198,7 @@ window.BOFU = { base: '<?= e(url('/')) ?>', vapid: '<?= e(Settings::get('vapid_p
   });
 })();
 </script>
+<script src="<?= e(asset_v('js/drop.js')) ?>" defer></script>
 <script src="<?= e(asset_v('js/admin.js')) ?>" defer></script>
 <?php /* На самій касі смужка зайва — чек там і так перед очима */ ?>
 <?php if (Pos::active() && !$pos_screen) echo View::partial('partials/pos_bar'); ?>

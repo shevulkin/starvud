@@ -47,7 +47,7 @@ window.MediaPicker = (function(){
       });
     });
   }
-  function open(cb){ onPick = cb; modal.classList.add('open'); load(); }
+  function open(cb){ onPick = cb; modal.classList.add('open'); initDrop(); load(); }
   function close(){ modal.classList.remove('open'); }
   document.getElementById('mpClose').addEventListener('click', close);
   modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
@@ -62,7 +62,12 @@ window.MediaPicker = (function(){
    * кожного файлу: інакше десять фото дали б десять перемальовувань, і
    * обране під курсором стрибало б із-під пальця.
    */
-  if (window.BofuDrop) {
+  /* drop.js підключений з defer і виконується ПІСЛЯ цього блоку, тож зону
+     підключаємо при першому відкритті вікна, а не при завантаженні сторінки. */
+  var dropReady = false;
+  function initDrop() {
+    if (dropReady || !window.BofuDrop) return;
+    dropReady = true;
     BofuDrop.attach(document.getElementById('mpDrop'), {
       url: base + '/admin/media',
       csrf: csrf,

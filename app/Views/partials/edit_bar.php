@@ -68,4 +68,6 @@ window.BOFU_EDIT = {
   canImages: <?= EditMode::canEditImages() ? 'true' : 'false' ?>
 };
 </script>
+<?php /* Зона завантаження у вікні вибору фото (BofuDrop) — без цього файлу клац по ній на сайті нічого не відкриває */ ?>
+<?php if (EditMode::canEditImages()): ?><script src="<?= e(asset_v('js/drop.js')) ?>" defer></script><?php endif; ?>
 <script src="<?= e(asset_v('js/edit.js')) ?>" defer></script>
