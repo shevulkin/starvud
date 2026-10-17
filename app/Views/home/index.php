@@ -55,7 +55,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
         $bTag = $bHref !== '' ? 'a' : 'div';
       ?>
       <?php if ($bImg !== ''): ?>
-        <<?= $bTag ?> class="sv-hero-banner"<?= $bHref !== '' ? ' href="' . e($bHref) . '"' : '' ?><?= edit_mark('hero_banner') ?> style="--ph:url('<?= e(asset(Images::displayThumb($bImg))) ?>')">
+        <<?= $bTag ?> class="sv-hero-banner<?= $bAuto ? '' : ' is-custom' ?>"<?= $bHref !== '' ? ' href="' . e($bHref) . '"' : '' ?><?= edit_mark('hero_banner') ?> style="--ph:url('<?= e(asset(Images::displayThumb($bImg))) ?>')">
           <img src="<?= e(asset($bAuto ? Images::displayThumb($bImg) : $bImg)) ?>" alt="<?= e($bCap !== '' ? $bCap : 'Банер Старвуд-М') ?>" fetchpriority="high">
           <?php if ($bCap !== ''): ?><span class="sv-hero-cap"><b><?= e($bCap) ?></b><?php if ($bHref !== ''): ?><i aria-hidden="true">→</i><?php endif; ?></span><?php endif; ?>
         </<?= $bTag ?>>

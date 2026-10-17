@@ -889,3 +889,17 @@ a.sv-hero-banner:hover img{transform:scale(1.03)}
 .sv-more>summary::after{content:' ▾';font-size:11px}
 .sv-more[open]>summary::after{content:' ▴'}
 .sv-more>div{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--bg);font-size:13px;line-height:1.5}
+
+/* Свій банер із адмінки (часто широкий і з текстом на картинці) показуємо ЦІЛКОМ, без обрізання по краях */
+.sv-hero-banner.is-custom{aspect-ratio:auto;background:none;box-shadow:0 14px 40px rgba(40,90,70,.16)}
+.sv-hero-banner.is-custom::before{display:none}
+.sv-hero-banner.is-custom img{height:auto;object-fit:contain}
+
+/* Яскравіше: сонячний пастельний фон першого екрана й теплі акценти (колір банера — жовтий, зелений, блакитний) */
+.sv-hero{background:
+  radial-gradient(900px 420px at 88% 8%,rgba(255,214,102,.38),transparent 62%),
+  radial-gradient(700px 380px at 6% 92%,rgba(120,200,160,.28),transparent 60%),
+  linear-gradient(180deg,#FFFDF6 0%,#F4FAF5 100%)}
+.sv-hero-title span{background:linear-gradient(90deg,var(--teal-d),#2FA36B);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sv-hero-banner.is-custom{max-height:640px}
+.sv-hero-banner.is-custom img{max-height:640px}
