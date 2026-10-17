@@ -903,3 +903,19 @@ a.sv-hero-banner:hover img{transform:scale(1.03)}
 .sv-hero-title span{background:linear-gradient(90deg,var(--teal-d),#2FA36B);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .sv-hero-banner.is-custom{max-height:640px}
 .sv-hero-banner.is-custom img{max-height:640px}
+
+/* ---------- Яскравіша палітра вітрини ----------
+   Було: приглушений «преміальний» бірюзовий і сіруватий беж. Тепер: жвавіший зелено-бірюзовий основний,
+   сонячно-кремове тло й чисті жовтий/червоний акценти — ближче до кольорів банера. Контраст білого
+   тексту на кнопках лишається читабельним (основний колір не світліший за #0B8473). Лише вітрина:
+   адмінка читає ті самі змінні з app.css і не змінюється. */
+body.sv{
+  --bg:#FFFBF2; --bg3:#FFF1D2;
+  --teal:#14A38C; --teal-d:#0B8473; --teal-l:#DFF5EE;
+  --gold:#0B8473; --gold2:#14A38C;
+  --yellow:#FFC93C; --yellow-l:#FFF0C2;
+  --red:#F0605A; --red-l:#FFE4E1;
+  --line:#EFE7D4; --line2:#E2D8BF;
+}
+.sv-catbar{background:linear-gradient(90deg,#0B8473 0%,#14A38C 100%)}
+.sv .btn-gold:hover,.sv-btn-primary:hover,.sv-btn-ink:hover{background:#08705F;border-color:#08705F}
