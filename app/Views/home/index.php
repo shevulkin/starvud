@@ -44,13 +44,29 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     </div>
     <div class="sv-hero-art" aria-hidden="true">
       <div class="sv-hero-mosaic">
-        <?php foreach ($hero_photos as $i => $h): ?>
-          <a class="sv-hero-tile sv-hero-tile-<?= $i ?>" href="<?= e($h['cat_slug'] !== '' ? shop_url($h['cat_slug']) : url('/product/' . $h['slug'])) ?>" tabindex="-1" style="--ph:url('<?= e(asset(Images::displayThumb($h['photo']))) ?>')">
-            <img src="<?= e(asset(Images::displayThumb($h['photo']))) ?>" alt="<?= e($h['name']) ?>" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
-            <?php /* Плитка — банер розділу, а не картка товару (хіти з цінами нижче): підпис — назва розділу
-                     зі стрілкою, клік веде в розділ */ ?>
-            <?php if ($h['cat'] !== ''): ?><span class="sv-hero-cap"><b><?= e($h['cat']) ?></b><i aria-hidden="true">→</i></span><?php endif; ?>
-          </a>
+        <?php
+          /* Банер першого екрана: кожна з чотирьох плиток керується з адмінки (Тексти й фото сайту →
+             «Банер першого екрана»): фото, підпис, посилання. Плитка без фото береться автоматично з хітів
+             і веде в розділ товару. Так банер можна замінити, не чіпаючи код */
+          $tiles = [];
+          for ($n = 0; $n < 4; $n++) {
+              $bk = 'hero_banner_' . ($n + 1);
+              $bimg = Content::image($bk);
+              if ($bimg !== '') {
+                  $tiles[] = ['photo' => $bimg, 'alt' => Content::title($bk) ?: 'Банер Старвуд-М',
+                              'cap' => Content::title($bk), 'href' => Content::get($bk, 'body'), 'key' => $bk];
+              } elseif (isset($hero_photos[$n])) {
+                  $h = $hero_photos[$n];
+                  $tiles[] = ['photo' => $h['photo'], 'alt' => $h['name'], 'cap' => $h['cat'],
+                              'href' => $h['cat_slug'] !== '' ? shop_url($h['cat_slug']) : url('/product/' . $h['slug']), 'key' => ''];
+              }
+          }
+        ?>
+        <?php foreach ($tiles as $i => $tl): $tag = $tl['href'] !== '' ? 'a' : 'div'; ?>
+          <<?= $tag ?> class="sv-hero-tile sv-hero-tile-<?= $i ?>"<?= $tl['href'] !== '' ? ' href="' . e($tl['href']) . '" tabindex="-1"' : '' ?> style="--ph:url('<?= e(asset(Images::displayThumb($tl['photo']))) ?>')">
+            <img src="<?= e(asset(Images::displayThumb($tl['photo']))) ?>" alt="<?= e($tl['alt']) ?>" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
+            <?php if ($tl['cap'] !== ''): ?><span class="sv-hero-cap"><b><?= e($tl['cap']) ?></b><?php if ($tl['href'] !== ''): ?><i aria-hidden="true">→</i><?php endif; ?></span><?php endif; ?>
+          </<?= $tag ?>>
         <?php endforeach; ?>
       </div>
       <div class="sv-hero-star"><?= mascot('wave', 96) ?></div>
