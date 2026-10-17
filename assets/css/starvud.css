@@ -839,15 +839,6 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-hero-cap i{font-style:normal;font-size:15px;font-weight:700}
 @media (max-width:520px){.sv-hero-cap{padding:28px 10px 9px}.sv-hero-cap b{font-size:12.5px}.sv-hero-cap i{font-size:13.5px}.sv-hero-cap small{font-size:10px}}
 
-/* Зірочка-талісман і на планшеті/телефоні: сідає на кут блоку з хітами, як на комп'ютері, але менша */
-@media (max-width:1000px){
-    .sv-hero-art{margin-bottom:26px}
-}
-@media (max-width:520px){
-  }
-
-/* Комп'ютер: зірочка стоїть поруч із блоком хітів, а не поверх підпису («250 грн» закривало) */
-@media (min-width:1001px){ 
 /* Плитки першого екрана — банер розділів: назва розділу й стрілка, без ціни й «Хіт» (хіти з цінами нижче) */
 .sv-hero-cap{flex-direction:row;align-items:center;justify-content:space-between;gap:10px;padding:30px 16px 12px}
 .sv-hero-cap b{font-size:16px;font-weight:700;display:block;-webkit-line-clamp:unset}
