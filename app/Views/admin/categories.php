@@ -125,6 +125,19 @@ $roots = array_values(array_filter($cats, fn($c) => !($c['depth'] ?? 0)));
                  <?= $busy ? 'disabled title="Спершу перенесіть або видаліть товари цієї категорії"' : '' ?>>
         </td>
       </tr>
+      <?php /* Текст розділу — окремим рядком під назвою, згорнутий: поле велике й завадило б читати таблицю */ ?>
+      <tr class="cat-desc-row"<?= $sub ? ' hidden' : '' ?>>
+        <td colspan="6" style="padding-top:0;border-top:0">
+          <details>
+            <summary class="dim" style="cursor:pointer;font-size:13px">
+              Текст розділу для покупців і пошуку (SEO)<?= trim((string)($c['description'] ?? '')) === '' ? ' — порожній' : ' — ' . mb_strlen((string)$c['description']) . ' знаків' ?>
+            </summary>
+            <textarea name="cat[<?= (int)$c['id'] ?>][description]" rows="9" style="width:100%;margin-top:8px"
+                      placeholder="Короткий корисний текст про розділ: як обрати, на що звернути увагу (100–200 слів). Показується під товарами сторінки розділу й іде в опис для Google."><?= e((string)($c['description'] ?? '')) ?></textarea>
+            <p class="field-hint" style="margin:4px 0 0">Абзаци розділяйте порожнім рядком. Рядок із «•» стане пунктом списку, рядок із двокрапкою в кінці — підзаголовком.</p>
+          </details>
+        </td>
+      </tr>
     <?php endforeach; ?>
   </table>
   <div class="admin-save">

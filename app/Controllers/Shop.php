@@ -162,11 +162,13 @@ class Shop
                 . 'Каталог іграшок' . ($page > 1 ? ' — сторінка ' . $page : '') . ' — ' . cfg('app_name'),
             // Свій опис на категорію й на вік: інакше Google бачить десяток
             // сторінок з однаковим описом і вважає їх дублікатами.
-            'meta_description' => ($current
+            'meta_description' => ($current && !$band && trim((string)($current['description'] ?? '')) !== ''
+                ? self::snippet((string)$current['description'])
+                : ($current
                 ? mb_substr($current['name'], 0, 1) . mb_strtolower(mb_substr($current['name'], 1))
                 : 'Дитячі іграшки') . ($band ? ' для дітей ' . $band[2] : '') . ': ' . $total . ' '
                     . plural($total, 'іграшка', 'іграшки', 'іграшок')
-                    . '. Доставка Новою Поштою по всій Україні, безкоштовно від 2500 ₴.',
+                    . '. Доставка Новою Поштою по всій Україні, безкоштовно від 2500 ₴.'),
             'jsonld' => [JsonLd::breadcrumbs(array_values(array_filter([
                 ['Головна', '/'],
                 ['Каталог', $current ? '/shop' : null],
@@ -321,6 +323,21 @@ class Shop
             'offer_allowed' => Offers::allowed($p, $first),
             'offer_states' => self::offerStates($p, $variants),
         ]);
+    }
+
+    /** Перший абзац тексту розділу як опис для пошуку (~155 знаків, обрізаний по слову) */
+    private static function snippet(string $text): string
+    {
+        $first = trim(preg_split('~
+\s*
+~u', trim(str_replace("
+", "
+", $text)))[0] ?? '');
+        $first = trim(preg_replace('~\s+~u', ' ', $first));
+        if (mb_strlen($first) <= 158) return $first;
+        $cut = mb_substr($first, 0, 155);
+        $sp = mb_strrpos($cut, ' ');
+        return ($sp !== false && $sp > 100 ? mb_substr($cut, 0, $sp) : $cut) . '…';
     }
 
     /**

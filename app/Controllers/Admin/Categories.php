@@ -93,6 +93,9 @@ class Categories
                         'name' => $name, 'sort' => (int)($c['sort'] ?? 0),
                         'parent_id' => $parent ?: null,
                         'active' => !empty($c['active']) ? 1 : 0,
+                        'description' => ($d = mb_substr(trim(str_replace("
+", "
+", (string)($c['description'] ?? ''))), 0, 6000)) !== '' ? $d : null,
                     ], 'id = ?', [$id]);
                 }
                 if ($errors) flash('error', implode(' ', $errors));

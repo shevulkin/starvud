@@ -869,3 +869,8 @@ a.sv-hero-banner:hover img{transform:scale(1.03)}
 .sv-hero-banner .sv-hero-cap{padding:56px 24px 22px}
 .sv-hero-banner .sv-hero-cap b{font-size:clamp(20px,2.4vw,30px)}
 @media (max-width:520px){.sv-hero-banner{border-radius:18px}.sv-hero-banner .sv-hero-cap{padding:44px 16px 16px}}
+
+/* Текст розділу під товарами сторінки каталогу */
+.sv-cat-about{margin:56px 0 8px;padding:28px 32px;background:#fff;border:1px solid var(--line);border-radius:22px}
+.sv-cat-about .sv-desc{max-width:760px}
+@media (max-width:760px){.sv-cat-about{padding:22px 18px;margin-top:40px}}

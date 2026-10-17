@@ -7,7 +7,7 @@ declare(strict_types=1);
  */
 class Schema
 {
-    public const VERSION = 58;
+    public const VERSION = 59;
 
     /** Оновлення існуючої бази до поточної версії без втрати даних */
     public static function upgrade(): void
@@ -711,6 +711,11 @@ class Schema
              */
             self::createAll();
         }
+        if ($ver < 59) {
+            // Текст розділу для сторінки каталогу й пошуку; стартові тексти кладемо лише в порожні поля
+            self::addColumn('categories', 'description', 'text null');
+            CategoryTexts::seedMissing();
+        }
         if ($ver < 58) {
             // ПРРО ДПС: підпис у браузері (DpsFlow) — крок документа, звірка стану
             // каси й «пульс» вкладки, яка тримає ключ
@@ -1178,6 +1183,7 @@ class Schema
                 // (Products::categoryTypeError). Перелік — Catalog::TYPES.
                 'type' => "str default 'product'", // product|course
                 'sort' => 'int default 0', 'active' => 'bool default 1',
+                'description' => 'text null',
             ],
             'products' => [
                 'id' => 'id', 'category_id' => 'int', 'name' => 'str', 'slug' => 'str unique',

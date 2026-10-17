@@ -164,6 +164,17 @@ foreach (DB::all('SELECT category_id, COUNT(*) n FROM products WHERE active = 1 
         <?php endif; ?>
       <?php endif; ?>
 
+      <?php
+        /* Текст розділу — під товарами першої сторінки без фільтрів: тут він корисний покупцю й дає сторінці
+           власний зміст для пошуку, а не заважає знайти товар */
+        $catText = trim((string)($current_cat['description'] ?? ''));
+        if ($catText !== '' && !$brand && $filters['q'] === '' && !$hasActiveFilters && $filters['age'] === '' && $page === 1): ?>
+        <section class="sv-cat-about">
+          <h2 class="sv-h2" style="font-size:28px"><?= e($current_cat['name']) ?>: що варто знати</h2>
+          <div class="sv-desc"><?= rich_text($catText) ?></div>
+        </section>
+      <?php endif; ?>
+
       <?php if ($other_products): ?>
         <div class="sv-sec-row" style="margin:72px 0 28px">
           <div><span class="sv-kicker">Популярне</span><h2 class="sv-h2" style="font-size:32px">Вас може зацікавити</h2></div>
