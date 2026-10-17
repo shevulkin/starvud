@@ -933,11 +933,15 @@ body.sv{
 .sv-logo-cubes .lc-b{--dx:-700px;--rot:900deg}
 .sv-logo-cubes .lc-c{--dx:-420px;--rot:540deg}
 .sv-logo-cubes.is-pre .lc-in{opacity:0}
-.sv-hero-logo:has(.is-play){animation:cubeTravel 6s cubic-bezier(.22,.55,.25,1) both}
-.sv-logo-cubes.is-play .lc-in{animation:cubeRoll 6s cubic-bezier(.22,.55,.25,1) both}
+.sv-hero-logo:has(.is-play){animation:cubeTravel 3.6s cubic-bezier(.22,.55,.25,1) both}
+.sv-logo-cubes.is-play .lc-in{animation:cubeRoll 3.6s cubic-bezier(.22,.55,.25,1) both}
 @keyframes cubeTravel{from{transform:translateX(-105vw)}to{transform:none}}
 @keyframes cubeRoll{
   from{transform:translateX(var(--dx)) rotate(calc(var(--rot) * -1))}
   to{transform:none}
 }
 @media (prefers-reduced-motion:reduce){.sv-hero-logo{animation:none!important}.sv-logo-cubes .lc-in{animation:none!important;opacity:1!important}}
+
+/* У завантаженому банері по кутах вшита тонка темна дуга: трохи збільшуємо фото, щоб край вийшов за межі рамки */
+.sv-hero-banner.is-custom img{transform:scale(1.07)}
+a.sv-hero-banner.is-custom:hover img{transform:scale(1.1)}
