@@ -83,7 +83,7 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
 <section class="sv-section" id="age">
   <div class="container">
     <div class="sv-sec-head">
-      <h2 class="sv-h2">Який вік?</h2>
+      <h2 class="sv-h2">На який вік?</h2>
       <p class="sv-lead">Позначка «від» — це вік, з якого іграшка безпечна й цікава; старшим дітям вона теж підійде.</p>
     </div>
     <div class="sv-ages">
