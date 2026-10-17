@@ -825,9 +825,14 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv .sv-card .sv-cart-btn svg{width:18px;height:18px}
 .sv .sv-card .sv-price b{font-size:21px}
 
-/* Іконка «Адміністрування» для персоналу — лише на телефоні (на комп'ютері є текстове посилання) */
+/* Меню акаунта (профіль, замовлення, адміністрування для персоналу, вихід) — і на телефоні, поруч із кошиком.
+   Окрема іконка адміністрування не потрібна: той самий пункт є в цьому меню. */
 .sv-admin-btn{display:none!important}
-@media (max-width:720px){ .sv-side .sv-icon.sv-admin-btn{display:flex!important;min-width:44px} }
+@media (max-width:720px){
+  .sv-side .sv-acct{display:block!important}
+  .sv-side .sv-acct>.sv-icon{display:flex!important;min-width:44px}
+  .sv-acct-menu{right:-44px}
+}
 
 /* Підпис на плитках першого екрана: «Хіт продажу», назва, ціна */
 .sv-hero-cap{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:2px;padding:36px 14px 12px;color:#fff;background:linear-gradient(to top,rgba(8,36,33,.82),rgba(8,36,33,.5) 55%,transparent)}
