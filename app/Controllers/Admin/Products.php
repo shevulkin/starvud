@@ -670,6 +670,8 @@ class Products
                 'barcode' => trim($_POST['barcode'] ?? '') ?: null,
                 'short_desc' => trim($_POST['short_desc'] ?? '') ?: null,
                 'description' => trim($_POST['description'] ?? '') ?: null,
+                'seo_title' => mb_substr(trim($_POST['seo_title'] ?? ''), 0, 120) ?: null,
+                'seo_description' => mb_substr(trim($_POST['seo_description'] ?? ''), 0, 300) ?: null,
                 'base_price' => ($_POST['base_price'] ?? '') === '' ? null : (float)$_POST['base_price'],
                 'old_price' => ($_POST['old_price'] ?? '') === '' ? null : (float)$_POST['old_price'],
                 'type' => Catalog::normType($_POST['type'] ?? null, (string)$p['type']),

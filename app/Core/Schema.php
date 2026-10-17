@@ -7,7 +7,7 @@ declare(strict_types=1);
  */
 class Schema
 {
-    public const VERSION = 61;
+    public const VERSION = 62;
 
     /** Оновлення існуючої бази до поточної версії без втрати даних */
     public static function upgrade(): void
@@ -711,6 +711,10 @@ class Schema
              */
             self::createAll();
         }
+        if ($ver < 62) {
+            // Свій опис для Google на картці товару (без нього береться з короткого чи повного опису)
+            self::addColumn('products', 'seo_description', 'str null');
+        }
         if ($ver < 61) {
             // Власне фото розділу: плитка на головній бере його, а без нього — фото хіта розділу
             self::addColumn('categories', 'image', 'str null');
@@ -1264,7 +1268,7 @@ class Schema
                 'ext_id' => 'str null',
                 // Довгий заголовок для пошуковиків («Йо-йо м'яч з підсвічуванням
                 // для новачків…»). На вітрині — коротка назва, у <title> — цей.
-                'seo_title' => 'str null',
+                'seo_title' => 'str null', 'seo_description' => 'str null',
                 // Торг на цей товар (див. Offers) і строк доступу до курсу, днів
                 'bargain' => 'bool default 1', 'access_days' => 'int null',
                 'created_at' => 'ts', 'updated_at' => 'ts',

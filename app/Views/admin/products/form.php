@@ -177,6 +177,17 @@ $roEdit = $canEdit ? '' : 'disabled';
 
 Технічні дані (вага, обʼєм, регіон) краще виносити в Характеристики нижче: за ними працюють фільтри в каталозі, а за текстом опису — ні.">
       <label>Повний опис</label><textarea name="description" rows="5" <?= $roEdit ?>><?= e($p['description'] ?? '') ?></textarea></div>
+    <details class="field" style="margin-bottom:18px"<?= (!empty($p["seo_title"]) || !empty($p["seo_description"])) ? " open" : "" ?>>
+      <summary style="cursor:pointer;font-weight:700">SEO: як картка виглядає в Google<?= trim((string)($p['seo_title'] ?? '')) . trim((string)($p['seo_description'] ?? '')) === '' ? ' · автоматично' : '' ?></summary>
+      <div style="margin-top:12px">
+        <label>Заголовок у пошуку</label>
+        <input type="text" name="seo_title" maxlength="65" value="<?= e($p['seo_title'] ?? '') ?>" placeholder="<?= e($p['name'] ?? 'Назва товару') ?>" <?= $roEdit ?>>
+        <p class="field-hint">До 65 символів. Порожньо — береться назва товару. Після нього сайт додає «— Старвуд-М».</p>
+        <label style="margin-top:14px">Опис у пошуку</label>
+        <textarea name="seo_description" rows="3" maxlength="160" placeholder="Порожньо — береться короткий або повний опис товару" <?= $roEdit ?>><?= e($p['seo_description'] ?? '') ?></textarea>
+        <p class="field-hint">До 160 символів: що це за іграшка, для якого віку, чим добра.</p>
+      </div>
+    </details>
     <div style="display:flex;gap:26px;flex-wrap:wrap">
       <label class="checkbox" data-help-title="Активний"
              data-help="Чи показувати товар на сайті просто зараз.

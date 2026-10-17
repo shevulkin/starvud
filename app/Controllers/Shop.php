@@ -335,7 +335,7 @@ class Shop
     {
         $first = trim(preg_split('~
 \s*
-~u', trim(str_replace("
+~u', trim(str_replace("
 ", "
 ", $text)))[0] ?? '');
         $first = trim(preg_replace('~\s+~u', ' ', $first));
@@ -352,6 +352,8 @@ class Shop
      */
     private static function productMetaDescription(array $p, $price): string
     {
+        $own = trim((string)($p['seo_description'] ?? ''));
+        if ($own !== '') return mb_substr($own, 0, 160);
         $short = trim(strip_tags((string)($p['short_desc'] ?? '')));
         if (mb_strlen($short) >= 80) return mb_substr($short, 0, 160);
         $full = trim(preg_replace('~\s+~u', ' ', strip_tags((string)($p['description'] ?? ''))));
