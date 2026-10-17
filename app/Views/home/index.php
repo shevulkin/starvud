@@ -60,7 +60,6 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
           <?php if ($bCap !== ''): ?><span class="sv-hero-cap"><b><?= e($bCap) ?></b><?php if ($bHref !== ''): ?><i aria-hidden="true">→</i><?php endif; ?></span><?php endif; ?>
         </<?= $bTag ?>>
       <?php endif; ?>
-      <div class="sv-hero-star"><?= mascot('wave', 96) ?></div>
     </div>
   </div>
 </section>

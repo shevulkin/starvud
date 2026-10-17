@@ -135,7 +135,6 @@ body.sv{background:var(--bg);color:var(--text);font-family:var(--sans);font-size
 .sv-hero-tile:hover img{transform:scale(1.04)}
 .sv-hero-tile-0{grid-row:span 2}
 .sv-hero-tile-3{display:none}
-.sv-hero-star{position:absolute;left:-40px;bottom:-34px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.08))}
 
 /* ---------- секції ---------- */
 .sv [id]{scroll-margin-top:150px}
@@ -450,8 +449,7 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
   .sv-catbar-in{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
   .sv-agedrop .nav-drop-btn{display:none}
   .sv-hero-grid{grid-template-columns:minmax(0,1fr);gap:40px}
-  .sv-hero-star{display:none}
-  .sv-ages,.sv-cats{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .sv-ages,.sv-cats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .sv-benefits-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .sv-quotes{grid-template-columns:minmax(0,1fr)}
   .sv-footer-grid{grid-template-columns:1fr 1fr}
@@ -843,18 +841,13 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 
 /* Зірочка-талісман і на планшеті/телефоні: сідає на кут блоку з хітами, як на комп'ютері, але менша */
 @media (max-width:1000px){
-  .sv-hero-star{display:block;left:auto;right:6px;bottom:-22px;z-index:3;pointer-events:none}
-  .sv-hero-star .mascot{width:78px!important;height:78px!important}
-  .sv-hero-art{margin-bottom:26px}
+    .sv-hero-art{margin-bottom:26px}
 }
 @media (max-width:520px){
-  .sv-hero-star{right:2px;bottom:-24px}
-  .sv-hero-star .mascot{width:64px!important;height:64px!important}
-}
+  }
 
 /* Комп'ютер: зірочка стоїть поруч із блоком хітів, а не поверх підпису («250 грн» закривало) */
-@media (min-width:1001px){ .sv-hero-star{left:-100px;bottom:-46px} }
-
+@media (min-width:1001px){ 
 /* Плитки першого екрана — банер розділів: назва розділу й стрілка, без ціни й «Хіт» (хіти з цінами нижче) */
 .sv-hero-cap{flex-direction:row;align-items:center;justify-content:space-between;gap:10px;padding:30px 16px 12px}
 .sv-hero-cap b{font-size:16px;font-weight:700;display:block;-webkit-line-clamp:unset}
@@ -914,3 +907,12 @@ body.sv{
   --red:#E8685A; --red-l:#FBE6E2;
   --line:#EFE8D8; --line2:#E2D9C4;
 }
+
+/* Банер без синьої рамки: браузерна рамка фокуса не малюється на клік; для клавіатури лишається мʼяке підсвічування */
+.sv-hero-banner,.sv-hero-banner:focus{outline:none}
+.sv-hero-banner:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(11,132,115,.28),var(--shadow)}
+
+/* Банер не домінує над першим екраном: помірніший за розміром, з відступами від меню й тексту */
+.sv-hero-banner.is-custom{max-width:560px;max-height:560px;margin-left:auto;margin-right:0}
+.sv-hero-banner.is-custom img{max-height:560px}
+@media (max-width:1000px){.sv-hero-banner.is-custom{max-width:100%;max-height:none;margin:0 auto}.sv-hero-banner.is-custom img{max-height:none}}
