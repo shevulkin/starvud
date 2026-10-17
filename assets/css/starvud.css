@@ -918,10 +918,26 @@ body.sv{
 .sv-hero-banner.is-custom{max-height:560px}
 .sv-hero-banner.is-custom img{max-height:560px}
 /* Лого-знак на лівому нижньому куті банера (замість зірки) */
-.sv-hero-logo{position:absolute;left:-34px;bottom:-30px;width:96px;height:auto;z-index:3;pointer-events:none;filter:drop-shadow(0 8px 14px rgba(0,0,0,.12))}
+.sv-hero-logo{position:absolute;left:-40px;bottom:-26px;width:84px;z-index:3;pointer-events:none;filter:drop-shadow(0 10px 16px rgba(30,50,40,.16))}
+.sv-hero-logo .sv-logo-cubes{display:block;width:100%;height:auto;overflow:visible}
 @media (max-width:1000px){
   .sv-hero-bwrap.is-custom{max-width:100%;margin:0 auto}
   .sv-hero-banner.is-custom,.sv-hero-banner.is-custom img{max-height:none}
-  .sv-hero-logo{left:auto;right:6px;bottom:-24px;width:78px}
+  .sv-hero-logo{left:auto;right:6px;bottom:-20px;width:68px}
 }
-@media (max-width:520px){.sv-hero-logo{right:2px;width:64px}}
+@media (max-width:520px){.sv-hero-logo{right:2px;width:56px}}
+
+/* Кубики викочуються з-за лівого краю екрана, неспішно котяться по всій ширині й зупиняються біля банера */
+.sv-logo-cubes .lc-in{transform-box:fill-box;transform-origin:center}
+.sv-logo-cubes .lc-a{--dx:-120px;--rot:720deg}
+.sv-logo-cubes .lc-b{--dx:-700px;--rot:900deg}
+.sv-logo-cubes .lc-c{--dx:-420px;--rot:540deg}
+.sv-logo-cubes.is-pre .lc-in{opacity:0}
+.sv-hero-logo:has(.is-play){animation:cubeTravel 6s cubic-bezier(.22,.55,.25,1) both}
+.sv-logo-cubes.is-play .lc-in{animation:cubeRoll 6s cubic-bezier(.22,.55,.25,1) both}
+@keyframes cubeTravel{from{transform:translateX(-105vw)}to{transform:none}}
+@keyframes cubeRoll{
+  from{transform:translateX(var(--dx)) rotate(calc(var(--rot) * -1))}
+  to{transform:none}
+}
+@media (prefers-reduced-motion:reduce){.sv-hero-logo{animation:none!important}.sv-logo-cubes .lc-in{animation:none!important;opacity:1!important}}

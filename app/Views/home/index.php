@@ -61,7 +61,19 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
           <?php if ($bCap !== ''): ?><span class="sv-hero-cap"><b><?= e($bCap) ?></b><?php if ($bHref !== ''): ?><i aria-hidden="true">→</i><?php endif; ?></span><?php endif; ?>
         </<?= $bTag ?>>
         <?php /* Лого-знак на куті банера — як раніше сиділа зірка, того самого розміру */ ?>
-        <img class="sv-hero-logo" src="<?= e(asset('img/logo-mark.webp')) ?>" width="96" height="78" alt="">
+        <span class="sv-hero-logo" aria-hidden="true"><?= View::partial('partials/logo_cubes') ?></span>
+        <script>
+        /* Кубики «докочуються» й складаються, коли банер зʼявляється на екрані (один раз) */
+        (function(){
+          var c = document.querySelector('.sv-logo-cubes'); if (!c) return;
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+          c.classList.add('is-pre');
+          var io = new IntersectionObserver(function(es){
+            if (es[0].isIntersecting) { c.classList.remove('is-pre'); c.classList.add('is-play'); io.disconnect(); }
+          }, {threshold: .6});
+          io.observe(c);
+        })();
+        </script>
         </div>
       <?php endif; ?>
     </div>
