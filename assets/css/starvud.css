@@ -824,3 +824,7 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv .sv-card .sv-card-foot>.sv-cart-btn,.sv .sv-card .sv-card-foot>form{width:40px;max-width:40px}
 .sv .sv-card .sv-cart-btn svg{width:18px;height:18px}
 .sv .sv-card .sv-price b{font-size:21px}
+
+/* Іконка «Адміністрування» для персоналу — лише на телефоні (на комп'ютері є текстове посилання) */
+.sv-admin-btn{display:none!important}
+@media (max-width:720px){ .sv-side .sv-icon.sv-admin-btn{display:flex!important;min-width:44px} }
