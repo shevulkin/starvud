@@ -874,3 +874,18 @@ a.sv-hero-banner:hover img{transform:scale(1.03)}
 .sv-cat-about{margin:56px 0 8px;padding:28px 32px;background:#fff;border:1px solid var(--line);border-radius:22px}
 .sv-cat-about .sv-desc{max-width:760px}
 @media (max-width:760px){.sv-cat-about{padding:22px 18px;margin-top:40px}}
+
+/* Профіль: пояснення сховано за «?» і «Як це працює», щоб не було «скатертини» тексту */
+.sv-q{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-left:8px;padding:0;flex-shrink:0;border:1px solid var(--line2);border-radius:50%;background:#fff;color:var(--muted);font:600 12px/1 var(--sans,inherit);cursor:pointer;vertical-align:middle}
+.sv-q:hover,.sv-q[aria-expanded="true"]{border-color:var(--teal);color:var(--teal-d);background:var(--teal-l)}
+.sv-q-text{display:block;flex-basis:100%;width:100%;margin:6px 0 0 0;padding:10px 12px;border-radius:10px;background:var(--bg);color:var(--muted);font-size:13px;line-height:1.5}
+.sv-q-text[hidden]{display:none}
+.sv-compact .notify-row{display:flex;align-items:flex-start;flex-wrap:wrap;gap:0 4px}
+.sv-compact .notify-row .checkbox{flex:0 1 auto}
+.sv-hint-line{margin:6px 0 0;display:flex;align-items:center;flex-wrap:wrap;gap:0 2px;font-size:13px}
+.sv-more{margin:0 0 12px}
+.sv-more>summary{display:inline-block;cursor:pointer;font-size:13px;font-weight:600;color:var(--teal-d);list-style:none}
+.sv-more>summary::-webkit-details-marker{display:none}
+.sv-more>summary::after{content:' ▾';font-size:11px}
+.sv-more[open]>summary::after{content:' ▴'}
+.sv-more>div{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--bg);font-size:13px;line-height:1.5}

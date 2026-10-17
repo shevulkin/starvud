@@ -1,3 +1,12 @@
+<?php
+/* Пояснення не розтягують сторінку: біля пункту — кнопка «?», що розкриває текст під рядком;
+   вступні абзаци ховаються в рядок «Як це працює». Увесь текст лишається, просто не на виду. */
+$tip = static fn(string $text): string =>
+    '<button type="button" class="sv-q" aria-expanded="false" aria-label="Пояснення" title="Що це?">?</button>'
+    . '<span class="sv-q-text" hidden>' . e($text) . '</span>';
+$more = static fn(string $title, string $html): string =>
+    '<details class="sv-more"><summary>' . e($title) . '</summary><div class="dim">' . $html . '</div></details>';
+?>
 <section class="section sv-compact" style="padding-top:32px">
   <div class="container narrow" style="max-width:780px">
     <?= View::partial('partials/account_nav', ['active' => 'profile']) ?>
@@ -63,11 +72,10 @@
                  читалась би як несправність сайту. */ ?>
         <?php if (!empty($u['phone'])): ?>
           <?php if (!empty($u['phone_verified_at'])): ?>
-            <p class="dim" style="margin:6px 0 0">✓ Номер підтверджений — замовлення, оформлені на нього по телефону, потрапляють сюди.</p>
+            <p class="dim sv-hint-line">✓ Номер підтверджений <?= $tip('Замовлення, оформлені на цей номер по телефону, потрапляють у ваш кабінет.') ?></p>
           <?php else: ?>
-            <p class="dim" style="margin:6px 0 0">Номер не підтверджений. Він годиться для звʼязку, але замовлення,
-              оформлені продавцем на цей номер, у кабінет не потраплять.
-              <?php if (!empty($tg_ready)): ?>Щоб підтвердити — увійдіть через Telegram: бот попросить поділитися номером.<?php endif; ?></p>
+            <p class="dim sv-hint-line">Номер не підтверджений <?= $tip('Він годиться для звʼязку, але замовлення, оформлені продавцем на цей номер, у кабінет не потраплять.'
+              . (!empty($tg_ready) ? ' Щоб підтвердити — увійдіть через Telegram: бот попросить поділитися номером.' : '')) ?></p>
           <?php endif; ?>
         <?php endif; ?>
       </div>
@@ -87,9 +95,8 @@
 
     <div class="admin-card">
       <h2 class="h-serif" style="font-size:20px">Адреси доставки</h2>
-      <p class="dim" style="margin-bottom:16px">Збережена адреса підставляється при оформленні — вводити щоразу не треба.
-        Отримувача адреса не памʼятає навмисно: посилку видають лише тому, чиї імʼя й телефон у накладній,
-        тож їх ви підтверджуєте в кожному замовленні.</p>
+      <p class="dim" style="margin-bottom:8px">Збережена адреса підставляється при оформленні замовлення.</p>
+      <?= $more('Як це працює', 'Отримувача адреса не памʼятає навмисно: посилку видають лише тому, чиї імʼя й телефон у накладній, тож їх ви підтверджуєте в кожному замовленні.') ?>
 
       <?php if (!$addresses): ?>
         <p class="dim">Поки що порожньо. Додайте першу — або поставте галку «Запамʼятати цю адресу» при оформленні.</p>
@@ -187,17 +194,17 @@
         $notify_all_events = [];
         foreach ($notify_options as $st) foreach ($st['events'] as $ev) $notify_all_events[$ev] = true;
         ?>
-        <p class="dim" style="margin-bottom:16px">Оберіть, куди вам надсилати<?php
-          if ($notify_all_events): ?>: <?= e(implode(', ', array_keys($notify_all_events))) ?><?php
-          endif; ?>. Показано лише те, що ввімкнув адміністратор — решту він вимкнув для всіх.</p>
+        <p class="dim" style="margin-bottom:8px">Оберіть, куди вам надсилати сповіщення.</p>
+        <?= $more('Які саме сповіщення', ($notify_all_events ? e(implode(', ', array_keys($notify_all_events))) . '. ' : '') . 'Показано лише те, що ввімкнув адміністратор — решту він вимкнув для всіх.') ?>
         <?php foreach ($notify_options as $ch => $st): ?>
           <div class="notify-row">
             <label class="checkbox<?= $st['ready'] ? '' : ' is-off' ?>"
                    <?= $st['ready'] ? '' : 'title="' . e($st['hint']) . '"' ?>>
               <input type="checkbox" name="ch[<?= e($ch) ?>]" value="1"<?= $st['on'] ? ' checked' : '' ?>>
               <span><b><?= e($notify_channels[$ch] ?? $ch) ?></b><?php
-                if (!$st['ready']): ?> <span class="dim">— <?= e($st['hint']) ?></span><?php endif; ?></span>
+                if (!$st['ready']): ?> <span class="dim">— недоступно</span><?php endif; ?></span>
             </label>
+            <?php if (!$st['ready'] && trim((string)$st['hint']) !== ''): ?><?= $tip((string)$st['hint']) ?><?php endif; ?>
           </div>
         <?php endforeach; ?>
         <button class="btn btn-gold" type="submit" style="margin-top:16px">💾 Зберегти сповіщення</button>
@@ -213,12 +220,8 @@
       <form class="admin-card" method="post" action="<?= e(url('/profile')) ?>">
         <?= Csrf::field() ?><input type="hidden" name="_action" value="login_methods">
         <h2 class="h-serif" style="font-size:20px">Способи входу в акаунт</h2>
-        <p class="dim" style="margin-bottom:16px">
-          Пароля тут немає: кожен спосіб нижче — окремий вхід, і будь-який із них пускає в акаунт.
-          Тому зайвий краще вимкнути: якщо ви заходите лише через Telegram, вхід поштою вам не
-          потрібен, а скринька — найдовше живе й найчастіше витікає.
-          Вимкнений спосіб перестає працювати одразу, навіть якщо хтось знає ваш номер чи пошту.
-        </p>
+        <p class="dim" style="margin-bottom:8px">Оберіть, якими способами можна входити в акаунт.</p>
+        <?= $more('Як це працює', 'Пароля тут немає: кожен спосіб нижче — окремий вхід, і будь-який із них пускає в акаунт. Тому зайвий краще вимкнути: якщо ви заходите лише через Telegram, вхід поштою вам не потрібен, а скринька — найдовше живе й найчастіше витікає. Вимкнений спосіб перестає працювати одразу, навіть якщо хтось знає ваш номер чи пошту.') ?>
         <?php foreach ($login_methods as $m => $st): ?>
           <div class="notify-row">
             <label class="checkbox<?= $st['ready'] ? '' : ' is-off' ?>"
@@ -228,19 +231,12 @@
                        перевіряє готовність ще раз (LoginMethods::save). */ ?>
               <input type="checkbox" name="lm[<?= e($m) ?>]" value="1"
                      <?= $st['on'] ? ' checked' : '' ?><?= $st['ready'] ? '' : ' disabled' ?>>
-              <span><b><?= e($st['label']) ?></b>
-                <?php if ($st['ready']): ?>
-                  <span class="dim">— <?= e($st['about']) ?></span>
-                <?php else: ?>
-                  <span class="dim">— <?= e($st['hint']) ?></span>
-                <?php endif; ?>
-              </span>
+              <span><b><?= e($st['label']) ?></b><?php if (!$st['ready']): ?> <span class="dim">— недоступно</span><?php endif; ?></span>
             </label>
+            <?= $tip((string)($st['ready'] ? $st['about'] : $st['hint'])) ?>
           </div>
         <?php endforeach; ?>
-        <p class="dim" style="margin:14px 0 0;font-size:12.5px">
-          Хоча б один спосіб має лишитись увімкненим — інакше в акаунт не буде як зайти.
-        </p>
+        <p class="dim" style="margin:12px 0 0;font-size:12.5px">Хоча б один спосіб має лишитись увімкненим.</p>
         <button class="btn btn-gold" type="submit" style="margin-top:16px">💾 Зберегти способи входу</button>
       </form>
     <?php endif; ?>
@@ -249,12 +245,8 @@
       <form class="admin-card" method="post" action="<?= e(url('/profile')) ?>">
         <?= Csrf::field() ?><input type="hidden" name="_action" value="kasa">
         <h2 class="h-serif" style="font-size:20px">Моя каса</h2>
-        <p class="dim" style="margin-bottom:16px">
-          Через яку касу пробиваються чеки ваших продажів. За замовчуванням — касу вашої точки,
-          і міняти тут нічого не треба. Власну касу вказують тоді, коли <b>Device Manager стоїть
-          на цьому ж пристрої</b> — вашому ПК або телефоні — і ключ підпису лежить у ньому
-          (на флешці чи в папці). Тоді чек несе просто ваша вкладка, і ключ нікуди не передається.
-        </p>
+        <p class="dim" style="margin-bottom:8px">Через яку касу пробиваються чеки ваших продажів. За замовчуванням — каса вашої точки.</p>
+        <?= $more('Коли міняти', 'Власну касу вказують тоді, коли <b>Device Manager стоїть на цьому ж пристрої</b> — вашому ПК або телефоні — і ключ підпису лежить у ньому (на флешці чи в папці). Тоді чек несе просто ваша вкладка, і ключ нікуди не передається.') ?>
         <div class="form-grid">
           <div class="field">
             <label>Куди пробивати</label>
@@ -309,8 +301,7 @@
 
     <div class="admin-card" id="messengers" style="scroll-margin-top:16px">
       <h2 class="h-serif" style="font-size:20px">Месенджери для сповіщень і входу</h2>
-      <p class="dim" style="margin-bottom:16px">Підключіть месенджер — сюди приходитимуть коди входу за номером телефону,
-        а також сповіщення, якщо цей месенджер є у списку вище.</p>
+      <p class="dim" style="margin-bottom:12px">Підключіть месенджер для кодів входу й сповіщень.</p>
       <div style="display:flex;flex-direction:column;gap:12px">
         <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
           <b style="min-width:90px">Telegram</b>
@@ -449,4 +440,14 @@
     });
   });
 })();
+</script>
+<script>
+/* Кнопка «?» розкриває пояснення під своїм рядком; повторний дотик ховає */
+document.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('.sv-q'); if (!b) return;
+  var t = b.nextElementSibling; if (!t || !t.classList.contains('sv-q-text')) return;
+  var open = t.hasAttribute('hidden');
+  if (open) t.removeAttribute('hidden'); else t.setAttribute('hidden', '');
+  b.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
 </script>
