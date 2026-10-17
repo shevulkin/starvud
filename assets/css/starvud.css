@@ -851,3 +851,6 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
   .sv-hero-star{right:2px;bottom:-24px}
   .sv-hero-star .mascot{width:64px!important;height:64px!important}
 }
+
+/* Комп'ютер: зірочка стоїть поруч із блоком хітів, а не поверх підпису («250 грн» закривало) */
+@media (min-width:1001px){ .sv-hero-star{left:-100px;bottom:-46px} }
