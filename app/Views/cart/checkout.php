@@ -391,8 +391,10 @@
   var meBox = document.getElementById('meRecipient');
   function applyMe(){
     if (meBox.checked) {
+      // Підставляємо дані з профілю, але поля лишаються редагованими: покупець може
+      // виправити імʼя чи номер саме для цього замовлення, не змінюючи профіль
       nameInput.value = me.name; phoneInput.value = me.phone;
-      nameInput.readOnly = phoneInput.readOnly = true;
+      nameInput.readOnly = phoneInput.readOnly = false;
     } else {
       nameInput.value = phoneInput.value = '';
       nameInput.readOnly = phoneInput.readOnly = false;
