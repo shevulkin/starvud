@@ -840,3 +840,14 @@ a.sv-pg:hover{border-color:var(--teal-d);color:var(--teal-d)}
 .sv-hero-cap b{font-size:14px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .sv-hero-cap i{font-style:normal;font-size:15px;font-weight:700}
 @media (max-width:520px){.sv-hero-cap{padding:28px 10px 9px}.sv-hero-cap b{font-size:12.5px}.sv-hero-cap i{font-size:13.5px}.sv-hero-cap small{font-size:10px}}
+
+/* Зірочка-талісман і на планшеті/телефоні: сідає на кут блоку з хітами, як на комп'ютері, але менша */
+@media (max-width:1000px){
+  .sv-hero-star{display:block;left:auto;right:6px;bottom:-22px;z-index:3;pointer-events:none}
+  .sv-hero-star .mascot{width:78px!important;height:78px!important}
+  .sv-hero-art{margin-bottom:26px}
+}
+@media (max-width:520px){
+  .sv-hero-star{right:2px;bottom:-24px}
+  .sv-hero-star .mascot{width:64px!important;height:64px!important}
+}
