@@ -21,6 +21,14 @@
   var pushBtn = document.getElementById('pushEnable');
   if (pushBtn && 'PushManager' in window && (window.BOFU && BOFU.vapid)) {
     pushBtn.style.display = 'block';
+    // Уже підписані на цьому пристрої — кнопка не має щоразу пропонувати «Увімкнути»
+    var pushOn = function () { pushBtn.textContent = '🔔 Пуші увімкнено'; pushBtn.disabled = true; pushBtn.style.opacity = '.7'; };
+    if (window.Notification && Notification.permission === 'denied') {
+      pushBtn.textContent = '🔕 Пуші заблоковано в браузері'; pushBtn.disabled = true;
+    } else if (window.Notification && Notification.permission === 'granted') {
+      navigator.serviceWorker.ready.then(function (reg) { return reg.pushManager.getSubscription(); })
+        .then(function (s) { if (s) pushOn(); }).catch(function () {});
+    }
     pushBtn.addEventListener('click', function () {
       Notification.requestPermission().then(function (perm) {
         if (perm !== 'granted') return;
@@ -39,7 +47,7 @@
             body: JSON.stringify(sub)
           });
         }).then(function () {
-          pushBtn.textContent = '🔔 Пуші увімкнено';
+          pushOn();
         }).catch(function (e) { console.warn('push', e); });
       });
     });
