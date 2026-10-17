@@ -45,6 +45,9 @@ class Home
         $aged = Catalog::search([]);
         $ageCount = [];
         foreach (array_keys(Ages::BANDS) as $k) $ageCount[$k] = count(array_filter($aged, static fn($p) => Ages::matches($p, (string)$k)));
+        // Плитки першого екрана працюють як банер розділів: підпис — назва розділу, клік веде в розділ
+        $heroCats = [];
+        foreach (DB::all('SELECT id, name, slug FROM categories WHERE active = 1') as $c) $heroCats[(int)$c['id']] = $c;
         View::show('home/index', [
             'categories' => self::shelves(),
             'featured' => $featured,
@@ -52,7 +55,7 @@ class Home
             'age_count' => $ageCount,
             // Перший екран показує справжні іграшки, а не малюнки: чотири хіти
             'hero_photos' => array_map(static fn($p) => ['photo' => Catalog::photo($p), 'name' => $p['name'], 'slug' => $p['slug'],
-                    'price' => ($pr = Catalog::price($p)[0]) !== null ? price_fmt((float)$pr) : ''],
+                    'cat' => $heroCats[(int)$p['category_id']]['name'] ?? '', 'cat_slug' => $heroCats[(int)$p['category_id']]['slug'] ?? ''],
                 array_slice($featured, 0, 4)),
             'reviews' => Reviews::withText(3),
             'review_stats' => $stats,

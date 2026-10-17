@@ -45,11 +45,11 @@ $avg = number_format((float)$review_stats['avg'], 1, ',', '');
     <div class="sv-hero-art" aria-hidden="true">
       <div class="sv-hero-mosaic">
         <?php foreach ($hero_photos as $i => $h): ?>
-          <a class="sv-hero-tile sv-hero-tile-<?= $i ?>" href="<?= e(url('/product/' . $h['slug'])) ?>" tabindex="-1" style="--ph:url('<?= e(asset(Images::displayThumb($h['photo']))) ?>')">
+          <a class="sv-hero-tile sv-hero-tile-<?= $i ?>" href="<?= e($h['cat_slug'] !== '' ? shop_url($h['cat_slug']) : url('/product/' . $h['slug'])) ?>" tabindex="-1" style="--ph:url('<?= e(asset(Images::displayThumb($h['photo']))) ?>')">
             <img src="<?= e(asset(Images::displayThumb($h['photo']))) ?>" alt="<?= e($h['name']) ?>" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?>>
-            <?php /* Підпис на плитці: без нього чотири великі фото виглядають як випадкові знімки, а не як
-                     «хіти продажу», на які можна натиснути */ ?>
-            <span class="sv-hero-cap"><small>Хіт продажу</small><b><?= e($h['name']) ?></b><?php if ($h['price'] !== ''): ?><i><?= e($h['price']) ?></i><?php endif; ?></span>
+            <?php /* Плитка — банер розділу, а не картка товару (хіти з цінами нижче): підпис — назва розділу
+                     зі стрілкою, клік веде в розділ */ ?>
+            <?php if ($h['cat'] !== ''): ?><span class="sv-hero-cap"><b><?= e($h['cat']) ?></b><i aria-hidden="true">→</i></span><?php endif; ?>
           </a>
         <?php endforeach; ?>
       </div>
