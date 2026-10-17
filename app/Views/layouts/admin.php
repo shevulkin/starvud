@@ -22,7 +22,9 @@ $pos_screen = rtrim($cur, '/') === '/admin/orders/new';
 <title><?= e($page_title ?? 'Адміністрування') ?></title>
 <meta name="theme-color" content="#141110">
 <?php /* Легкий значок вкладки; велика іконка лишається манифесту й apple-touch */ ?>
-<link rel="icon" href="<?= e(asset('img/favicon.png')) ?>" sizes="64x64">
+<link rel="icon" href="<?= e(asset('img/favicon-96.png')) ?>" type="image/png" sizes="96x96">
+<link rel="icon" href="<?= e(asset('img/favicon-48.png')) ?>" type="image/png" sizes="48x48">
+<link rel="icon" href="<?= e(asset('img/favicon-192.png')) ?>" type="image/png" sizes="192x192">
 <link rel="manifest" href="<?= e(url('/manifest.webmanifest')) ?>">
 <link rel="apple-touch-icon" href="<?= e(asset('img/avatar.png')) ?>">
 <link rel="stylesheet" href="<?= e(asset_v('css/fonts.css')) ?>">

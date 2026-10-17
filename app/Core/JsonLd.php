@@ -117,7 +117,7 @@ class JsonLd
             '@id' => abs_url('/') . '#store',
             'name' => cfg('app_name'),
             'url' => abs_url('/'),
-            'image' => asset_abs('img/logo.png'),
+            'image' => asset_abs('img/favicon-192.png'),
             'telephone' => Content::title('contact_phone'),
             'address' => self::clean(['@type' => 'PostalAddress', 'streetAddress' => Content::title('contact_address'), 'addressCountry' => 'UA']),
             'aggregateRating' => [

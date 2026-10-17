@@ -109,18 +109,24 @@ class Seo
             ['/delivery', '0.5'], ['/payment', '0.5'], ['/returns', '0.5'],
             ['/privacy', '0.3'], ['/offer', '0.3'],
         ];
-        foreach (DB::all('SELECT slug, updated_at FROM products WHERE active = 1') as $p) {
-            $urls[] = ['/product/' . $p['slug'], '0.8', $p['updated_at']];
+        // Фото товарів — у карті сайту (image:image): Google Картинки знаходять їх швидше
+        $imgs = [];
+        foreach (DB::all('SELECT product_id, path FROM product_images ORDER BY sort, id') as $im) {
+            if (count($imgs[(int)$im['product_id']] ?? []) < 6) $imgs[(int)$im['product_id']][] = asset_abs($im['path']);
+        }
+        foreach (DB::all('SELECT id, slug, updated_at FROM products WHERE active = 1') as $p) {
+            $urls[] = ['/product/' . $p['slug'], '0.8', $p['updated_at'], $imgs[(int)$p['id']] ?? []];
         }
         // Вікові сторінки («іграшки з народження», «від 1 року»…) — окремі посадкові під запити за віком
         foreach (array_keys(\Ages::BANDS) as $k) $urls[] = ['/shop?age=' . $k, '0.7'];
         foreach (DB::all('SELECT slug FROM categories WHERE active = 1') as $c) {
             $urls[] = [shop_path($c['slug']), '0.7'];
         }
-        echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+        echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . "\n";
         foreach ($urls as $u) {
             echo '<url><loc>' . htmlspecialchars($abs($u[0])) . '</loc><priority>' . $u[1] . '</priority>';
             if (!empty($u[2])) echo '<lastmod>' . date('Y-m-d', strtotime($u[2])) . '</lastmod>';
+            foreach ($u[3] ?? [] as $src) echo '<image:image><image:loc>' . htmlspecialchars($src) . '</image:loc></image:image>';
             echo "</url>\n";
         }
         echo '</urlset>';
@@ -138,6 +144,15 @@ class Seo
                 ['src' => asset('img/avatar.png'), 'sizes' => '400x400', 'type' => 'image/png', 'purpose' => 'any maskable'],
             ],
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        exit;
+    }
+
+    /** Багато пошуковців і браузерів питають саме /favicon.ico — віддаємо знак сайту. */
+    public static function favicon(): never
+    {
+        header('Content-Type: image/png');
+        header('Cache-Control: public, max-age=86400');
+        readfile(BOFU_ROOT . '/assets/img/favicon-96.png');
         exit;
     }
 

@@ -220,6 +220,7 @@ class App
         if ($path === '/sitemap.xml') { Controllers\Seo::sitemap(); }
         if ($path === '/feed/google.xml') { Controllers\Seo::googleFeed(); }
         if ($path === '/manifest.webmanifest') { Controllers\Seo::manifest(); }
+        if ($path === '/favicon.ico') { Controllers\Seo::favicon(); }
         if ($path === '/sw.js') { Controllers\Seo::serviceWorker(); }
 
         // --- аутентифікація ---

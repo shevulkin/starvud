@@ -16,7 +16,9 @@
 <meta property="og:image" content="<?= e(asset_abs($og_image ?? (!empty($p) && !empty($jsonld_product) ? Catalog::photo($p) : 'img/og-default.jpg'))) ?>">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1D6B64">
-<link rel="icon" href="<?= e(asset('img/favicon.png')) ?>" sizes="64x64">
+<link rel="icon" href="<?= e(asset('img/favicon-96.png')) ?>" type="image/png" sizes="96x96">
+<link rel="icon" href="<?= e(asset('img/favicon-48.png')) ?>" type="image/png" sizes="48x48">
+<link rel="icon" href="<?= e(asset('img/favicon-192.png')) ?>" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="<?= e(asset('img/avatar.png')) ?>">
 <link rel="manifest" href="<?= e(url('/manifest.webmanifest')) ?>">
 <?php /* Шрифти — свої файли з assets/fonts: CSP пускає шрифти лише з нашого
